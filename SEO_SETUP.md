@@ -13,6 +13,22 @@ Ez a projekt most már tartalmazza a nyilvános oldalak alapvető SEO-rétegét,
   - `src/app/robots.ts`
   - `src/app/sitemap.ts`
 
+## Kanonikus production domain
+
+A publikus SEO-réteg alap URL-je az `APP_BASE_URL` változóból érkezik. Ennél a projektnél a kanonikus production domain:
+
+- `https://www.imperiogepeszet.hu`
+
+Ez az érték határozza meg a következőket is:
+
+- canonical URL-ek
+- Open Graph URL-ek
+- `metadataBase`
+- `robots.txt` sitemap hivatkozása
+- `sitemap.xml` publikus URL-jei
+
+Ha az `APP_BASE_URL` véletlenül a non-`www` domainre lenne állítva, a közös URL helper ezt a publikus SEO-rétegben automatikusan a `www` verzióra normalizálja.
+
 ## Mi lett hozzáadva?
 
 - egyedi magyar title és description minden fő nyilvános oldalhoz
