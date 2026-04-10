@@ -3,26 +3,20 @@ import type { Metadata } from "next"
 import { BoilerReplacementForm } from "@/components/forms/boiler-replacement-form"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Reveal } from "@/components/motion/reveal"
+import { ServicePageDetailsSection } from "@/components/sections/service-page-details-section"
 import { ServicePageHero } from "@/components/sections/service-page-hero"
 import { StructuredData } from "@/components/seo/structured-data"
+import { servicePageContents } from "@/lib/content/service-pages"
 import { buildPageMetadata } from "@/lib/seo/metadata"
-import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
+import {
+  createBreadcrumbStructuredData,
+  createFaqStructuredData,
+  createServiceStructuredData,
+} from "@/lib/seo/site"
 
-const highlights = [
-  "Gyors indulás",
-  "Kevesebb kör",
-  "Képes kiegészítés",
-]
+const pageContent = servicePageContents.kazancsere
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Kazánjavítás és kazáncsere megkeresése",
-  description:
-    "Kazánjavításhoz vagy kazáncseréhez készült megkeresési oldal átlátható adatbekéréssel, képfeltöltéssel és gyorsabb első egyeztetéssel.",
-  path: "/szolgaltatasok/kazancsere",
-  openGraphTitle: "Kazánjavítás és kazáncsere megkeresése | Imperio Gépészet",
-  openGraphDescription:
-    "Kazánjavítás vagy kazáncsere strukturált megkereséssel, gyorsabb előszűréssel és pontosabb előzetes egyeztetéssel.",
-})
+export const metadata: Metadata = buildPageMetadata(pageContent.metadata)
 
 export default function BoilerReplacementPage() {
   return (
@@ -30,28 +24,40 @@ export default function BoilerReplacementPage() {
       <StructuredData
         data={[
           createServiceStructuredData({
-            name: "Kazánjavítás / kazáncsere",
-            description:
-              "Kazánjavítás vagy kazáncsere strukturált megkereséssel, átlátható adatbekéréssel és opcionális képfeltöltéssel.",
-            path: "/szolgaltatasok/kazancsere",
+            name: pageContent.structuredData.name,
+            description: pageContent.structuredData.description,
+            path: pageContent.path,
           }),
+          createFaqStructuredData(pageContent.details.faqs),
           createBreadcrumbStructuredData([
             { name: "Főoldal", path: "/" },
-            { name: "Kazánjavítás / kazáncsere", path: "/szolgaltatasok/kazancsere" },
+            { name: pageContent.hero.title, path: pageContent.path },
           ]),
         ]}
       />
       <main className="min-h-screen bg-zinc-950 text-white">
         <SiteNavbar />
         <ServicePageHero
-          title="Kazánjavítás / kazáncsere"
-          intro="Itt indítható el a kazánjavítással vagy kazáncserével kapcsolatos megkeresés."
-          leadTitle="Kazános megkeresés röviden"
-          leadDescription="Néhány alapadat már elég az induláshoz. A többit később is megadhatja."
-          serviceType="kazancsere"
-          sourcePage="kazancsere"
-          primaryCtaLabel="Megkeresés indítása"
-          highlights={highlights}
+          title={pageContent.hero.title}
+          intro={pageContent.hero.intro}
+          leadTitle={pageContent.hero.leadTitle}
+          leadDescription={pageContent.hero.leadDescription}
+          serviceType={pageContent.serviceType}
+          sourcePage={pageContent.sourcePage}
+          primaryCtaLabel={pageContent.hero.primaryCtaLabel}
+          highlights={pageContent.hero.highlights}
+        />
+        <ServicePageDetailsSection
+          eyebrow={pageContent.details.eyebrow}
+          title={pageContent.details.title}
+          intro={pageContent.details.intro}
+          clusters={pageContent.details.clusters}
+          localNoteTitle={pageContent.details.localNoteTitle}
+          localNote={pageContent.details.localNote}
+          relatedLinks={pageContent.details.relatedLinks}
+          faqs={pageContent.details.faqs}
+          sourcePage={pageContent.sourcePage}
+          serviceType={pageContent.serviceType}
         />
 
         <section
@@ -60,11 +66,10 @@ export default function BoilerReplacementPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Kazános megkeresés
+              {pageContent.formSection.title}
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              Néhány adat megadása után elküldheti a megkeresést. Ami most nem
-              biztos, később is pontosítható.
+              {pageContent.formSection.intro}
             </p>
           </Reveal>
 

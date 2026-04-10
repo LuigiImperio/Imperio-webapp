@@ -3,26 +3,20 @@ import type { Metadata } from "next"
 import { HeatPumpInstallationForm } from "@/components/forms/heat-pump-installation-form"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Reveal } from "@/components/motion/reveal"
+import { ServicePageDetailsSection } from "@/components/sections/service-page-details-section"
 import { ServicePageHero } from "@/components/sections/service-page-hero"
 import { StructuredData } from "@/components/seo/structured-data"
+import { servicePageContents } from "@/lib/content/service-pages"
 import { buildPageMetadata } from "@/lib/seo/metadata"
-import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
+import {
+  createBreadcrumbStructuredData,
+  createFaqStructuredData,
+  createServiceStructuredData,
+} from "@/lib/seo/site"
 
-const highlights = [
-  "Gyors indulás",
-  "Műszaki alapok",
-  "Képes kiegészítés",
-]
+const pageContent = servicePageContents.hoszivattyuTelepites
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Hőszivattyú telepítési megkeresés",
-  description:
-    "Hőszivattyús projektek előkészítéséhez készült megkeresési oldal ingatlan-, rendszer- és műszaki alapadatokkal, valamint opcionális képfeltöltéssel.",
-  path: "/szolgaltatasok/hoszivattyu-telepites",
-  openGraphTitle: "Hőszivattyú telepítési megkeresés | Imperio Gépészet",
-  openGraphDescription:
-    "Hőszivattyús előminősítő megkeresés ingatlan-, rendszer- és kapcsolati adatokkal a pontosabb első szakmai egyeztetéshez.",
-})
+export const metadata: Metadata = buildPageMetadata(pageContent.metadata)
 
 export default function HeatPumpInstallationPage() {
   return (
@@ -30,28 +24,40 @@ export default function HeatPumpInstallationPage() {
       <StructuredData
         data={[
           createServiceStructuredData({
-            name: "Hőszivattyú telepítés",
-            description:
-              "Hőszivattyús projektekhez készült strukturált megkeresési oldal ingatlan- és rendszeralapadatokkal, előzetes műszaki kérdésekkel és opcionális képfeltöltéssel.",
-            path: "/szolgaltatasok/hoszivattyu-telepites",
+            name: pageContent.structuredData.name,
+            description: pageContent.structuredData.description,
+            path: pageContent.path,
           }),
+          createFaqStructuredData(pageContent.details.faqs),
           createBreadcrumbStructuredData([
             { name: "Főoldal", path: "/" },
-            { name: "Hőszivattyú telepítés", path: "/szolgaltatasok/hoszivattyu-telepites" },
+            { name: pageContent.hero.title, path: pageContent.path },
           ]),
         ]}
       />
       <main className="min-h-screen bg-zinc-950 text-white">
         <SiteNavbar />
         <ServicePageHero
-          title="Hőszivattyú telepítés"
-          intro="Itt indítható el a hőszivattyús megkeresés."
-          leadTitle="Hőszivattyús megkeresés röviden"
-          leadDescription="A fő műszaki adatokból gyorsan látszik a kiinduló helyzet."
-          serviceType="hoszivattyu_telepites"
-          sourcePage="hoszivattyu-telepites"
-          primaryCtaLabel="Megkeresés indítása"
-          highlights={highlights}
+          title={pageContent.hero.title}
+          intro={pageContent.hero.intro}
+          leadTitle={pageContent.hero.leadTitle}
+          leadDescription={pageContent.hero.leadDescription}
+          serviceType={pageContent.serviceType}
+          sourcePage={pageContent.sourcePage}
+          primaryCtaLabel={pageContent.hero.primaryCtaLabel}
+          highlights={pageContent.hero.highlights}
+        />
+        <ServicePageDetailsSection
+          eyebrow={pageContent.details.eyebrow}
+          title={pageContent.details.title}
+          intro={pageContent.details.intro}
+          clusters={pageContent.details.clusters}
+          localNoteTitle={pageContent.details.localNoteTitle}
+          localNote={pageContent.details.localNote}
+          relatedLinks={pageContent.details.relatedLinks}
+          faqs={pageContent.details.faqs}
+          sourcePage={pageContent.sourcePage}
+          serviceType={pageContent.serviceType}
         />
 
         <section
@@ -60,11 +66,10 @@ export default function HeatPumpInstallationPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Hőszivattyús megkeresés
+              {pageContent.formSection.title}
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              Néhány alapadat már elég az induláshoz. A többit később is
-              megadhatja.
+              {pageContent.formSection.intro}
             </p>
           </Reveal>
 

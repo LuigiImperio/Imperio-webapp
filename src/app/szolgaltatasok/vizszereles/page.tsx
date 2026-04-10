@@ -3,26 +3,20 @@ import type { Metadata } from "next"
 import { PlumbingRequestForm } from "@/components/forms/plumbing-request-form"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Reveal } from "@/components/motion/reveal"
+import { ServicePageDetailsSection } from "@/components/sections/service-page-details-section"
 import { ServicePageHero } from "@/components/sections/service-page-hero"
 import { StructuredData } from "@/components/seo/structured-data"
+import { servicePageContents } from "@/lib/content/service-pages"
 import { buildPageMetadata } from "@/lib/seo/metadata"
-import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
+import {
+  createBreadcrumbStructuredData,
+  createFaqStructuredData,
+  createServiceStructuredData,
+} from "@/lib/seo/site"
 
-const highlights = [
-  "Gyors indulás",
-  "Tisztább helyzetkép",
-  "Képes kiegészítés",
-]
+const pageContent = servicePageContents.vizszereles
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Víz- és gázszerelési megkeresés",
-  description:
-    "Víz- és gázszerelési megkeresés munkatípussal, sürgősséggel, egyeztetési adatokkal és opcionális képfeltöltéssel, tipikus lakossági feladatokhoz is.",
-  path: "/szolgaltatasok/vizszereles",
-  openGraphTitle: "Víz- és gázszerelési megkeresés | Imperio Gépészet",
-  openGraphDescription:
-    "Általános víz- és gázszerelési munkákhoz készült szolgáltatásoldal strukturált adatbekéréssel és gyorsabb előkészítéssel.",
-})
+export const metadata: Metadata = buildPageMetadata(pageContent.metadata)
 
 export default function PlumbingRequestPage() {
   return (
@@ -30,28 +24,40 @@ export default function PlumbingRequestPage() {
       <StructuredData
         data={[
           createServiceStructuredData({
-            name: "Víz- és gázszerelés",
-            description:
-              "Általános víz- és gázszerelési megkeresés sürgősséggel, egyeztetési adatokkal és opcionális képfeltöltéssel.",
-            path: "/szolgaltatasok/vizszereles",
+            name: pageContent.structuredData.name,
+            description: pageContent.structuredData.description,
+            path: pageContent.path,
           }),
+          createFaqStructuredData(pageContent.details.faqs),
           createBreadcrumbStructuredData([
             { name: "Főoldal", path: "/" },
-            { name: "Víz- és gázszerelés", path: "/szolgaltatasok/vizszereles" },
+            { name: pageContent.hero.title, path: pageContent.path },
           ]),
         ]}
       />
       <main className="min-h-screen bg-zinc-950 text-white">
         <SiteNavbar />
         <ServicePageHero
-          title="Víz- és gázszerelés"
-          intro="Itt indítható el a víz- vagy gázszerelési megkeresés."
-          leadTitle="Szerelési megkeresés röviden"
-          leadDescription="A munka jellege, a sürgősség és a helyszín már az elején látszik."
-          serviceType="vizszereles"
-          sourcePage="vizszereles"
-          primaryCtaLabel="Megkeresés indítása"
-          highlights={highlights}
+          title={pageContent.hero.title}
+          intro={pageContent.hero.intro}
+          leadTitle={pageContent.hero.leadTitle}
+          leadDescription={pageContent.hero.leadDescription}
+          serviceType={pageContent.serviceType}
+          sourcePage={pageContent.sourcePage}
+          primaryCtaLabel={pageContent.hero.primaryCtaLabel}
+          highlights={pageContent.hero.highlights}
+        />
+        <ServicePageDetailsSection
+          eyebrow={pageContent.details.eyebrow}
+          title={pageContent.details.title}
+          intro={pageContent.details.intro}
+          clusters={pageContent.details.clusters}
+          localNoteTitle={pageContent.details.localNoteTitle}
+          localNote={pageContent.details.localNote}
+          relatedLinks={pageContent.details.relatedLinks}
+          faqs={pageContent.details.faqs}
+          sourcePage={pageContent.sourcePage}
+          serviceType={pageContent.serviceType}
         />
 
         <section
@@ -60,10 +66,10 @@ export default function PlumbingRequestPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Víz- vagy gázszerelési megkeresés
+              {pageContent.formSection.title}
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              Néhány adat megadása után elküldheti a megkeresést.
+              {pageContent.formSection.intro}
             </p>
           </Reveal>
 

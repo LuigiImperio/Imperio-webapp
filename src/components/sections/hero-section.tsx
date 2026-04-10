@@ -353,7 +353,7 @@ export function HeroSection() {
         <div className="relative z-10 max-w-4xl">
           <HeroMotion delay={0}>
             <div className="public-pill-accent inline-flex max-w-full px-3.5 py-1.5 text-[0.72rem] sm:px-4 sm:text-sm">
-              Lakossági és gépészeti munkák
+              Víz-, gáz-, fűtés- és gépészeti munkák
             </div>
           </HeroMotion>
 
@@ -368,8 +368,8 @@ export function HeroSection() {
 
           <HeroMotion delay={0.16} className="mt-6">
             <p className="max-w-2xl text-[0.95rem] leading-6 text-zinc-300 sm:text-base sm:leading-7 md:text-lg">
-              Gyors hibabejelentés, lakossági munkák és gépészeti megkeresések
-              egy helyen.
+              Vízszerelés, gázszerelés, fűtésszerelés, csőtörés, kazános hibák
+              és összetettebb épületgépészeti megkeresések egy helyen.
             </p>
           </HeroMotion>
 
@@ -377,8 +377,9 @@ export function HeroSection() {
             <div className="flex items-start gap-3 sm:items-center">
               <span className="mt-3 h-px w-8 shrink-0 bg-gradient-to-r from-[#d0a261] to-transparent sm:mt-0 sm:w-10" />
               <p className="text-[0.92rem] leading-6 text-[#e5d2ad] md:text-base">
-                Munkanapokon rövid időn belül visszajelzünk, a sürgős hibákat
-                kiemelten kezeljük.
+                Pécsen és környékén a hétköznapi lakossági problémáktól a
+                komplett gépészeti projektekig strukturáltan indulhat a
+                megkeresés, a sürgős hibákat pedig kiemelten kezeljük.
               </p>
             </div>
           </HeroMotion>

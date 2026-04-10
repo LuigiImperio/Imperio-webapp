@@ -29,7 +29,8 @@ export function FaqSection() {
           </h2>
           <p className="mt-3.5 max-w-2xl text-[0.96rem] leading-6 text-zinc-400 sm:text-base sm:leading-7">
             Itt röviden összefoglaltuk azokat a tudnivalókat, amelyek segítenek
-            tisztábban látni a megkeresés menetét és a következő lépéseket.
+            tisztábban látni a megkeresés menetét és a következő lépéseket,
+            akár szolgáltatásból, akár konkrét problémából indulna ki.
           </p>
         </Reveal>
 

@@ -4,17 +4,36 @@ export const supportedServiceAreaCities = [
   "Pellérd",
   "Pogány",
   "Keszü",
+  "Gyód",
   "Orfű",
+  "Abaliget",
+  "Hosszúhetény",
   "Komló",
   "Siklós",
+  "Szentlőrinc",
   "Budapest",
 ] as const
 
+export const primaryServiceAreaCities = [
+  "Pécs",
+  "Kozármisleny",
+  "Pellérd",
+  "Pogány",
+  "Keszü",
+  "Gyód",
+  "Orfű",
+  "Abaliget",
+  "Hosszúhetény",
+  "Komló",
+  "Siklós",
+  "Szentlőrinc",
+] as const
+
 export const supportedServiceAreaLabel =
-  "Pécs és agglomerációja, valamint nagyobb budapesti projektek"
+  "Pécs és környéke, valamint több közeli baranyai település"
 
 export const supportedServiceAreaShortLabel =
-  "Pécs és agglomerációja"
+  "Pécs és környéke"
 
 export type ServiceAreaAssessment = {
   assessedCity: string
@@ -65,10 +84,10 @@ export function getServiceAreaUserMessage(assessment: ServiceAreaAssessment) {
   }
 
   if (assessment.isWithinSupportedArea) {
-    return "A megadott település Pécs elsődleges szolgáltatási körzetéhez tartozik, így a megkeresés helyben gyorsabban előkészíthető."
+    return "A megadott település az elsődleges, Pécs környéki szolgáltatási területhez tartozik, így a megkeresés helyben gyorsabban előkészíthető."
   }
 
-  return "A megadott település Pécsen és agglomerációján kívül esik, de ettől függetlenül rögzítjük a megkeresést. Távolabbi munka esetén az ajánlatban kiszállási költség is megjelenhet, a pontos lehetőségekről visszajelzünk."
+  return "A megadott település Pécs és környéke, illetve az elsődleges baranyai szolgáltatási területen kívül esik, de ettől függetlenül rögzítjük a megkeresést. Távolabbi munka esetén az ajánlatban kiszállási költség is megjelenhet, a pontos lehetőségekről visszajelzünk."
 }
 
 export function getServiceAreaStatusLabel(

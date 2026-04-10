@@ -5,6 +5,7 @@ import { SiteNavbar } from "@/components/layout/site-navbar"
 import { ContactCtaSection } from "@/components/sections/contact-cta-section"
 import { FaqSection } from "@/components/sections/faq-section"
 import { HeroSection } from "@/components/sections/hero-section"
+import { HomepageSearchIntentsSection } from "@/components/sections/homepage-search-intents-section"
 import { MobileStickyCtaBar } from "@/components/sections/mobile-sticky-cta-bar"
 import { ReferencesSection } from "@/components/sections/references-section"
 import { ResidentialCommonWorkSection } from "@/components/sections/residential-common-work-section"
@@ -12,17 +13,17 @@ import { ServicesSection } from "@/components/sections/services-section"
 import { SupportersSection } from "@/components/sections/supporters-section"
 import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section"
 import { WorkWithUsSection } from "@/components/sections/work-with-us-section"
+import { homepageMetaDescription } from "@/lib/contact"
 import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createHomepageStructuredData } from "@/lib/seo/site"
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Épületgépészet Pécsen és környékén",
-  description:
-    "Víz-, gáz- és fűtéstechnikai megkeresések, hibabejelentés, kazános feladatok és hőszivattyús előkészítés Pécsen, agglomerációjában, valamint nagyobb budapesti projekteknél.",
+  description: homepageMetaDescription,
   path: "/",
   openGraphTitle: "Imperio Gépészet | Épületgépészet Pécsen és környékén",
   openGraphDescription:
-    "Épületgépészeti megoldások víz-, gáz- és fűtéstechnikai területen, strukturált megkereséssel és helyi fókuszú szolgáltatási lefedettséggel.",
+    "Épületgépészet, víz-, gáz- és fűtésszerelés, sürgős hibák és projektjellegű megkeresések Pécsen és környékén, természetes helyi relevanciával.",
 })
 
 export default function HomePage() {
@@ -34,6 +35,7 @@ export default function HomePage() {
         <HeroSection />
         <MobileStickyCtaBar />
         <ResidentialCommonWorkSection />
+        <HomepageSearchIntentsSection />
         <ServicesSection />
         <WhyChooseUsSection />
         <WorkWithUsSection />

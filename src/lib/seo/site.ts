@@ -7,16 +7,17 @@ import {
   defaultSocialImageAlt,
   defaultSocialImagePath,
 } from "@/lib/business"
+import { homepageStructuredDescription } from "@/lib/contact"
 import { getAppBaseUrl } from "@/lib/config/server-env"
 import { faqItems } from "@/lib/content/faqs"
 import { publicLegalPaths } from "@/lib/legal"
-import { supportedServiceAreaCities, supportedServiceAreaLabel } from "@/lib/service-area"
+import { primaryServiceAreaCities } from "@/lib/service-area"
 
 export const siteName = businessName
 export const siteLocale = "hu_HU"
 export const siteCategory = "épületgépészet"
 export const defaultSiteDescription =
-  "Épületgépészeti megoldások Pécsen és agglomerációjában, valamint nagyobb budapesti projektekhez: víz-, gáz- és fűtéstechnikai feladatok, kazános megkeresések, hőszivattyús előkészítés és hibabejelentés."
+  "Épületgépészeti megoldások Pécsen és környékén: vízszerelés, gázszerelés, fűtésszerelés, csőtörés, kazánjavítás, hőszivattyús előkészítés, hibabejelentés és komplett gépészeti kivitelezés."
 
 export const publicSitePaths = [
   "/",
@@ -32,46 +33,64 @@ export const publicSitePaths = [
 
 const serviceCatalogItems = [
   {
-    name: "Csőtörés / szivárgás",
+    name: "Csőtörés, vízszivárgás és beázás",
     description:
-      "Gyors helyzetfelmérésre és célzott hibabejelentésre szolgáló megkeresési oldal csőtöréshez és szivárgáshoz.",
+      "Gyors helyzetfelmérés csőtöréshez, vízszivárgáshoz, nedvesedéshez és beázási helyzetekhez.",
     path: "/szolgaltatasok/csotores-szivargas",
   },
   {
-    name: "Hőszivattyú telepítés",
+    name: "Sürgős gépészeti hibabejelentés",
     description:
-      "Előminősítő megkeresés hőszivattyús projektekhez, műszaki háttérrel és helyszíni alapadatokkal.",
-    path: "/szolgaltatasok/hoszivattyu-telepites",
-  },
-  {
-    name: "Kazánjavítás / kazáncsere",
-    description:
-      "Kazánjavításhoz és kazáncseréhez kialakított megkeresési oldal műszaki és kapcsolati adatokkal.",
-    path: "/szolgaltatasok/kazancsere",
-  },
-  {
-    name: "Fűtési rendszerek",
-    description:
-      "Fűtésszerelési, karbantartási és optimalizálási feladatok strukturált megkeresése.",
-    path: "/szolgaltatasok/futeskorszerusites",
-  },
-  {
-    name: "Hibabejelentés",
-    description:
-      "Gyors hibajelzés sürgősséggel, rövid leírással és opcionális képfeltöltéssel.",
+      "Gyors bejelentési útvonal sürgős víz-, gáz- és fűtési problémákhoz, leállásokhoz és bizonytalan hibákhoz.",
     path: "/szolgaltatasok/hibabejelentes",
   },
   {
-    name: "Komplett épületgépészeti kivitelezés",
+    name: "Kazánjavítás, kazáncsere és kazános hibák",
     description:
-      "Komplexebb felújítási és kivitelezési projektek strukturált megkeresése.",
+      "Kazánjavításhoz, kazáncseréhez, hibakódos vagy nem induló kazánokhoz készült megkeresési oldal.",
+    path: "/szolgaltatasok/kazancsere",
+  },
+  {
+    name: "Fűtésszerelés, radiátor és padlófűtés",
+    description:
+      "Radiátoros, padlófűtéses és központi fűtési rendszerekhez kapcsolódó javítási, karbantartási és korszerűsítési megkeresés.",
+    path: "/szolgaltatasok/futeskorszerusites",
+  },
+  {
+    name: "Vízszerelés és gázszerelés",
+    description:
+      "Csapcsere, lefolyóprobléma, szaniterek, vízvezetékek, gázvezetékek és gázkészülékhez kapcsolódó munkák strukturált megkeresése.",
+    path: "/szolgaltatasok/vizszereles",
+  },
+  {
+    name: "Hőszivattyú telepítés és rendszerkiépítés",
+    description:
+      "Hőszivattyús projektek előkészítése új építéshez, rendszerátalakításhoz és korszerűsítési igényekhez.",
+    path: "/szolgaltatasok/hoszivattyu-telepites",
+  },
+  {
+    name: "Komplett épületgépészeti kivitelezés és felújítás",
+    description:
+      "Komplex gépészeti kivitelezési oldal családi házhoz, felújításhoz, fürdőszobai gépészeti munkához és több rendszert érintő projektekhez.",
     path: "/szolgaltatasok/komplett-epuletgepeszeti-kivitelezes",
   },
   {
-    name: "Víz- és gázszerelés",
+    name: "Csapcsere, lefolyóprobléma és szanitercsere",
     description:
-      "Víz- és gázszerelési munkákhoz készült megkeresési oldal sürgősséggel és alapadatokkal.",
+      "Hétköznapi lakossági vízszerelési panaszok és javítási igények rendezett megkeresése.",
     path: "/szolgaltatasok/vizszereles",
+  },
+  {
+    name: "Radiátor nem meleg, levegős rendszer, padlófűtés nem fűt",
+    description:
+      "Komfort- és működési panaszokhoz kapcsolódó fűtésszerelési és beszabályozási megkeresések.",
+    path: "/szolgaltatasok/futeskorszerusites",
+  },
+  {
+    name: "Családi ház gépészet és fürdőszobai gépészeti munka",
+    description:
+      "Projektalapú, teljesebb épületgépészeti kivitelezések és felújítások megkeresése.",
+    path: "/szolgaltatasok/komplett-epuletgepeszeti-kivitelezes",
   },
 ] as const
 
@@ -94,10 +113,16 @@ export function getDefaultOpenGraphImages() {
   ]
 }
 
-export const serviceAreaStructuredData = supportedServiceAreaCities.map((city) => ({
-  "@type": "City",
-  name: city,
-}))
+export const serviceAreaStructuredData = [
+  ...primaryServiceAreaCities.map((city) => ({
+    "@type": "City",
+    name: city,
+  })),
+  {
+    "@type": "AdministrativeArea",
+    name: "Baranya megye",
+  },
+] as const
 
 export function createHomepageStructuredData() {
   return [
@@ -120,15 +145,18 @@ export function createHomepageStructuredData() {
       image: getAbsoluteUrl(defaultSocialImagePath),
       email: businessEmail,
       telephone: businessPhone,
-      description: `${defaultSiteDescription} Kiemelt szolgáltatási terület: ${supportedServiceAreaLabel}.`,
+      description: `${defaultSiteDescription} ${homepageStructuredDescription}`,
       areaServed: serviceAreaStructuredData,
       availableLanguage: ["hu-HU"],
       contactPoint: [
         {
           "@type": "ContactPoint",
+          name: "Kapcsolatfelvétel és megkeresések",
           telephone: businessPhone,
           email: businessEmail,
           contactType: "customer service",
+          description:
+            "Telefonos és e-mailes kapcsolatfelvétel strukturált víz-, gáz-, fűtési és épületgépészeti megkeresésekhez.",
           availableLanguage: ["hu-HU"],
           areaServed: serviceAreaStructuredData,
         },
@@ -178,6 +206,7 @@ export function createServiceStructuredData({
     "@type": "Service",
     name,
     serviceType: name,
+    category: siteCategory,
     description,
     url: getAbsoluteUrl(path),
     areaServed: serviceAreaStructuredData,
@@ -191,7 +220,25 @@ export function createServiceStructuredData({
       telephone: businessPhone,
       logo: getAbsoluteUrl(businessLogoPath),
       image: getAbsoluteUrl(defaultSocialImagePath),
+      description: defaultSiteDescription,
     },
+  }
+}
+
+export function createFaqStructuredData(
+  items: ReadonlyArray<{ question: string; answer: string }>
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   }
 }
 

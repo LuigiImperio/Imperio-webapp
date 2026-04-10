@@ -3,26 +3,20 @@ import type { Metadata } from "next"
 import { LeakRequestForm } from "@/components/forms/leak-request-form"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Reveal } from "@/components/motion/reveal"
+import { ServicePageDetailsSection } from "@/components/sections/service-page-details-section"
 import { ServicePageHero } from "@/components/sections/service-page-hero"
 import { StructuredData } from "@/components/seo/structured-data"
+import { servicePageContents } from "@/lib/content/service-pages"
 import { buildPageMetadata } from "@/lib/seo/metadata"
-import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
+import {
+  createBreadcrumbStructuredData,
+  createFaqStructuredData,
+  createServiceStructuredData,
+} from "@/lib/seo/site"
 
-const highlights = [
-  "Gyors helyzetkép",
-  "Tisztább indulás",
-  "Képes kiegészítés",
-]
+const pageContent = servicePageContents.csotoresSzivargas
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Csőtörés és szivárgás bejelentése",
-  description:
-    "Gyors csőtörés- és szivárgás-bejelentés célzott triage kérdésekkel, képfeltöltéssel és kapcsolatfelvételi adatokkal, elsősorban Pécsen és környékén.",
-  path: "/szolgaltatasok/csotores-szivargas",
-  openGraphTitle: "Csőtörés és szivárgás bejelentése | Imperio Gépészet",
-  openGraphDescription:
-    "Gyors, célzott megkeresési oldal csőtöréshez és szivárgáshoz rövid helyzetfelméréssel és átlátható első egyeztetéssel.",
-})
+export const metadata: Metadata = buildPageMetadata(pageContent.metadata)
 
 export default function LeakRequestPage() {
   return (
@@ -30,28 +24,40 @@ export default function LeakRequestPage() {
       <StructuredData
         data={[
           createServiceStructuredData({
-            name: "Csőtörés / szivárgás",
-            description:
-              "Csőtöréshez vagy szivárgáshoz készült célzott megkeresési oldal gyors helyzetfelméréssel és opcionális képfeltöltéssel.",
-            path: "/szolgaltatasok/csotores-szivargas",
+            name: pageContent.structuredData.name,
+            description: pageContent.structuredData.description,
+            path: pageContent.path,
           }),
+          createFaqStructuredData(pageContent.details.faqs),
           createBreadcrumbStructuredData([
             { name: "Főoldal", path: "/" },
-            { name: "Csőtörés / szivárgás", path: "/szolgaltatasok/csotores-szivargas" },
+            { name: pageContent.hero.title, path: pageContent.path },
           ]),
         ]}
       />
       <main className="min-h-screen bg-zinc-950 text-white">
         <SiteNavbar />
         <ServicePageHero
-          title="Csőtörés / szivárgás"
-          intro="Itt gyorsan jelezheti a csőtörést vagy a szivárgást."
-          leadTitle="Rövid bejelentés csőtöréshez"
-          leadDescription="A fő adatokból gyorsan látszik az érintett terület és a sürgősség."
-          serviceType="csotores_szivargas"
-          sourcePage="csotores-szivargas"
-          primaryCtaLabel="Megkeresés indítása"
-          highlights={highlights}
+          title={pageContent.hero.title}
+          intro={pageContent.hero.intro}
+          leadTitle={pageContent.hero.leadTitle}
+          leadDescription={pageContent.hero.leadDescription}
+          serviceType={pageContent.serviceType}
+          sourcePage={pageContent.sourcePage}
+          primaryCtaLabel={pageContent.hero.primaryCtaLabel}
+          highlights={pageContent.hero.highlights}
+        />
+        <ServicePageDetailsSection
+          eyebrow={pageContent.details.eyebrow}
+          title={pageContent.details.title}
+          intro={pageContent.details.intro}
+          clusters={pageContent.details.clusters}
+          localNoteTitle={pageContent.details.localNoteTitle}
+          localNote={pageContent.details.localNote}
+          relatedLinks={pageContent.details.relatedLinks}
+          faqs={pageContent.details.faqs}
+          sourcePage={pageContent.sourcePage}
+          serviceType={pageContent.serviceType}
         />
 
         <section
@@ -60,10 +66,10 @@ export default function LeakRequestPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Csőtörés vagy szivárgás
+              {pageContent.formSection.title}
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              Adja meg röviden a helyzetet és az elérhetőségét.
+              {pageContent.formSection.intro}
             </p>
           </Reveal>
 

@@ -58,7 +58,7 @@ const residentialWorks: ResidentialWork[] = [
   {
     title: "Vízszerelés",
     description:
-      "Csapok, WC-k, mosdók, vezetékek és egyéb vízszerelési elemek javítása, cseréje és szerelése.",
+      "Csöpögő csap, szanitercsere, lefolyóprobléma, vízvezeték-javítás és egyéb hétköznapi vízszerelési feladatok.",
     icon: Wrench,
     href: "/szolgaltatasok/vizszereles",
     ctaLabel: "Vízszerelési megkeresés indítása",
@@ -68,7 +68,7 @@ const residentialWorks: ResidentialWork[] = [
   {
     title: "Fűtésszerelés",
     description:
-      "Radiátorok, központi fűtés és egyéb fűtési rendszerhibák javítása, szerelése és helyreállítása.",
+      "Radiátor nem meleg, levegős rendszer, padlófűtési gond vagy általános fűtési hiba esetén.",
     icon: Thermometer,
     href: "/szolgaltatasok/futeskorszerusites",
     ctaLabel: "Fűtési megkeresés indítása",
@@ -78,7 +78,7 @@ const residentialWorks: ResidentialWork[] = [
   {
     title: "Gázszerelés",
     description:
-      "Gázvezetékek, gázkészülékek szerelése, cseréje és kapcsolódó munkák szakszerű elvégzése.",
+      "Gázvezetékek, gázkészülékek szerelése, cseréje és kapcsolódó lakossági munkák szakszerű egyeztetéssel.",
     icon: Flame,
     href: "/szolgaltatasok/vizszereles",
     ctaLabel: "Víz- és gázszerelési megkeresés",
@@ -108,7 +108,7 @@ const residentialWorks: ResidentialWork[] = [
   {
     title: "Komplett kivitelezés / felújítás",
     description:
-      "Teljes épületgépészeti rendszer korszerűsítése, összehangolt kivitelezése és felújítási támogatása.",
+      "Teljes épületgépészeti rendszer korszerűsítése, lakásfelújítás gépészete és összehangolt kivitelezési támogatás.",
     icon: Building2,
     href: "/szolgaltatasok/komplett-epuletgepeszeti-kivitelezes",
     ctaLabel: "Komplex projektmegkeresés indítása",
@@ -290,7 +290,8 @@ export function ResidentialCommonWorkSection() {
               Ha a feladatot inkább hétköznapi helyzetként fogalmazná meg, az
               alábbi indulási pontok segítenek gyorsabban megtalálni a megfelelő
               irányt. A leggyakoribb otthoni gépészeti munkákat rendeztük rövid,
-              könnyebben áttekinthető belépési pontokba.
+              könnyebben áttekinthető belépési pontokba, a csapcserétől és
+              radiátorhibától a kazános vagy fürdőszobai gépészeti feladatokig.
             </p>
           </div>
 
@@ -298,7 +299,8 @@ export function ResidentialCommonWorkSection() {
             <p className="text-[0.92rem] leading-6 text-zinc-400 md:text-base md:leading-7">
               A fenti fő szolgáltatási területek szakmai logikája változatlanul
               megmarad, ez a blokk pedig abban segít, hogy lakossági nézőpontból
-              is gyorsan kijelölhető legyen a legjobb következő lépés.
+              is gyorsan kijelölhető legyen a legjobb következő lépés, akár
+              víz-, gáz-, fűtési vagy kisebb felújítási kérdéssel indulna.
             </p>
           </div>
         </div>

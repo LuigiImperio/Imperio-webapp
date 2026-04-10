@@ -32,10 +32,10 @@ const serviceCategories = [
     title: "Fűtési rendszerek karbantartása és optimalizálása",
     icon: Thermometer,
     description:
-      "Rendszeres átvizsgálás, beszabályozás és teljesítményjavító finomhangolás központi fűtési rendszerekhez és kapcsolódó elemekhez.",
+      "Radiátoros, padlófűtéses és központi fűtési rendszerek átvizsgálása, karbantartása, beszabályozása és teljesítményjavító finomhangolása.",
     bullets: [
       "Központi fűtési rendszerek karbantartása és szezon előtti szervize",
-      "Radiátorok, csőhálózatok és teljesítményproblémák áttekintése",
+      "Radiátorok, padlófűtéses körök és teljesítményproblémák áttekintése",
       "Termosztátok, szelepek és szivattyúk beszabályozása",
       "Finomhangolás és energiahatékonysági optimalizálás",
     ],
@@ -48,9 +48,10 @@ const serviceCategories = [
     title: "Szerelési munkák és rendszerkivitelezés",
     icon: Wrench,
     description:
-      "Víz-, gáz- és fűtési rendszerek szerelése, átalakítása és üzemszerű működéshez szükséges kivitelezése rendezett műszaki egyeztetéssel.",
+      "Víz-, gáz- és kapcsolódó szerelési munkák csapcsere, szaniterek, lefolyóprobléma, vezetékjavítás és általános rendszerkivitelezés esetén.",
     bullets: [
       "Vízvezeték- és gázrendszerek szerelése, javítása",
+      "Csapcsere, szanitercsere és lefolyó körüli vízszerelési munkák",
       "Központi és vegyes tüzelésű fűtési rendszerek szerelése",
       "Csőhálózatok kiépítése, átalakítása és bekötési pontok kialakítása",
       "Berendezések cseréje és új elemek szakszerű bekötése",
@@ -64,11 +65,11 @@ const serviceCategories = [
     title: "Gépészeti kivitelezés és fűtéstechnika",
     icon: Flame,
     description:
-      "Fűtéstechnikai és gépészeti rendszerek telepítése, bekötése és üzembe helyezése összetettebb műszaki megoldásokhoz.",
+      "Kazános, fűtéstechnikai és gépészeti rendszerek telepítése, cseréje és üzembe helyezése kazánhibák, korszerűsítések és új rendszerkapcsolatok esetén.",
     bullets: [
       "Hőszivattyúk és hibrid fűtési rendszerek kialakítása",
       "Központi fűtési rendszerek kivitelezése és rendszerösszekötések",
-      "Fürdőszobák gépészeti kiépítése és kapcsolódó kivitelezési munkák",
+      "Kazánjavításhoz, kazáncseréhez és készülékcseréhez kapcsolódó egyeztetés",
       "Kazánok, köztük Baxi típusú berendezések telepítése és beüzemelése",
     ],
     href: "/szolgaltatasok/kazancsere",
@@ -80,7 +81,7 @@ const serviceCategories = [
     title: "Komplett épületgépészeti kivitelezés",
     icon: Building2,
     description:
-      "Nagyobb léptékű gépészeti projektek felülvizsgálattal, korszerűsítési szemlélettel és mérnöki háttérrel támogatva.",
+      "Nagyobb léptékű gépészeti projektek családi házhoz, felújításhoz, fürdőszobai gépészeti munkához vagy több rendszert érintő kivitelezéshez.",
     bullets: [
       "Műszaki állapotfelmérés és rendszerek felülvizsgálata",
       "Elavult elemek cseréje, korszerűsítés és optimalizálás",
@@ -286,15 +287,16 @@ export function ServicesSection() {
         </h2>
 
         <p className="mt-4 max-w-3xl text-[0.96rem] leading-6 text-zinc-300 sm:text-base sm:leading-7 md:text-lg">
-          Az alábbi kategóriák az összetettebb gépészeti, szerelési és
-          kivitelezési feladatokhoz adnak gyors szakmai eligazodást. Tipikus
-          lakossági munkákhoz a külön lakossági áttekintés ad gyorsabb
-          kiindulópontot.
+          Az alábbi kategóriák a szélesebb épületgépészeti, víz-, gáz- és
+          fűtési feladatokhoz adnak gyors eligazodást. Tipikus lakossági
+          problémáknál, például csapcsere, radiátorhiba, padlófűtési gond vagy
+          kazános panasz esetén a kapcsolódó szolgáltatási útvonalból lehet
+          tisztábban továbbindulni.
         </p>
 
         <p className="mt-3 max-w-3xl text-[0.9rem] leading-6 text-zinc-500 md:text-sm">
-          Sürgős hibánál a gyorsszerviz útvonal a legjobb indulás, tipikus
-          lakossági feladatoknál pedig a lakossági áttekintés. Kiemelt terület:{" "}
+          Sürgős hibánál a gyors hibabejelentés, hétköznapi otthoni problémáknál
+          pedig a lakossági áttekintés a legjobb indulás. Kiemelt terület:{" "}
           {supportedServiceAreaLabel}.
         </p>
 
@@ -375,8 +377,8 @@ export function ServicesSection() {
             <p className="mt-3 text-[0.92rem] leading-6 text-zinc-300 md:text-base md:leading-7">
               Azonnali beavatkozást igénylő hibáknál ne a fenti kategóriákkal
               kezdjen, hanem közvetlenül a gyors hibabejelentést használja. Ez a
-              leggyorsabb belépési pont sürgős meghibásodások, leállások vagy
-              azonnali figyelmet igénylő problémák esetén.
+              leggyorsabb belépési pont csőtörés, leálló fűtés, melegvíz-kimaradás
+              vagy más sürgős gépészeti probléma esetén.
             </p>
           </div>
 

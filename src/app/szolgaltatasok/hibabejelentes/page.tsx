@@ -3,26 +3,20 @@ import type { Metadata } from "next"
 import { FaultReportForm } from "@/components/forms/fault-report-form"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Reveal } from "@/components/motion/reveal"
+import { ServicePageDetailsSection } from "@/components/sections/service-page-details-section"
 import { ServicePageHero } from "@/components/sections/service-page-hero"
 import { StructuredData } from "@/components/seo/structured-data"
+import { servicePageContents } from "@/lib/content/service-pages"
 import { buildPageMetadata } from "@/lib/seo/metadata"
-import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
+import {
+  createBreadcrumbStructuredData,
+  createFaqStructuredData,
+  createServiceStructuredData,
+} from "@/lib/seo/site"
 
-const highlights = [
-  "Gyors bejelentés",
-  "Sürgősség megadása",
-  "Képes kiegészítés",
-]
+const pageContent = servicePageContents.hibabejelentes
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Hibabejelentés sürgős gépészeti problémákra",
-  description:
-    "Gyors hibabejelentés sürgősséggel, rövid leírással és képfeltöltéssel, hogy a hiba jellege már az első kapcsolatfelvételnél tisztábban látszódjon.",
-  path: "/szolgaltatasok/hibabejelentes",
-  openGraphTitle: "Hibabejelentés sürgős gépészeti problémákra | Imperio Gépészet",
-  openGraphDescription:
-    "Sürgős vagy problémás helyzet gyors bejelentése rövid, átlátható adatrögzítéssel és képes pontosítással.",
-})
+export const metadata: Metadata = buildPageMetadata(pageContent.metadata)
 
 export default function FaultReportPage() {
   return (
@@ -30,28 +24,40 @@ export default function FaultReportPage() {
       <StructuredData
         data={[
           createServiceStructuredData({
-            name: "Hibabejelentés",
-            description:
-              "Hibabejelentés rövid leírással, sürgősségi megadással és opcionális képfeltöltéssel.",
-            path: "/szolgaltatasok/hibabejelentes",
+            name: pageContent.structuredData.name,
+            description: pageContent.structuredData.description,
+            path: pageContent.path,
           }),
+          createFaqStructuredData(pageContent.details.faqs),
           createBreadcrumbStructuredData([
             { name: "Főoldal", path: "/" },
-            { name: "Hibabejelentés", path: "/szolgaltatasok/hibabejelentes" },
+            { name: pageContent.hero.title, path: pageContent.path },
           ]),
         ]}
       />
       <main className="min-h-screen bg-zinc-950 text-white">
         <SiteNavbar />
         <ServicePageHero
-          title="Hibabejelentés"
-          intro="Itt gyorsan jelezheti a hibát és a sürgősséget."
-          leadTitle="Rövid hibabejelentés"
-          leadDescription="A fő adatokból gyorsan látszik, mennyire sürgős a helyzet."
-          serviceType="hibabejelentes"
-          sourcePage="hibabejelentes"
-          primaryCtaLabel="Bejelentés indítása"
-          highlights={highlights}
+          title={pageContent.hero.title}
+          intro={pageContent.hero.intro}
+          leadTitle={pageContent.hero.leadTitle}
+          leadDescription={pageContent.hero.leadDescription}
+          serviceType={pageContent.serviceType}
+          sourcePage={pageContent.sourcePage}
+          primaryCtaLabel={pageContent.hero.primaryCtaLabel}
+          highlights={pageContent.hero.highlights}
+        />
+        <ServicePageDetailsSection
+          eyebrow={pageContent.details.eyebrow}
+          title={pageContent.details.title}
+          intro={pageContent.details.intro}
+          clusters={pageContent.details.clusters}
+          localNoteTitle={pageContent.details.localNoteTitle}
+          localNote={pageContent.details.localNote}
+          relatedLinks={pageContent.details.relatedLinks}
+          faqs={pageContent.details.faqs}
+          sourcePage={pageContent.sourcePage}
+          serviceType={pageContent.serviceType}
         />
 
         <section
@@ -60,11 +66,10 @@ export default function FaultReportPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Hibabejelentés
+              {pageContent.formSection.title}
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              Adja meg röviden a hibát és az elérhetőségét. Képet csak akkor
-              töltsön fel, ha segít.
+              {pageContent.formSection.intro}
             </p>
           </Reveal>
 

@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { publicAnalyticsEventNames } from "@/lib/analytics/public-events"
+import type { ServicePageHighlight } from "@/lib/content/service-pages"
 import { supportedServiceAreaLabel } from "@/lib/service-area"
 
 type ServicePageHeroProps = {
@@ -17,7 +18,7 @@ type ServicePageHeroProps = {
   serviceType: string
   sourcePage: string
   primaryCtaLabel: string
-  highlights: readonly string[]
+  highlights: readonly ServicePageHighlight[]
 }
 
 export function ServicePageHero({
@@ -107,17 +108,19 @@ export function ServicePageHero({
 
         <div className="mt-6 grid gap-3.5 md:mt-10 md:grid-cols-3 md:gap-4">
           {highlights.map((item, index) => (
-            <Reveal key={item} delayMs={120 + index * 90} variant="card">
+            <Reveal key={item.title} delayMs={120 + index * 90} variant="card">
               <Card className="public-surface-soft public-card-hover group h-full border-white/10 text-white shadow-none">
                 <CardHeader className="space-y-2.5 p-4 pb-3 md:space-y-3 md:p-6 md:pb-3">
                   <div className="text-xs uppercase tracking-[0.18em] text-zinc-500">
                     0{index + 1}
                   </div>
-                  <CardTitle className="text-[1.02rem] md:text-xl">{item}</CardTitle>
+                  <CardTitle className="text-[1.02rem] md:text-xl">
+                    {item.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
                   <p className="text-[0.9rem] leading-6 text-zinc-400 transition-colors duration-300 group-hover:text-zinc-300 md:text-sm">
-                    Röviden mutatja, mire számíthat.
+                    {item.description}
                   </p>
                 </CardContent>
               </Card>
