@@ -6,6 +6,7 @@ import {
   formAsideCardClassName,
   formBusyPanelClassName,
   formCounterPillClassName,
+  FormPrivacyConsentField,
   FormFieldLabel,
   FormFieldMessage,
   FormOptionGroup,
@@ -35,6 +36,8 @@ import {
   formSummaryLabelClassName,
   formSupportPanelClassName,
   formUploadButtonClassName,
+  FormUploadPrivacyNote,
+  useRequiredPrivacyConsent,
   formWarningListClassName,
   formWarningPanelClassName,
   formWarningTextClassName,
@@ -77,22 +80,20 @@ const steps = [
   {
     title: "Ingatlan adatai",
     description:
-      "Az alapadatok segítenek gyorsabban átlátni, milyen helyszínre és méretre kell tervezni.",
+      "Az alapadatokból gyorsan látszik a helyszín és a méret.",
   },
   {
     title: "Jelenlegi rendszer",
     description:
-      "A meglévő rendszer állapota alapján pontosabban előkészíthető a következő egyeztetés.",
+      "A jelenlegi rendszerből gyorsabban látszik, mire van szükség.",
   },
   {
     title: "Kapcsolatfelvétel",
-    description:
-      "Az elérhetőségek, a megjegyzés és az opcionális képek alapján gördülékenyebben indulhat a kapcsolatfelvétel.",
+    description: "Az elérhetőség és a képek gyorsítják a visszajelzést.",
   },
   {
     title: "Összegzés",
-    description:
-      "A véglegesítés előtt egy helyen áttekinthető minden megadott információ.",
+    description: "Itt ellenőrizheti a megadott adatokat.",
   },
 ] as const
 
@@ -513,6 +514,12 @@ export function BoilerReplacementForm() {
     useState<BoilerReplacementInquiryData>(initialFormState)
   const [errors, setErrors] = useState<ErrorState>({})
   const [touchedFields, setTouchedFields] = useState<TouchedState>({})
+  const {
+    privacyConsentAccepted,
+    privacyConsentError,
+    setPrivacyConsentAccepted,
+    validatePrivacyConsent,
+  } = useRequiredPrivacyConsent()
   const { trackFormStarted, trackStepCompleted, trackSubmitSuccess } =
     useFormTracking({
       serviceType: "kazancsere",
@@ -716,6 +723,11 @@ export function BoilerReplacementForm() {
       return
     }
 
+    if (!validatePrivacyConsent()) {
+      setSubmitStatus("idle")
+      return
+    }
+
     const requestId = crypto.randomUUID()
 
     try {
@@ -798,19 +810,15 @@ export function BoilerReplacementForm() {
       <aside className="order-2 hidden self-start lg:order-1 lg:block lg:space-y-6 lg:sticky lg:top-24">
         <Card className={formAsideCardClassName}>
           <CardHeader className="space-y-4 p-5 sm:p-6">
-            <div className={formEyebrowClassName}>
-              Strukturált ajánlatindítás
-            </div>
-            <CardTitle className="text-xl">Kazános megkeresés előkészítése</CardTitle>
+            <div className={formEyebrowClassName}>Ajánlatkérés</div>
+            <CardTitle className="text-xl">Kazános megkeresés</CardTitle>
             <CardDescription className={formLeadTextClassName}>
-              A legfontosabb adatok rövid előzetes rögzítésével gyorsabb és
-              pontosabb lehet az első egyeztetés.
+              Adja meg a fő adatokat, és könnyebb lesz a visszajelzés.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 p-5 pt-0 sm:space-y-5 sm:p-6 sm:pt-0">
             <div className={formSupportPanelClassName}>
-              Néhány rövid lépésből áll. A kötelező adatok a jobb előkészítést
-              segítik, a nem biztos részletek később is pontosíthatók.
+              A bizonytalan részleteket később is megadhatja.
             </div>
             <div className="space-y-2">
               <div className={formProgressMetaClassName}>
@@ -821,7 +829,7 @@ export function BoilerReplacementForm() {
               </div>
               <div className={formProgressTrackClassName}>
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-white via-zinc-200 to-zinc-400 transition-[width] duration-500"
+                  className="h-full rounded-full bg-linear-to-r from-white via-zinc-200 to-zinc-400 transition-[width] duration-500"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -910,7 +918,7 @@ export function BoilerReplacementForm() {
           {currentStepErrors.length > 0 && !isLastStep ? (
             <div className={formWarningPanelClassName}>
               <p className="text-sm font-medium text-amber-100">
-                A továbblépéshez ellenőrizze a kiemelt mezőket.
+                Ellenőrizze a kiemelt mezőket.
               </p>
               <ul className={formWarningListClassName}>
                 {currentStepErrors.map(({ field, message }) => (
@@ -960,7 +968,7 @@ export function BoilerReplacementForm() {
                   ) : (
                     <FormFieldMessage
                       tone="muted"
-                      message="Az alapterület segíti a gyorsabb előzetes becslést."
+                      message="Nagyjából megadva is jó."
                     />
                   )}
                 </label>
@@ -1027,7 +1035,7 @@ export function BoilerReplacementForm() {
                   ) : (
                     <FormFieldMessage
                       tone="muted"
-                      message="Az irányítószám és a település már segíti a pontosabb előkészítést."
+                      message="A település már elég az induláshoz."
                     />
                   )}
                 </label>
@@ -1061,7 +1069,7 @@ export function BoilerReplacementForm() {
                 ) : (
                   <FormFieldMessage
                     tone="muted"
-                    message="Ha ismert a típus, az segíti a pontosabb előkészítést."
+                    message="Ha tudja, írja be."
                   />
                 )}
               </label>
@@ -1184,7 +1192,7 @@ export function BoilerReplacementForm() {
                 />
                 <FormFieldMessage
                   tone="muted"
-                  message="Nem kötelező, de segíthet, ha van külön műszaki vagy helyszíni információ."
+                  message="Nem kötelező."
                 />
               </label>
 
@@ -1195,8 +1203,7 @@ export function BoilerReplacementForm() {
                       Egyeztetés és felmérés
                     </h3>
                     <p className={formSectionBodyTextClassName}>
-                      Röviden jelezhető, hogy szükséges lehet-e helyszíni
-                      felmérés, és mikor lenne megfelelő a következő egyeztetés.
+                      Jelezze, kellhet-e felmérés, és mikor lenne jó.
                     </p>
                   </div>
 
@@ -1227,7 +1234,7 @@ export function BoilerReplacementForm() {
                   <label className="space-y-3">
                     <FormFieldLabel label="Kapcsolódó megjegyzés" />
                     <Textarea
-                      placeholder="Ha van külön időzítési vagy felméréshez kapcsolódó megjegyzés, itt röviden jelezheti."
+                      placeholder="Ha van plusz időpont- vagy helyszíni információ, írja ide."
                       value={formData.scheduling.schedulingNote}
                       onChange={(event) =>
                         updateField("schedulingNote", event.target.value)
@@ -1242,7 +1249,7 @@ export function BoilerReplacementForm() {
                     />
                     <FormFieldMessage
                       tone="muted"
-                      message="Nem kötelező, de segíthet az időpont-egyeztetés gyorsításában."
+                      message="Nem kötelező."
                     />
                   </label>
                 </div>
@@ -1253,11 +1260,12 @@ export function BoilerReplacementForm() {
                   <div>
                     <FormFieldLabel label="Opcionális képek" />
                     <p className={formSectionBodyTextClassName}>
-                      Legfeljebb {serviceRequestMaxImageCount} kép csatolható.
-                      Hasznos lehet például kazán fotó, adattábla fotó vagy a
-                      gépészeti helyiség képe.
+                      Legfeljebb {serviceRequestMaxImageCount} kép. Például
+                      kazánról vagy adattábláról.
                     </p>
                   </div>
+
+                  <FormUploadPrivacyNote />
 
                   <label className={formUploadButtonClassName}>
                     <input
@@ -1322,8 +1330,7 @@ export function BoilerReplacementForm() {
                   Áttekintés a véglegesítés előtt
                 </h3>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-300">
-                  Az alábbi adatok alapján már egy strukturáltabb egyeztetés
-                  indítható el.
+                  Itt ellenőrizheti a megadott adatokat.
                 </p>
               </div>
 
@@ -1378,14 +1385,14 @@ export function BoilerReplacementForm() {
 
                       {section.title === "Kapcsolatfelvétel" && !notesValue ? (
                         <div className={cn("mt-4", formDashedInfoClassName)}>
-                          Külön megjegyzés nem érkezett.
+                          Nincs megjegyzés.
                         </div>
                       ) : null}
 
                       {section.title === "Egyeztetés és felmérés" &&
                       !schedulingNoteValue ? (
                         <div className={cn("mt-4", formDashedInfoClassName)}>
-                          Kapcsolódó egyeztetési megjegyzés nem érkezett.
+                          Nincs kapcsolódó megjegyzés.
                         </div>
                       ) : null}
                     </div>
@@ -1426,6 +1433,15 @@ export function BoilerReplacementForm() {
                 </div>
               </div>
 
+              {!isSuccess ? (
+                <FormPrivacyConsentField
+                  checked={privacyConsentAccepted}
+                  error={privacyConsentError}
+                  disabled={isSubmitting}
+                  onCheckedChange={setPrivacyConsentAccepted}
+                />
+              ) : null}
+
               {isSubmitting ? (
                 <div className={formBusyPanelClassName}>
                   <div className="flex items-start gap-4">
@@ -1438,8 +1454,8 @@ export function BoilerReplacementForm() {
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
                         {hasSelectedImages
-                          ? "A megadott adatok mentése és a csatolt képek feltöltése most történik."
-                          : "A megadott adatok mentése most történik a rendszerben."}
+                          ? "A mentés és a képfeltöltés most történik."
+                          : "A mentés most történik."}
                       </p>
                     </div>
                   </div>
@@ -1458,9 +1474,7 @@ export function BoilerReplacementForm() {
                           Az ajánlatkérés sikeresen rögzítve lett.
                         </p>
                         <p className={formSuccessBodyTextClassName}>
-                          A megadott adatok rögzítésre kerültek, így a
-                          következő kapcsolatfelvétel már rendezettebb,
-                          szakmailag jobban előkészített alapból indulhat.
+                          Az adatok beérkeztek. Hamarosan visszajelzünk.
                         </p>
                       </div>
                     </div>
@@ -1472,8 +1486,7 @@ export function BoilerReplacementForm() {
                         Képfeltöltés nem történt
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
-                        Az ajánlatkérés kép nélkül került rögzítésre, ami teljesen
-                        rendben van ennél az opcionális lépésnél.
+                        Az ajánlatkérés kép nélkül érkezett.
                       </p>
                     </div>
                   ) : null}
@@ -1485,8 +1498,7 @@ export function BoilerReplacementForm() {
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
                         {uploadedAttachments.length} kép kapcsolódott az
-                        ajánlatkéréshez, így az előzetes műszaki felméréshez is
-                        rendelkezésre állnak.
+                        ajánlatkéréshez.
                       </p>
                     </div>
                   ) : null}
@@ -1520,12 +1532,10 @@ export function BoilerReplacementForm() {
               {!isSubmitting && !isSuccess && !isError ? (
                 <div className={formInfoPanelClassName}>
                   <p className="text-sm font-medium text-white">
-                    Minden fontos adat egy helyen áttekinthető.
+                    Minden rendben?
                   </p>
                   <p className="mt-2 text-sm leading-6 text-zinc-300">
-                    Ha rendben találja az összegzést, az ajánlatkérés a következő
-                    lépésben közvetlenül rögzíthető az adatbázisban, a képek pedig
-                    opcionálisan csatolhatók hozzá.
+                    Ha igen, küldje el a megkeresést.
                   </p>
                 </div>
               ) : null}

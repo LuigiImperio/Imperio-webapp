@@ -9,9 +9,9 @@ import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
 
 const highlights = [
-  "Átláthatóbb előkészítés",
-  "Pontosabb műszaki kép",
-  "Gyorsabb első egyeztetés",
+  "Gyors indulás",
+  "Tisztább helyzetkép",
+  "Kevesebb kör",
 ]
 
 export const metadata: Metadata = buildPageMetadata({
@@ -45,9 +45,9 @@ export default function HeatingModernizationPage() {
         <SiteNavbar />
         <ServicePageHero
           title="Fűtési rendszerek"
-          intro="Itt indítható el egy strukturált megkeresés, amely fűtésszerelési, karbantartási, átvizsgálási vagy optimalizálási igény esetén is segít előre rögzíteni a rendszer fő jellemzőit és a legfontosabb körülményeket."
-          leadTitle="Fűtési rendszerrel kapcsolatos megkeresés rendezett indulással"
-          leadDescription="A cél, hogy a műszaki alaphelyzet, az igény fő iránya és a kapcsolódó körülmények már az első kapcsolatfelvétel előtt láthatóvá váljanak, így szerelési, karbantartási vagy átvizsgálási feladatnál is gyorsabb és pontosabb lehessen a következő egyeztetés."
+          intro="Itt indítható el a fűtési munkával kapcsolatos megkeresés."
+          leadTitle="Fűtési megkeresés röviden"
+          leadDescription="A fő adatokból gyorsan látszik, miről van szó. A hiányzó részleteket később is megadhatja."
           serviceType="futeskorszerusites"
           sourcePage="futeskorszerusites"
           primaryCtaLabel="Megkeresés indítása"
@@ -60,12 +60,10 @@ export default function HeatingModernizationPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Fűtési rendszerrel kapcsolatos megkeresés
+              Fűtési megkeresés
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              A folyamat röviden végigvihető, és segít, hogy a jelenlegi
-              rendszer, a szerelési vagy karbantartási igény fő iránya és a
-              helyszíni körülmények már az első körben tisztábban látszódjanak.
+              Néhány adat megadása után elküldheti a megkeresést.
             </p>
           </Reveal>
 

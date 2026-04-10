@@ -6,6 +6,7 @@ import {
   formAsideCardClassName,
   formBusyPanelClassName,
   formCounterPillClassName,
+  FormPrivacyConsentField,
   FormFieldLabel,
   FormFieldMessage,
   FormOptionGroup,
@@ -35,6 +36,8 @@ import {
   formSummaryLabelClassName,
   formSupportPanelClassName,
   formUploadButtonClassName,
+  FormUploadPrivacyNote,
+  useRequiredPrivacyConsent,
   formWarningListClassName,
   formWarningPanelClassName,
   formWarningTextClassName,
@@ -77,17 +80,15 @@ const steps = [
   {
     title: "Hiba jellege",
     description:
-      "A probléma típusa és sürgőssége segít, hogy gyorsabban látszódjon, mennyire azonnali a teendő.",
+      "A hiba típusa és sürgőssége gyors képet ad.",
   },
   {
     title: "Helyszín és kapcsolat",
-    description:
-      "A helyszín, az elérhetőség és az opcionális képek alapján könnyebb gyorsan visszajelezni.",
+    description: "A helyszín és az elérhetőség gyorsítja a visszajelzést.",
   },
   {
     title: "Összegzés",
-    description:
-      "A véglegesítés előtt egy helyen áttekinthető minden megadott adat.",
+    description: "Itt ellenőrizheti a megadott adatokat.",
   },
 ] as const
 
@@ -469,6 +470,12 @@ export function FaultReportForm() {
   const [formData, setFormData] = useState<FaultReportInquiryData>(initialFormState)
   const [errors, setErrors] = useState<ErrorState>({})
   const [touchedFields, setTouchedFields] = useState<TouchedState>({})
+  const {
+    privacyConsentAccepted,
+    privacyConsentError,
+    setPrivacyConsentAccepted,
+    validatePrivacyConsent,
+  } = useRequiredPrivacyConsent()
   const { trackFormStarted, trackStepCompleted, trackSubmitSuccess } =
     useFormTracking({
       serviceType: "hibabejelentes",
@@ -663,6 +670,11 @@ export function FaultReportForm() {
       return
     }
 
+    if (!validatePrivacyConsent()) {
+      setSubmitStatus("idle")
+      return
+    }
+
     const requestId = crypto.randomUUID()
 
     try {
@@ -747,19 +759,15 @@ export function FaultReportForm() {
       <aside className="order-2 hidden self-start lg:order-1 lg:block lg:space-y-6 lg:sticky lg:top-24">
         <Card className={formAsideCardClassName}>
           <CardHeader className="space-y-4 p-5 sm:p-6">
-            <div className={formEyebrowClassName}>
-              Gyors bejelentés
-            </div>
-            <CardTitle className="text-xl">Hiba gyors rögzítése</CardTitle>
+            <div className={formEyebrowClassName}>Gyors bejelentés</div>
+            <CardTitle className="text-xl">Hibabejelentés</CardTitle>
             <CardDescription className={formLeadTextClassName}>
-              Rövid, áttekinthető folyamat sürgős vagy problémás helyzetek gyors
-              előzetes jelzésére és a következő lépés jobb előkészítésére.
+              Röviden jelezze a hibát, és könnyebb lesz a visszajelzés.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 p-5 pt-0 sm:space-y-5 sm:p-6 sm:pt-0">
             <div className={formSupportPanelClassName}>
-              A cél a gyors átláthatóság. A legfontosabb adatok néhány rövid
-              válasszal megadhatók, a képek pedig opcionálisak.
+              Pár alapadat elég az induláshoz. A kép nem kötelező.
             </div>
             <div className="space-y-2">
               <div className={formProgressMetaClassName}>
@@ -846,7 +854,7 @@ export function FaultReportForm() {
           {currentStepErrors.length > 0 && !isLastStep ? (
             <div className={formWarningPanelClassName}>
               <p className="text-sm font-medium text-amber-100">
-                A továbblépéshez ellenőrizze a kiemelt mezőket.
+                Ellenőrizze a kiemelt mezőket.
               </p>
               <ul className={formWarningListClassName}>
                 {currentStepErrors.map(({ field, message }) => (
@@ -900,7 +908,7 @@ export function FaultReportForm() {
                 ) : (
                   <FormFieldMessage
                     tone="muted"
-                    message="Minél rövidebben és pontosabban írja le a hibát, annál gyorsabban átlátható a helyzet."
+                    message="Pár mondat elég."
                   />
                 )}
               </label>
@@ -969,7 +977,7 @@ export function FaultReportForm() {
                   ) : (
                     <FormFieldMessage
                       tone="muted"
-                      message="Az irányítószám és a település már segíti a gyorsabb első felmérést."
+                      message="A település már elég az induláshoz."
                     />
                   )}
                 </label>
@@ -1056,7 +1064,7 @@ export function FaultReportForm() {
                 />
                 <FormFieldMessage
                   tone="muted"
-                  message="Nem kötelező, de segíthet a gyorsabb visszahívás előkészítésében."
+                  message="Nem kötelező."
                 />
               </label>
 
@@ -1067,8 +1075,7 @@ export function FaultReportForm() {
                       Egyeztetés és felmérés
                     </h3>
                     <p className={formSectionBodyTextClassName}>
-                      Gyorsan jelezhető, hogy szükséges lehet-e helyszíni
-                      felmérés, és mikor lenne megfelelő a további egyeztetés.
+                      Jelezze, kellhet-e felmérés, és mikor lenne jó.
                     </p>
                   </div>
 
@@ -1099,7 +1106,7 @@ export function FaultReportForm() {
                   <label className="space-y-3">
                     <FormFieldLabel label="Kapcsolódó megjegyzés" />
                     <Textarea
-                      placeholder="Ha van külön időzítési vagy helyszíni egyeztetéshez kapcsolódó megjegyzés, itt röviden jelezheti."
+                      placeholder="Ha van plusz időpont- vagy helyszíni információ, írja ide."
                       value={formData.scheduling.schedulingNote}
                       onChange={(event) =>
                         updateField("schedulingNote", event.target.value)
@@ -1114,7 +1121,7 @@ export function FaultReportForm() {
                     />
                     <FormFieldMessage
                       tone="muted"
-                      message="Nem kötelező, de segíthet a gyorsabb visszajelzés megszervezésében."
+                      message="Nem kötelező."
                     />
                   </label>
                 </div>
@@ -1125,11 +1132,12 @@ export function FaultReportForm() {
                   <div>
                     <FormFieldLabel label="Opcionális képek" />
                     <p className={formSectionBodyTextClassName}>
-                      Legfeljebb {serviceRequestMaxImageCount} kép csatolható.
-                      Hasznos lehet például a szivárgás helye, a készülék állapota
-                      vagy bármilyen látható rendellenesség.
+                      Legfeljebb {serviceRequestMaxImageCount} kép. Például a
+                      hiba helyéről vagy a készülékről.
                     </p>
                   </div>
+
+                  <FormUploadPrivacyNote />
 
                   <label className={formUploadButtonClassName}>
                     <input
@@ -1194,8 +1202,7 @@ export function FaultReportForm() {
                   Gyors áttekintés a véglegesítés előtt
                 </h3>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-300">
-                  Az alábbi adatok alapján a hibabejelentés közvetlenül
-                  rögzíthető a rendszerben.
+                  Itt ellenőrizheti a megadott adatokat.
                 </p>
               </div>
 
@@ -1249,14 +1256,14 @@ export function FaultReportForm() {
 
                       {section.title === "Helyszín és kapcsolat" && !notesValue ? (
                         <div className={cn("mt-4", formDashedInfoClassName)}>
-                          Külön megjegyzés nem érkezett.
+                          Nincs megjegyzés.
                         </div>
                       ) : null}
 
                       {section.title === "Egyeztetés és felmérés" &&
                       !schedulingNoteValue ? (
                         <div className={cn("mt-4", formDashedInfoClassName)}>
-                          Kapcsolódó egyeztetési megjegyzés nem érkezett.
+                          Nincs kapcsolódó megjegyzés.
                         </div>
                       ) : null}
                     </div>
@@ -1297,6 +1304,15 @@ export function FaultReportForm() {
                 </div>
               </div>
 
+              {!isSuccess ? (
+                <FormPrivacyConsentField
+                  checked={privacyConsentAccepted}
+                  error={privacyConsentError}
+                  disabled={isSubmitting}
+                  onCheckedChange={setPrivacyConsentAccepted}
+                />
+              ) : null}
+
               {isSubmitting ? (
                 <div className={formBusyPanelClassName}>
                   <div className="flex items-start gap-4">
@@ -1309,8 +1325,8 @@ export function FaultReportForm() {
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
                         {hasSelectedImages
-                          ? "A megadott adatok mentése és a csatolt képek feltöltése most történik."
-                          : "A megadott adatok mentése most történik a rendszerben."}
+                          ? "A mentés és a képfeltöltés most történik."
+                          : "A mentés most történik."}
                       </p>
                     </div>
                   </div>
@@ -1329,9 +1345,7 @@ export function FaultReportForm() {
                           A hibabejelentés sikeresen rögzítve lett.
                         </p>
                         <p className={formSuccessBodyTextClassName}>
-                          A megadott adatok rögzítésre kerültek, így a helyzet
-                          gyorsabban áttekinthető és a következő lépés is
-                          rendezettebben készíthető elő.
+                          A bejelentés beérkezett. Hamarosan visszajelzünk.
                         </p>
                       </div>
                     </div>
@@ -1343,8 +1357,7 @@ export function FaultReportForm() {
                         Képfeltöltés nem történt
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
-                        A hibabejelentés kép nélkül került rögzítésre, ami ennél
-                        a gyors folyamatnál teljesen rendben van.
+                        A bejelentés kép nélkül érkezett.
                       </p>
                     </div>
                   ) : null}

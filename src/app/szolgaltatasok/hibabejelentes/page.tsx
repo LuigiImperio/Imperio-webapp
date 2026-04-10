@@ -9,9 +9,9 @@ import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
 
 const highlights = [
-  "Gyors problémajelzés",
+  "Gyors bejelentés",
   "Sürgősség megadása",
-  "Képes pontosítás",
+  "Képes kiegészítés",
 ]
 
 export const metadata: Metadata = buildPageMetadata({
@@ -45,9 +45,9 @@ export default function FaultReportPage() {
         <SiteNavbar />
         <ServicePageHero
           title="Hibabejelentés"
-          intro="Itt gyorsan és átláthatóan jelezhető sürgős vagy problémás helyzet, hogy a legfontosabb információk rövid idő alatt rögzíthetők legyenek."
-          leadTitle="Hibabejelentés gyorsabb előzetes egyeztetéssel"
-          leadDescription="A cél, hogy a probléma jellege, a sürgősség és a helyszíni alapadatok már az első bejelentésnél láthatóvá váljanak, így gyorsabban priorizálható legyen a következő lépés."
+          intro="Itt gyorsan jelezheti a hibát és a sürgősséget."
+          leadTitle="Rövid hibabejelentés"
+          leadDescription="A fő adatokból gyorsan látszik, mennyire sürgős a helyzet."
           serviceType="hibabejelentes"
           sourcePage="hibabejelentes"
           primaryCtaLabel="Bejelentés indítása"
@@ -60,12 +60,11 @@ export default function FaultReportPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Indítsa el a gyors hibabejelentést
+              Hibabejelentés
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              A rövid lépések célja, hogy a hiba jellege, a sürgősség és a
-              kapcsolattartási adatok gyorsan átláthatók legyenek. Opcionális
-              képek is csatolhatók, ha ez segíti a pontosabb első visszajelzést.
+              Adja meg röviden a hibát és az elérhetőségét. Képet csak akkor
+              töltsön fel, ha segít.
             </p>
           </Reveal>
 

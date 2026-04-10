@@ -9,9 +9,9 @@ import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
 
 const highlights = [
-  "Műszaki előminősítés",
-  "Rendezettebb első egyeztetés",
-  "Jobban előkészített indulás",
+  "Gyors indulás",
+  "Műszaki alapok",
+  "Képes kiegészítés",
 ]
 
 export const metadata: Metadata = buildPageMetadata({
@@ -45,9 +45,9 @@ export default function HeatPumpInstallationPage() {
         <SiteNavbar />
         <ServicePageHero
           title="Hőszivattyú telepítés"
-          intro="Itt indítható el egy strukturált előminősítő megkeresés, amely segít előre rögzíteni a helyszín, a jelenlegi rendszer és a projekt indulási helyzetének legfontosabb adatait."
-          leadTitle="Hőszivattyús megkeresés átláthatóbb műszaki előkészítéssel"
-          leadDescription="A cél, hogy a hőleadó oldal, a jelenlegi hőtermelő, az elektromos háttér és a projekt szakasza már az első kapcsolatfelvétel előtt tisztábban látszódjon, így a következő egyeztetés célzottabb lehessen."
+          intro="Itt indítható el a hőszivattyús megkeresés."
+          leadTitle="Hőszivattyús megkeresés röviden"
+          leadDescription="A fő műszaki adatokból gyorsan látszik a kiinduló helyzet."
           serviceType="hoszivattyu_telepites"
           sourcePage="hoszivattyu-telepites"
           primaryCtaLabel="Megkeresés indítása"
@@ -60,12 +60,11 @@ export default function HeatPumpInstallationPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Hőszivattyús megkeresés indítása
+              Hőszivattyús megkeresés
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              A folyamat néhány rövid lépésből áll, és segít, hogy a projekt
-              alaphelyzete, a fő műszaki szempontok és az egyeztetéshez
-              szükséges körülmények már az első körben tisztábban látszódjanak.
+              Néhány alapadat már elég az induláshoz. A többit később is
+              megadhatja.
             </p>
           </Reveal>
 

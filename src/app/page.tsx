@@ -5,6 +5,7 @@ import { SiteNavbar } from "@/components/layout/site-navbar"
 import { ContactCtaSection } from "@/components/sections/contact-cta-section"
 import { FaqSection } from "@/components/sections/faq-section"
 import { HeroSection } from "@/components/sections/hero-section"
+import { MobileStickyCtaBar } from "@/components/sections/mobile-sticky-cta-bar"
 import { ReferencesSection } from "@/components/sections/references-section"
 import { ResidentialCommonWorkSection } from "@/components/sections/residential-common-work-section"
 import { ServicesSection } from "@/components/sections/services-section"
@@ -31,6 +32,7 @@ export default function HomePage() {
       <main className="min-h-screen bg-zinc-950 text-white">
         <SiteNavbar />
         <HeroSection />
+        <MobileStickyCtaBar />
         <ResidentialCommonWorkSection />
         <ServicesSection />
         <WhyChooseUsSection />

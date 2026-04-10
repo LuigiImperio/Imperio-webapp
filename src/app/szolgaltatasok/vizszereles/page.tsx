@@ -9,9 +9,9 @@ import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
 
 const highlights = [
-  "Gyorsabb előzetes kép",
-  "Jobb helyszíni egyeztetés",
-  "Egyszerűbb indulás",
+  "Gyors indulás",
+  "Tisztább helyzetkép",
+  "Képes kiegészítés",
 ]
 
 export const metadata: Metadata = buildPageMetadata({
@@ -45,9 +45,9 @@ export default function PlumbingRequestPage() {
         <SiteNavbar />
         <ServicePageHero
           title="Víz- és gázszerelés"
-          intro="Vízszerelési és gázszerelési munkákhoz itt indítható strukturált megkeresés, hogy a feladat jellege, a sürgősség és a helyszíni alapadatok már az első kapcsolatfelvétel előtt átláthatók legyenek."
-          leadTitle="Víz- és gázszerelési megkeresés rendezettebb indulással"
-          leadDescription="A cél, hogy a munka típusa, a sürgősség és az egyeztetéshez fontos körülmények már az elején láthatók legyenek, így tipikus lakossági szerelési feladatoknál is gyorsabb és pontosabb lehessen a következő visszajelzés."
+          intro="Itt indítható el a víz- vagy gázszerelési megkeresés."
+          leadTitle="Szerelési megkeresés röviden"
+          leadDescription="A munka jellege, a sürgősség és a helyszín már az elején látszik."
           serviceType="vizszereles"
           sourcePage="vizszereles"
           primaryCtaLabel="Megkeresés indítása"
@@ -60,13 +60,10 @@ export default function PlumbingRequestPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Víz- vagy gázszerelési megkeresés indítása
+              Víz- vagy gázszerelési megkeresés
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              A folyamat néhány rövid lépésből áll, és segít, hogy víz- vagy
-              gázszerelési feladatnál a munka jellege, a sürgősség és az
-              egyeztetéshez szükséges alapadatok már az első megkeresésnél
-              láthatók legyenek.
+              Néhány adat megadása után elküldheti a megkeresést.
             </p>
           </Reveal>
 

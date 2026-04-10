@@ -14,6 +14,7 @@ import {
   formFileMetaTextClassName,
   formFileRemoveButtonClassName,
   formInfoPanelClassName,
+  FormPrivacyConsentField,
   FormFieldLabel,
   FormFieldMessage,
   formLeadTextClassName,
@@ -32,6 +33,8 @@ import {
   formSummaryLabelClassName,
   formSupportPanelClassName,
   formUploadButtonClassName,
+  FormUploadPrivacyNote,
+  useRequiredPrivacyConsent,
   formWarningListClassName,
   formWarningPanelClassName,
   formWarningTextClassName,
@@ -75,17 +78,15 @@ const steps = [
   {
     title: "Helyzetfelmérés",
     description:
-      "Néhány gyors válasszal jobban látszik, mennyire sürgős a helyzet és melyik területet érinti a hiba.",
+      "Néhány válaszból gyorsan látszik a helyzet.",
   },
   {
     title: "Helyszín és kapcsolat",
-    description:
-      "A helyszín, az elérhetőség és az opcionális képek segítenek a gyorsabb első visszajelzésben.",
+    description: "A helyszín és az elérhetőség gyorsítja a visszajelzést.",
   },
   {
     title: "Összegzés",
-    description:
-      "A véglegesítés előtt egy helyen áttekinthető minden megadott információ.",
+    description: "Itt ellenőrizheti a megadott adatokat.",
   },
 ] as const
 
@@ -551,6 +552,12 @@ export function LeakRequestForm() {
   const [formData, setFormData] = useState<LeakRequestInquiryData>(initialFormState)
   const [errors, setErrors] = useState<ErrorState>({})
   const [touchedFields, setTouchedFields] = useState<TouchedState>({})
+  const {
+    privacyConsentAccepted,
+    privacyConsentError,
+    setPrivacyConsentAccepted,
+    validatePrivacyConsent,
+  } = useRequiredPrivacyConsent()
   const { trackFormStarted, trackStepCompleted, trackSubmitSuccess } =
     useFormTracking({
       serviceType: "csotores_szivargas",
@@ -752,6 +759,11 @@ export function LeakRequestForm() {
       return
     }
 
+    if (!validatePrivacyConsent()) {
+      setSubmitStatus("idle")
+      return
+    }
+
     const requestId = crypto.randomUUID()
 
     try {
@@ -836,18 +848,15 @@ export function LeakRequestForm() {
       <aside className="order-2 hidden self-start lg:order-1 lg:block lg:space-y-6 lg:sticky lg:top-24">
         <Card className={formAsideCardClassName}>
           <CardHeader className="space-y-4 p-5 sm:p-6">
-            <div className={formEyebrowClassName}>Gyors triage-indítás</div>
-            <CardTitle className="text-xl">Csőtörés gyors előszűrése</CardTitle>
+            <div className={formEyebrowClassName}>Gyors bejelentés</div>
+            <CardTitle className="text-xl">Csőtörés / szivárgás</CardTitle>
             <CardDescription className={formLeadTextClassName}>
-              A cél, hogy néhány rövid válaszból gyorsan látszódjon a helyzet
-              sürgőssége, az érintett terület és a következő egyeztetéshez
-              szükséges alapadat.
+              Adja meg a fő adatokat, és könnyebb lesz a visszajelzés.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 p-5 pt-0 sm:space-y-5 sm:p-6 sm:pt-0">
             <div className={formSupportPanelClassName}>
-              Ez a folyamat sürgősebb csőtöréses vagy szivárgásos helyzetek
-              nyugodt, rendezett első rögzítésére készült.
+              Sürgős helyzetekhez készült. A képek nem kötelezők.
             </div>
             <div className="space-y-2">
               <div className={formProgressMetaClassName}>
@@ -934,7 +943,7 @@ export function LeakRequestForm() {
           {currentStepErrors.length > 0 && !isLastStep ? (
             <div className={formWarningPanelClassName}>
               <p className="text-sm font-medium text-amber-100">
-                A továbblépéshez ellenőrizze a kiemelt mezőket.
+                Ellenőrizze a kiemelt mezőket.
               </p>
               <ul className={formWarningListClassName}>
                 {currentStepErrors.map(({ field, message }) => (
@@ -1028,7 +1037,7 @@ export function LeakRequestForm() {
                 ) : (
                   <FormFieldMessage
                     tone="muted"
-                    message="A rövid, tényszerű leírás segít a gyorsabb első visszajelzésben."
+                    message="Pár mondat elég."
                   />
                 )}
               </label>
@@ -1213,7 +1222,7 @@ export function LeakRequestForm() {
                   />
                   <FormFieldMessage
                     tone="muted"
-                    message="Opcionálisan megadható minden, ami az egyeztetést vagy a helyszín elérését segíti."
+                    message="Nem kötelező."
                   />
                 </label>
 
@@ -1233,7 +1242,7 @@ export function LeakRequestForm() {
                   />
                   <FormFieldMessage
                     tone="muted"
-                    message="Ez a mező opcionális, a legfontosabb a gyors alaphelyzet tisztázása."
+                    message="Nem kötelező."
                   />
                 </label>
               </div>
@@ -1245,14 +1254,15 @@ export function LeakRequestForm() {
                       Képek csatolása
                     </h3>
                     <p className="mt-2 text-sm leading-6 text-zinc-300">
-                      Ha a helyzet jobban érthető fotó alapján, itt legfeljebb{" "}
-                      {serviceRequestMaxImageCount} kép tölthető fel.
+                      Legfeljebb {serviceRequestMaxImageCount} kép tölthető fel.
                     </p>
                   </div>
                   <span className={formSummaryLabelClassName}>Opcionális</span>
                 </div>
 
                 <div className="mt-4 flex flex-col gap-4">
+                  <FormUploadPrivacyNote />
+
                   <label className={formUploadButtonClassName}>
                     <span>Képek kiválasztása</span>
                     <input
@@ -1271,8 +1281,7 @@ export function LeakRequestForm() {
 
                   {selectedImages.length === 0 ? (
                     <div className={formDashedInfoClassName}>
-                      Nincs kiválasztott kép. Ez ennél a gyors folyamatnál
-                      teljesen rendben van.
+                      Nincs kiválasztott kép.
                     </div>
                   ) : (
                     <div className="grid gap-3">
@@ -1313,8 +1322,7 @@ export function LeakRequestForm() {
                   Áttekintés a véglegesítés előtt
                 </h3>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-300">
-                  Az alábbi adatok alapján már egy gyorsabban kezelhető első
-                  visszajelzés és triage indulhat el.
+                  Itt ellenőrizheti a megadott adatokat.
                 </p>
               </div>
 
@@ -1368,14 +1376,14 @@ export function LeakRequestForm() {
 
                       {section.title === "Helyszín és kapcsolat" && !notesValue ? (
                         <div className={cn("mt-4", formDashedInfoClassName)}>
-                          Külön megjegyzés nem érkezett.
+                          Nincs megjegyzés.
                         </div>
                       ) : null}
 
                       {section.title === "Egyeztetés és felmérés" &&
                       !schedulingNoteValue ? (
                         <div className={cn("mt-4", formDashedInfoClassName)}>
-                          Kapcsolódó egyeztetési megjegyzés nem érkezett.
+                          Nincs kapcsolódó megjegyzés.
                         </div>
                       ) : null}
                     </div>
@@ -1414,6 +1422,15 @@ export function LeakRequestForm() {
                 </div>
               </div>
 
+              {!isSuccess ? (
+                <FormPrivacyConsentField
+                  checked={privacyConsentAccepted}
+                  error={privacyConsentError}
+                  disabled={isSubmitting}
+                  onCheckedChange={setPrivacyConsentAccepted}
+                />
+              ) : null}
+
               {isSubmitting ? (
                 <div className={formBusyPanelClassName}>
                   <div className="flex items-start gap-4">
@@ -1426,8 +1443,8 @@ export function LeakRequestForm() {
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
                         {hasSelectedImages
-                          ? "A megadott adatok mentése és a csatolt képek feltöltése most történik."
-                          : "A megadott adatok mentése most történik a rendszerben."}
+                          ? "A mentés és a képfeltöltés most történik."
+                          : "A mentés most történik."}
                       </p>
                     </div>
                   </div>
@@ -1446,9 +1463,7 @@ export function LeakRequestForm() {
                           A megkeresés sikeresen rögzítve lett.
                         </p>
                         <p className={formSuccessBodyTextClassName}>
-                          A csőtöréshez vagy szivárgáshoz kapcsolódó alapadatok
-                          bekerültek a rendszerbe, így a következő visszajelzés
-                          gyorsabban előkészíthető.
+                          A megkeresés beérkezett. Hamarosan visszajelzünk.
                         </p>
                       </div>
                     </div>
@@ -1460,8 +1475,7 @@ export function LeakRequestForm() {
                         Képfeltöltés nem történt
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
-                        A megkeresés kép nélkül került rögzítésre, ami ennél a
-                        gyors triage-folyamatnál teljesen elfogadható.
+                        A megkeresés kép nélkül érkezett.
                       </p>
                     </div>
                   ) : null}

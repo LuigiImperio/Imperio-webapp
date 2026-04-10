@@ -9,9 +9,9 @@ import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
 
 const highlights = [
-  "Gyorsabb helyzetkép",
-  "Célzottabb triage",
-  "Nyugodt, rendezett indulás",
+  "Gyors helyzetkép",
+  "Tisztább indulás",
+  "Képes kiegészítés",
 ]
 
 export const metadata: Metadata = buildPageMetadata({
@@ -45,9 +45,9 @@ export default function LeakRequestPage() {
         <SiteNavbar />
         <ServicePageHero
           title="Csőtörés / szivárgás"
-          intro="Itt indítható el egy gyors, célzott megkeresési folyamat olyan helyzetekhez, ahol beázás, csőrepedés vagy látható, illetve rejtett szivárgás miatt fontos a mielőbbi első visszajelzés."
-          leadTitle="Gyorsabb helyzetfelmérés rendezett első egyeztetéssel"
-          leadDescription="A cél, hogy a szivárgás állapota, az érintett terület és a helyszíni alapadatok már az első kapcsolatfelvétel előtt átláthatók legyenek, így a következő lépés célzottabban készülhessen elő."
+          intro="Itt gyorsan jelezheti a csőtörést vagy a szivárgást."
+          leadTitle="Rövid bejelentés csőtöréshez"
+          leadDescription="A fő adatokból gyorsan látszik az érintett terület és a sürgősség."
           serviceType="csotores_szivargas"
           sourcePage="csotores-szivargas"
           primaryCtaLabel="Megkeresés indítása"
@@ -60,12 +60,10 @@ export default function LeakRequestPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Csőtörés vagy szivárgás bejelentése
+              Csőtörés vagy szivárgás
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              A folyamat röviden végigvihető, és abban segít, hogy a helyzet
-              sürgőssége, az érintett terület és az egyeztetéshez szükséges
-              alapadatok gyorsan áttekinthetők legyenek.
+              Adja meg röviden a helyzetet és az elérhetőségét.
             </p>
           </Reveal>
 

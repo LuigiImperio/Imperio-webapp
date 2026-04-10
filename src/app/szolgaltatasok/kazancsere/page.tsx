@@ -9,9 +9,9 @@ import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
 
 const highlights = [
-  "Gyorsabb előszűrés",
-  "Pontosabb egyeztetés",
-  "Kevesebb felesleges kör",
+  "Gyors indulás",
+  "Kevesebb kör",
+  "Képes kiegészítés",
 ]
 
 export const metadata: Metadata = buildPageMetadata({
@@ -45,9 +45,9 @@ export default function BoilerReplacementPage() {
         <SiteNavbar />
         <ServicePageHero
           title="Kazánjavítás / kazáncsere"
-          intro="Itt indítható el egy strukturált megkeresési folyamat, amely segít előre rögzíteni a legfontosabb kazánnal kapcsolatos műszaki és kapcsolattartási információkat."
-          leadTitle="Kazános megkeresés rendezettebb indulással"
-          leadDescription="A cél, hogy a legfontosabb részletek már az első kapcsolatfelvétel előtt láthatók legyenek, így javítás vagy csere esetén is gyorsabb és pontosabb lehessen a következő egyeztetés."
+          intro="Itt indítható el a kazánjavítással vagy kazáncserével kapcsolatos megkeresés."
+          leadTitle="Kazános megkeresés röviden"
+          leadDescription="Néhány alapadat már elég az induláshoz. A többit később is megadhatja."
           serviceType="kazancsere"
           sourcePage="kazancsere"
           primaryCtaLabel="Megkeresés indítása"
@@ -60,12 +60,11 @@ export default function BoilerReplacementPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Kazános megkeresés indítása
+              Kazános megkeresés
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              A folyamat néhány rövid lépésből áll. A megadott adatok a
-              gyorsabb első visszajelzést segítik, a most még bizonytalan
-              részletek pedig később is pontosíthatók.
+              Néhány adat megadása után elküldheti a megkeresést. Ami most nem
+              biztos, később is pontosítható.
             </p>
           </Reveal>
 

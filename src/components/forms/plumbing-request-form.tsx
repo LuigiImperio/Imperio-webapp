@@ -6,6 +6,7 @@ import {
   formAsideCardClassName,
   formBusyPanelClassName,
   formCounterPillClassName,
+  FormPrivacyConsentField,
   FormFieldLabel,
   FormFieldMessage,
   FormOptionGroup,
@@ -35,6 +36,8 @@ import {
   formSummaryLabelClassName,
   formSupportPanelClassName,
   formUploadButtonClassName,
+  FormUploadPrivacyNote,
+  useRequiredPrivacyConsent,
   formWarningListClassName,
   formWarningPanelClassName,
   formWarningTextClassName,
@@ -77,22 +80,19 @@ const steps = [
   {
     title: "Munka jellege",
     description:
-      "A munka típusa és a sürgősség segít, hogy gyorsabban átlátható legyen a feladat jellege.",
+      "A munka típusa és a sürgősség gyors képet ad.",
   },
   {
     title: "Helyszín és egyeztetés",
-    description:
-      "A település és az egyeztetési preferenciák segítenek a következő kapcsolatfelvétel jobb előkészítésében.",
+    description: "A helyszín és az időpont gyorsítja a visszajelzést.",
   },
   {
     title: "Kapcsolat és képek",
-    description:
-      "Az elérhetőségek és az opcionális képek tisztább képet adnak a munka várható körülményeiről.",
+    description: "Az elérhetőség és a képek gyorsítják a visszajelzést.",
   },
   {
     title: "Összegzés",
-    description:
-      "A véglegesítés előtt egy helyen áttekinthető minden megadott adat.",
+    description: "Itt ellenőrizheti a megadott adatokat.",
   },
 ] as const
 
@@ -472,6 +472,12 @@ export function PlumbingRequestForm() {
     useState<PlumbingRequestInquiryData>(initialFormState)
   const [errors, setErrors] = useState<ErrorState>({})
   const [touchedFields, setTouchedFields] = useState<TouchedState>({})
+  const {
+    privacyConsentAccepted,
+    privacyConsentError,
+    setPrivacyConsentAccepted,
+    validatePrivacyConsent,
+  } = useRequiredPrivacyConsent()
   const { trackFormStarted, trackStepCompleted, trackSubmitSuccess } =
     useFormTracking({
       serviceType: "vizszereles",
@@ -673,6 +679,11 @@ export function PlumbingRequestForm() {
       return
     }
 
+    if (!validatePrivacyConsent()) {
+      setSubmitStatus("idle")
+      return
+    }
+
     const requestId = crypto.randomUUID()
 
     try {
@@ -757,19 +768,15 @@ export function PlumbingRequestForm() {
       <aside className="order-2 hidden self-start lg:order-1 lg:block lg:space-y-6 lg:sticky lg:top-24">
         <Card className={formAsideCardClassName}>
           <CardHeader className="space-y-4 p-5 sm:p-6">
-            <div className={formEyebrowClassName}>
-              Strukturált megkeresés
-            </div>
-            <CardTitle className="text-xl">Szerelési igény előkészítése</CardTitle>
+            <div className={formEyebrowClassName}>Megkeresés</div>
+            <CardTitle className="text-xl">Szerelési megkeresés</CardTitle>
             <CardDescription className={formLeadTextClassName}>
-              A munka jellege, a helyszín és az egyeztetési körülmények rövid
-              rögzítésével rendezettebbé válhat a következő lépés.
+              Adja meg röviden, mire van szükség.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 p-5 pt-0 sm:space-y-5 sm:p-6 sm:pt-0">
             <div className={formSupportPanelClassName}>
-              Néhány rövid lépésből áll, és segít, hogy a feladat jellege már
-              az első körben tisztábban látszódjon. A képfeltöltés opcionális.
+              Pár alapadat elég az induláshoz.
             </div>
             <div className="space-y-2">
               <div className={formProgressMetaClassName}>
@@ -869,7 +876,7 @@ export function PlumbingRequestForm() {
           {currentStepErrors.length > 0 && !isLastStep ? (
             <div className={formWarningPanelClassName}>
               <p className="text-sm font-medium text-amber-100">
-                A továbblépéshez ellenőrizze a kiemelt mezőket.
+                Ellenőrizze a kiemelt mezőket.
               </p>
               <ul className={formWarningListClassName}>
                 {currentStepErrors.map(({ field, message }) => (
@@ -923,7 +930,7 @@ export function PlumbingRequestForm() {
                 ) : (
                   <FormFieldMessage
                     tone="muted"
-                    message="A rövid leírás segít, hogy gyorsabban látható legyen a munka jellege és a következő lépés."
+                    message="Pár mondat elég."
                   />
                 )}
               </label>
@@ -995,7 +1002,7 @@ export function PlumbingRequestForm() {
                   ) : (
                     <FormFieldMessage
                       tone="muted"
-                      message="Az irányítószám és a település már segíti a pontosabb előkészítést."
+                      message="A település már elég az induláshoz."
                     />
                   )}
                 </label>
@@ -1020,8 +1027,7 @@ export function PlumbingRequestForm() {
                       Egyeztetés és felmérés
                     </h3>
                     <p className={formSectionBodyTextClassName}>
-                      Röviden jelezhető, hogy szükséges lehet-e helyszíni
-                      felmérés, és mikor lenne megfelelő a következő egyeztetés.
+                      Jelezze, kellhet-e felmérés, és mikor lenne jó.
                     </p>
                   </div>
 
@@ -1052,7 +1058,7 @@ export function PlumbingRequestForm() {
                   <label className="space-y-3">
                     <FormFieldLabel label="Kapcsolódó megjegyzés" />
                     <Textarea
-                      placeholder="Ha van külön időzítési vagy felméréshez kapcsolódó megjegyzés, itt röviden jelezheti."
+                      placeholder="Ha van plusz időpont- vagy helyszíni információ, írja ide."
                       value={formData.scheduling.schedulingNote}
                       onChange={(event) =>
                         updateField("schedulingNote", event.target.value)
@@ -1067,7 +1073,7 @@ export function PlumbingRequestForm() {
                     />
                     <FormFieldMessage
                       tone="muted"
-                      message="Nem kötelező, de segíthet az egyeztetés pontosításában."
+                      message="Nem kötelező."
                     />
                   </label>
                 </div>
@@ -1146,7 +1152,7 @@ export function PlumbingRequestForm() {
                 />
                 <FormFieldMessage
                   tone="muted"
-                  message="Nem kötelező, de segíthet a kapcsolatfelvétel jobb előkészítésében."
+                  message="Nem kötelező."
                 />
               </label>
 
@@ -1155,11 +1161,12 @@ export function PlumbingRequestForm() {
                   <div>
                     <FormFieldLabel label="Opcionális képek" />
                     <p className={formSectionBodyTextClassName}>
-                      Legfeljebb {serviceRequestMaxImageCount} kép csatolható.
-                      Hasznos lehet például a szivárgás helye, a csere előtt álló
-                      szerelvény vagy az érintett helyiség fotója.
+                      Legfeljebb {serviceRequestMaxImageCount} kép. Például a
+                      hiba helyéről vagy a szerelvényről.
                     </p>
                   </div>
+
+                  <FormUploadPrivacyNote />
 
                   <label className={formUploadButtonClassName}>
                     <input
@@ -1224,8 +1231,7 @@ export function PlumbingRequestForm() {
                   Áttekintés a véglegesítés előtt
                 </h3>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-300">
-                  Az alábbi adatok alapján már egy rendezettebb szerelési
-                  egyeztetés indítható el.
+                  Itt ellenőrizheti a megadott adatokat.
                 </p>
               </div>
 
@@ -1280,13 +1286,13 @@ export function PlumbingRequestForm() {
                       {section.title === "Helyszín és egyeztetés" &&
                       !schedulingNoteValue ? (
                         <div className={cn("mt-4", formDashedInfoClassName)}>
-                          Kapcsolódó egyeztetési megjegyzés nem érkezett.
+                          Nincs kapcsolódó megjegyzés.
                         </div>
                       ) : null}
 
                       {section.title === "Kapcsolatfelvétel" && !notesValue ? (
                         <div className={cn("mt-4", formDashedInfoClassName)}>
-                          Külön megjegyzés nem érkezett.
+                          Nincs megjegyzés.
                         </div>
                       ) : null}
                     </div>
@@ -1327,6 +1333,15 @@ export function PlumbingRequestForm() {
                 </div>
               </div>
 
+              {!isSuccess ? (
+                <FormPrivacyConsentField
+                  checked={privacyConsentAccepted}
+                  error={privacyConsentError}
+                  disabled={isSubmitting}
+                  onCheckedChange={setPrivacyConsentAccepted}
+                />
+              ) : null}
+
               {isSubmitting ? (
                 <div className={formBusyPanelClassName}>
                   <div className="flex items-start gap-4">
@@ -1339,8 +1354,8 @@ export function PlumbingRequestForm() {
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
                         {hasSelectedImages
-                          ? "A megadott adatok mentése és a csatolt képek feltöltése most történik."
-                          : "A megadott adatok mentése most történik a rendszerben."}
+                          ? "A mentés és a képfeltöltés most történik."
+                          : "A mentés most történik."}
                       </p>
                     </div>
                   </div>
@@ -1359,9 +1374,7 @@ export function PlumbingRequestForm() {
                           A szerelési megkeresés sikeresen rögzítve lett.
                         </p>
                         <p className={formSuccessBodyTextClassName}>
-                          A megadott adatok bekerültek a rendszerbe, így a
-                          következő kapcsolatfelvétel már rendezettebb alapból
-                          indulhat.
+                          Az adatok beérkeztek. Hamarosan visszajelzünk.
                         </p>
                       </div>
                     </div>
@@ -1373,8 +1386,7 @@ export function PlumbingRequestForm() {
                         Képfeltöltés nem történt
                       </p>
                       <p className="mt-2 text-sm leading-6 text-zinc-300">
-                        A megkeresés kép nélkül került rögzítésre, ami ennél az
-                        opcionális lépésnél teljesen rendben van.
+                        A megkeresés kép nélkül érkezett.
                       </p>
                     </div>
                   ) : null}

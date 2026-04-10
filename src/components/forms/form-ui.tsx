@@ -1,5 +1,9 @@
 "use client"
 
+import Link from "next/link"
+import { useId, useState } from "react"
+
+import { privacyPolicyPath } from "@/lib/legal"
 import { cn } from "@/lib/utils"
 
 export function getFormInputClassName({
@@ -58,6 +62,113 @@ export function FormFieldMessage({
       )}
     >
       {message}
+    </p>
+  )
+}
+
+export function useRequiredPrivacyConsent() {
+  const [privacyConsentAccepted, setPrivacyConsentAcceptedState] = useState(false)
+  const [privacyConsentError, setPrivacyConsentError] = useState<string | null>(
+    null
+  )
+
+  function setPrivacyConsentAccepted(nextValue: boolean) {
+    setPrivacyConsentAcceptedState(nextValue)
+
+    if (nextValue) {
+      setPrivacyConsentError(null)
+    }
+  }
+
+  function validatePrivacyConsent() {
+    if (privacyConsentAccepted) {
+      setPrivacyConsentError(null)
+      return true
+    }
+
+    setPrivacyConsentError(
+      "A küldéshez fogadja el az adatkezelési tájékoztatót."
+    )
+
+    return false
+  }
+
+  return {
+    privacyConsentAccepted,
+    privacyConsentError,
+    setPrivacyConsentAccepted,
+    validatePrivacyConsent,
+  }
+}
+
+export function FormPrivacyConsentField({
+  checked,
+  error,
+  disabled = false,
+  onCheckedChange,
+}: {
+  checked: boolean
+  error?: string | null
+  disabled?: boolean
+  onCheckedChange: (nextValue: boolean) => void
+}) {
+  const consentId = useId()
+
+  return (
+    <div className="rounded-[1.35rem] border border-white/10 bg-zinc-950/52 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] md:rounded-3xl md:p-5">
+      <div className="flex items-start gap-3">
+        <input
+          id={consentId}
+          type="checkbox"
+          checked={checked}
+          disabled={disabled}
+          aria-invalid={Boolean(error)}
+          onChange={(event) => onCheckedChange(event.target.checked)}
+          className={cn(
+            "mt-1 size-4 rounded border border-white/18 bg-zinc-950/90 accent-[#f0dfbe] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 disabled:cursor-not-allowed disabled:opacity-60",
+            error && "border-rose-400/60 accent-rose-200"
+          )}
+        />
+
+        <div className="space-y-2">
+          <div className="text-sm leading-6 text-zinc-200">
+            <label htmlFor={consentId} className="cursor-pointer">
+              Elfogadom az{" "}
+            </label>
+            <Link
+              href={privacyPolicyPath}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              className="font-medium text-white underline decoration-white/30 underline-offset-4 transition-colors hover:text-zinc-100 hover:decoration-white/60"
+            >
+              adatkezelési tájékoztatót
+            </Link>
+            <label htmlFor={consentId} className="cursor-pointer">
+              .
+            </label>
+          </div>
+
+          <p className="text-sm leading-6 text-zinc-300">
+            Az adatait csak a megkereséshez használjuk, és nem adjuk tovább.
+          </p>
+        </div>
+      </div>
+
+      {error ? (
+        <div className="mt-3">
+          <FormFieldMessage message={error} />
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+export function FormUploadPrivacyNote() {
+  return (
+    <p className="text-sm leading-6 text-zinc-300">
+      Csak a feladathoz tartozó képeket töltse fel. Ezeket csak a megkereséshez
+      használjuk.
     </p>
   )
 }

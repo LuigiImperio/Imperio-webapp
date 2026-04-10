@@ -61,7 +61,7 @@ export function ServicePageHero({
                 {leadDescription}
               </p>
               <p className="mt-3 max-w-3xl text-[0.9rem] leading-6 text-zinc-500 md:text-sm">
-                Jelenlegi kiemelt szolgáltatási terület: {supportedServiceAreaLabel}.
+                Szolgáltatási terület: {supportedServiceAreaLabel}.
               </p>
             </div>
 
@@ -100,8 +100,7 @@ export function ServicePageHero({
               </TrackedLink>
             </div>
             <p className="mt-4 text-[0.9rem] leading-6 text-zinc-400 md:text-sm">
-              A fő gomb közvetlenül az űrlap szakaszához ugrik, így a rövid
-              bevezető után azonnal folytatható a megkeresés.
+              A fő gomb közvetlenül az űrlaphoz ugrik.
             </p>
           </div>
         </Reveal>
@@ -118,8 +117,7 @@ export function ServicePageHero({
                 </CardHeader>
                 <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
                   <p className="text-[0.9rem] leading-6 text-zinc-400 transition-colors duration-300 group-hover:text-zinc-300 md:text-sm">
-                    A strukturált előkészítés segít, hogy már az első körben
-                    tisztábban látszódjon a helyzet és a következő lépés.
+                    Röviden mutatja, mire számíthat.
                   </p>
                 </CardContent>
               </Card>

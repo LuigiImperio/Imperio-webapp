@@ -1,6 +1,9 @@
+import Link from "next/link"
 import Image from "next/image"
 
 import { Reveal } from "@/components/motion/reveal"
+import { businessEmail, businessName, businessPhone, businessPhoneDisplay } from "@/lib/business"
+import { imprintPath, privacyPolicyPath } from "@/lib/legal"
 
 const supporters = [
   {
@@ -9,6 +12,17 @@ const supporters = [
     alt: "OFA támogató logó",
     width: 220,
     height: 80,
+  },
+] as const
+
+const legalLinks = [
+  {
+    href: privacyPolicyPath,
+    label: "Adatkezelési tájékoztató",
+  },
+  {
+    href: imprintPath,
+    label: "Impresszum",
   },
 ] as const
 
@@ -56,6 +70,39 @@ export function SupportersSection() {
             ))}
           </div>
         </div>
+
+        <Reveal className="mx-auto mt-8 max-w-4xl" delayMs={120} variant="soft">
+          <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] px-4 py-5 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] sm:px-5 sm:py-6">
+            <div className="flex flex-wrap items-center justify-center gap-2.5">
+              {legalLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-sm text-zinc-200 transition-colors hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <p className="mt-4 text-sm leading-6 text-zinc-400">
+              {businessName} |{" "}
+              <a
+                href={`tel:${businessPhone}`}
+                className="transition-colors hover:text-zinc-200"
+              >
+                {businessPhoneDisplay}
+              </a>{" "}
+              |{" "}
+              <a
+                href={`mailto:${businessEmail}`}
+                className="break-all transition-colors hover:text-zinc-200"
+              >
+                {businessEmail}
+              </a>
+            </p>
+          </div>
+        </Reveal>
       </div>
     </footer>
   )

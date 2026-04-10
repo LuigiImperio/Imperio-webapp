@@ -9,6 +9,7 @@ import {
 } from "@/lib/business"
 import { getAppBaseUrl } from "@/lib/config/server-env"
 import { faqItems } from "@/lib/content/faqs"
+import { publicLegalPaths } from "@/lib/legal"
 import { supportedServiceAreaCities, supportedServiceAreaLabel } from "@/lib/service-area"
 
 export const siteName = businessName
@@ -19,6 +20,7 @@ export const defaultSiteDescription =
 
 export const publicSitePaths = [
   "/",
+  ...publicLegalPaths,
   "/szolgaltatasok/csotores-szivargas",
   "/szolgaltatasok/hoszivattyu-telepites",
   "/szolgaltatasok/kazancsere",

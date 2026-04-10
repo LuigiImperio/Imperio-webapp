@@ -9,9 +9,9 @@ import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createBreadcrumbStructuredData, createServiceStructuredData } from "@/lib/seo/site"
 
 const highlights = [
-  "Komplexebb feladatokhoz",
-  "Rendezettebb műszaki kép",
-  "Jobban előkészített egyeztetés",
+  "Nagyobb munkákhoz",
+  "Fő műszaki irány",
+  "Képes kiegészítés",
 ]
 
 export const metadata: Metadata = buildPageMetadata({
@@ -48,9 +48,9 @@ export default function BuildingServicesRequestPage() {
         <SiteNavbar />
         <ServicePageHero
           title="Komplett épületgépészeti kivitelezés"
-          intro="Fürdőszoba kiépítéshez, komplett felújításhoz vagy nagyobb, több rendszert érintő épületgépészeti feladatokhoz itt indítható strukturált megkeresés, hogy a projekt jellege, a helyszín és a fő műszaki irány már az első kapcsolatfelvétel előtt tisztábban látszódjon."
-          leadTitle="Komplexebb projektmegkeresés rendezettebb indulással"
-          leadDescription="A cél, hogy a projekt kerete, a fő érintett területek és az egyeztetéshez szükséges alapadatok már az első körben összeálljanak, így fürdőszobai és nagyobb felújítási feladatoknál is gyorsabb és pontosabb lehessen a következő kapcsolatfelvétel."
+          intro="Itt indítható el a nagyobb vagy összetettebb épületgépészeti megkeresés."
+          leadTitle="Komplex megkeresés röviden"
+          leadDescription="A projekt fő adataiból gyorsan látszik, miről van szó."
           serviceType="komplett_epuletgepeszeti_kivitelezes"
           sourcePage="komplett-epuletgepeszeti-kivitelezes"
           primaryCtaLabel="Megkeresés indítása"
@@ -63,13 +63,10 @@ export default function BuildingServicesRequestPage() {
         >
           <Reveal className="mb-10 max-w-3xl">
             <h2 className="text-[2rem] font-semibold tracking-tight md:text-4xl">
-              Komplex projektmegkeresés indítása
+              Épületgépészeti megkeresés
             </h2>
             <p className="mt-4 text-base leading-7 text-zinc-400">
-              A folyamat néhány rövid lépésből áll, és abban segít, hogy a
-              komplexebb kivitelezési, fürdőszobai vagy felújítási feladatok
-              alapadatai, a fő műszaki irány és az egyeztetési körülmények már
-              az első kapcsolatfelvételnél áttekinthetők legyenek.
+              Adja meg a fő adatokat, és már küldhető is a megkeresés.
             </p>
           </Reveal>
 
