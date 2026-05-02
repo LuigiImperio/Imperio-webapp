@@ -22,6 +22,15 @@ export type ServicePageFaq = {
   answer: string
 }
 
+export type ServicePageContentKey =
+  | "csotoresSzivargas"
+  | "hibabejelentes"
+  | "kazancsere"
+  | "vizszereles"
+  | "futeskorszerusites"
+  | "hoszivattyuTelepites"
+  | "komplettEpuletgepeszetiKivitelezes"
+
 export type ServicePageContent = {
   path: string
   sourcePage: string
@@ -64,7 +73,10 @@ export type ServicePageContent = {
   }
 }
 
-export const servicePageContents = {
+export const servicePageContents: Record<
+  ServicePageContentKey,
+  ServicePageContent
+> = {
   csotoresSzivargas: {
     path: "/szolgaltatasok/csotores-szivargas",
     sourcePage: "csotores-szivargas",
@@ -211,7 +223,7 @@ export const servicePageContents = {
       intro:
         "Adja meg röviden, hogy aktív-e még a szivárgás, melyik terület érintett, és hogyan érhető el a legkönnyebben.",
     },
-  } satisfies ServicePageContent,
+  },
   hibabejelentes: {
     path: "/szolgaltatasok/hibabejelentes",
     sourcePage: "hibabejelentes",
@@ -357,7 +369,7 @@ export const servicePageContents = {
       intro:
         "Adja meg röviden, mi nem működik, mennyire sürgős a helyzet, és hogyan érhető el a legkönnyebben.",
     },
-  } satisfies ServicePageContent,
+  },
   kazancsere: {
     path: "/szolgaltatasok/kazancsere",
     sourcePage: "kazancsere",
@@ -504,7 +516,7 @@ export const servicePageContents = {
       intro:
         "Adja meg a jelenlegi kazán alapadatait, a hiba vagy csere okát, és azt is, hogyan érhető el a legkönnyebben.",
     },
-  } satisfies ServicePageContent,
+  },
   vizszereles: {
     path: "/szolgaltatasok/vizszereles",
     sourcePage: "vizszereles",
@@ -650,7 +662,7 @@ export const servicePageContents = {
       intro:
         "Röviden írja le, milyen jellegű munkáról van szó, mennyire sürgős, és milyen településről érkezik a megkeresés.",
     },
-  } satisfies ServicePageContent,
+  },
   futeskorszerusites: {
     path: "/szolgaltatasok/futeskorszerusites",
     sourcePage: "futeskorszerusites",
@@ -797,7 +809,7 @@ export const servicePageContents = {
       intro:
         "Adja meg a jelenlegi fűtési rendszer típusát, a fő problémát vagy korszerűsítési célt, és azt is, hogy melyik településről ír.",
     },
-  } satisfies ServicePageContent,
+  },
   hoszivattyuTelepites: {
     path: "/szolgaltatasok/hoszivattyu-telepites",
     sourcePage: "hoszivattyu-telepites",
@@ -945,7 +957,7 @@ export const servicePageContents = {
       intro:
         "Adja meg a projekt jellegét, az ingatlan és a rendszer alapadatait, majd írja le röviden, milyen megoldásban gondolkodik.",
     },
-  } satisfies ServicePageContent,
+  },
   komplettEpuletgepeszetiKivitelezes: {
     path: "/szolgaltatasok/komplett-epuletgepeszeti-kivitelezes",
     sourcePage: "komplett-epuletgepeszeti-kivitelezes",
@@ -1093,5 +1105,5 @@ export const servicePageContents = {
       intro:
         "Írja le röviden a projekt jellegét, az ingatlan típusát és azt, hogy melyik rendszer áll a középpontban, így az első egyeztetés is tisztább alapból indulhat.",
     },
-  } satisfies ServicePageContent,
-} as const satisfies Record<string, ServicePageContent>
+  },
+}
