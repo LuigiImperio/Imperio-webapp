@@ -107,7 +107,7 @@ function PortraitCard({ portraits }: { portraits: AboutPortraitSet }) {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {["5+ év tapasztalat", "Egyéni működés", "Mérnöki háttér"].map(
+          {["Terepi tapasztalat", "Egyéni működés", "Mérnöki háttér"].map(
             (item) => (
               <span
                 key={item}

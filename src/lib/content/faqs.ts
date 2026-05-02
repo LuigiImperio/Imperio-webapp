@@ -49,6 +49,11 @@ export const faqItems = [
       `${publicServiceAreaSummary} ${publicServiceAreaExtendedSummary} Más településekről érkező megkeresést is rögzítünk, és a munka jellege alapján jelezzük a lehetőségeket, illetve az esetleges kiszállási feltételeket.`,
   },
   {
+    question: "Milyen típusú ingatlanokhoz és megkeresésekhez használható az oldal?",
+    answer:
+      "Lakásokhoz, családi házakhoz, felújításokhoz, új rendszerkiépítésekhez és nagyobb gépészeti projektekhez is. A rövidebb hibajellegű megkereséstől a komplett épületgépészeti kivitelezésig ugyanaz a logika segít kiválasztani a megfelelő indulási pontot.",
+  },
+  {
     question:
       "Komplett felújításnál, családi ház gépészetnél vagy nagyobb budapesti projektnél is lehet megkeresést indítani?",
     answer:

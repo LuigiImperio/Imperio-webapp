@@ -1,10 +1,13 @@
 import type { Metadata } from "next"
 
+import { businessLogoPath } from "@/lib/business"
 import { getAppBaseUrl } from "@/lib/config/server-env"
 import {
   defaultSiteDescription,
+  defaultSiteKeywords,
   getAbsoluteUrl,
   getDefaultOpenGraphImages,
+  mergeMetadataKeywords,
   siteCategory,
   siteLocale,
   siteName,
@@ -14,12 +17,14 @@ export function buildPageMetadata({
   title,
   description,
   path,
+  keywords,
   openGraphTitle,
   openGraphDescription,
 }: {
   title: string
   description: string
   path: string
+  keywords?: readonly string[]
   openGraphTitle?: string
   openGraphDescription?: string
 }): Metadata {
@@ -29,9 +34,12 @@ export function buildPageMetadata({
   return {
     title,
     description,
+    keywords: mergeMetadataKeywords(keywords),
     category: siteCategory,
     creator: siteName,
     publisher: siteName,
+    authors: [{ name: siteName, url: getAbsoluteUrl("/") }],
+    referrer: "origin-when-cross-origin",
     alternates: {
       canonical: getAbsoluteUrl(path),
     },
@@ -70,12 +78,24 @@ export function buildRootMetadata(): Metadata {
     applicationName: siteName,
     creator: siteName,
     publisher: siteName,
+    authors: [{ name: siteName, url: getAbsoluteUrl("/") }],
+    referrer: "origin-when-cross-origin",
     title: {
       default: siteName,
       template: `%s | ${siteName}`,
     },
     description: defaultSiteDescription,
+    keywords: [...defaultSiteKeywords],
     category: siteCategory,
+    icons: {
+      icon: [
+        {
+          url: businessLogoPath,
+          type: "image/svg+xml",
+          sizes: "any",
+        },
+      ],
+    },
     alternates: {
       canonical: getAbsoluteUrl("/"),
     },

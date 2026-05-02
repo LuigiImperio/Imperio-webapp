@@ -85,12 +85,16 @@ const intentClusters = [
 
 const localSignals = [
   "Pécs",
+  "Pécsi agglomeráció",
   "Kozármisleny",
   "Pellérd",
+  "Pogány",
   "Keszü",
   "Gyód",
   "Orfű",
   "Komló",
+  "Siklós",
+  "Szentlőrinc",
   "Baranya megye egyeztetett helyszínei",
 ] as const
 
@@ -111,7 +115,8 @@ export function HomepageSearchIntentsSection() {
             A megkeresések sokszor úgy indulnak, hogy csöpög a csap, nem meleg a
             radiátor, nincs meleg víz vagy nagyobb felújításhoz kell gépész
             partner. Az alábbi blokkok ezeket a gyakori keresési irányokat
-            rendezik áttekinthető belépési pontokká.
+            rendezik áttekinthető belépési pontokká, átlagos felhasználói és
+            szakmaibb megfogalmazásokból is.
           </p>
         </Reveal>
 

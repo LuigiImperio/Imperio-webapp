@@ -40,7 +40,48 @@ export function ServicePageHero({
 
       <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14 md:px-10 md:py-22">
         <Reveal className="max-w-5xl" variant="hero">
-          <div className="public-pill inline-flex px-3.5 py-1 text-xs sm:px-4 sm:text-sm">
+          <nav
+            aria-label="Oldalon belüli útvonal"
+            className="flex flex-wrap items-center gap-2 text-[0.74rem] text-zinc-500 sm:text-xs"
+          >
+            <TrackedLink
+              href="/"
+              eventName={publicAnalyticsEventNames.ctaClick}
+              eventPayload={{
+                service_type: serviceType,
+                source_page: sourcePage,
+                source_section: "service_hero_breadcrumb",
+                cta_variant: "supportive",
+                cta_label: "Főoldal",
+                destination_path: "/",
+                entry_point: "service_page_breadcrumb_home",
+              }}
+              className="transition-colors hover:text-zinc-300"
+            >
+              Főoldal
+            </TrackedLink>
+            <span aria-hidden="true">/</span>
+            <TrackedLink
+              href="/#szolgaltatasok"
+              eventName={publicAnalyticsEventNames.ctaClick}
+              eventPayload={{
+                service_type: serviceType,
+                source_page: sourcePage,
+                source_section: "service_hero_breadcrumb",
+                cta_variant: "supportive",
+                cta_label: "Szolgáltatások",
+                destination_path: "/#szolgaltatasok",
+                entry_point: "service_page_breadcrumb_services",
+              }}
+              className="transition-colors hover:text-zinc-300"
+            >
+              Szolgáltatások
+            </TrackedLink>
+            <span aria-hidden="true">/</span>
+            <span className="text-zinc-300">{title}</span>
+          </nav>
+
+          <div className="public-pill mt-4 inline-flex px-3.5 py-1 text-xs sm:px-4 sm:text-sm">
             Szolgáltatásoldal
           </div>
 

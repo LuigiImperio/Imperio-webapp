@@ -18,6 +18,7 @@ type ServicePageDetailsSectionProps = {
   localNoteTitle: string
   localNote: string
   relatedLinks: readonly ServicePageRelatedLink[]
+  searchIntents: readonly string[]
   faqs: readonly ServicePageFaq[]
   sourcePage: string
   serviceType: ServiceRequestType
@@ -31,6 +32,7 @@ export function ServicePageDetailsSection({
   localNoteTitle,
   localNote,
   relatedLinks,
+  searchIntents,
   faqs,
   sourcePage,
   serviceType,
@@ -151,6 +153,41 @@ export function ServicePageDetailsSection({
             </article>
           </Reveal>
         </div>
+
+        <Reveal delayMs={120} variant="soft">
+          <article className="mt-6 public-surface-soft p-4 md:p-5">
+            <div className="flex items-start gap-3">
+              <span className="rounded-full border border-white/10 bg-white/[0.04] p-2 text-zinc-200">
+                <MessagesSquare className="size-4" />
+              </span>
+              <div>
+                <p className="text-[0.72rem] font-medium tracking-[0.2em] text-zinc-500 uppercase">
+                  Gyakori megfogalmazások
+                </p>
+                <h3 className="mt-2 text-lg font-semibold tracking-tight text-white">
+                  Így is el szoktak jutni ehhez az oldalhoz
+                </h3>
+              </div>
+            </div>
+
+            <p className="mt-4 max-w-3xl text-sm leading-6 text-zinc-300">
+              Ezek a hétköznapi és szakmaibb megfogalmazások is ugyanahhoz a
+              szolgáltatási problémakörhöz vezetnek, ezért a megkeresési oldal
+              mindkét irányból jól használható.
+            </p>
+
+            <ul className="mt-4 flex flex-wrap gap-2.5">
+              {searchIntents.map((intent) => (
+                <li
+                  key={intent}
+                  className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[0.82rem] text-zinc-200"
+                >
+                  {intent}
+                </li>
+              ))}
+            </ul>
+          </article>
+        </Reveal>
 
         <div className="mt-6">
           <Reveal variant="soft">

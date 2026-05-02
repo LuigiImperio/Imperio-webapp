@@ -5,13 +5,20 @@ import {
 } from "@/lib/business"
 import { supportedServiceAreaShortLabel } from "@/lib/service-area"
 
-export const homepageContactTitle = "Kapcsolatfelvétel Pécsen és környékén"
+export const publicBusinessScopeSummary =
+  "Az Imperio Gépészet Pécsen és környékén végez vízszerelési, gázszerelési, fűtésszerelési, csőtöréshez kapcsolódó, kazános, hőszivattyús és komplett épületgépészeti megkeresésekhez illeszkedő munkákat."
+
+export const publicCustomerScopeSummary =
+  "A weboldal lakások, családi házak, felújítások, új rendszerkiépítések és hitelesen projektjellegű, nagyobb gépészeti munkák induló egyeztetését támogatja."
+
+export const homepageContactTitle =
+  "Kapcsolatfelvétel, szolgáltatási terület és indulási irányok"
 
 export const homepageContactIntro =
-  "Telefonon és e-mailben is elérhetőek vagyunk, de ha a feladat már körvonalazódott, a megfelelő szolgáltatásoldalról indított megkeresés adja a legtisztább indulást. Víz-, gáz-, fűtés- és tágabb épületgépészeti munkáknál elsődlegesen Pécs és környéke tartozik a fókuszterülethez, nagyobb budapesti projekteknél pedig a feladat jellege alapján egyeztetünk."
+  `${publicBusinessScopeSummary} ${publicCustomerScopeSummary} Ha a feladat már körvonalazódott, a megfelelő szolgáltatásoldalról indított megkeresés adja a legtisztább indulást.`
 
 export const publicDirectContactIntro =
-  "Ha a feladat már beazonosítható, a szolgáltatásoldali megkeresés a legjobb kiindulópont. Közvetlen egyeztetéshez az alábbi elérhetőségek használhatók."
+  "Ha a feladat már beazonosítható, a szolgáltatásoldali megkeresés a legjobb kiindulópont. Rövid közvetlen egyeztetéshez az alábbi elérhetőségek használhatók."
 
 export const publicServiceAreaSummary = `Elsődleges szolgáltatási területünk ${supportedServiceAreaShortLabel}. Budapest esetén elsősorban nagyobb projektek vállalhatók, egyedi egyeztetéssel.`
 
@@ -25,9 +32,9 @@ export const publicUrgentContactSummary =
   "Sürgős hibánál a hibabejelentés a leggyorsabb belépési pont."
 
 export const homepageMetaDescription =
-  "Épületgépészet, vízszerelés, gázszerelés, fűtésszerelés, csőtörés, kazánjavítás és komplett gépészeti megkeresések Pécsen és környékén, strukturált kapcsolatfelvétellel."
+  "Épületgépészet, víz-, gáz- és fűtésszerelés, csőtörés, kazánjavítás, hőszivattyú és komplett gépészeti megkeresések Pécsen és környékén, lakossági és projektjellegű feladatokhoz."
 
-export const homepageStructuredDescription = `${publicServiceAreaSummary} ${publicContactResponseSummary}`
+export const homepageStructuredDescription = `${publicBusinessScopeSummary} ${publicCustomerScopeSummary} ${publicServiceAreaSummary} ${publicContactResponseSummary}`
 
 export const publicContactChannels = [
   {
@@ -53,12 +60,16 @@ export const publicServiceAreaDetails = [
     value: supportedServiceAreaShortLabel,
     description:
       "Pécs, Kozármisleny, Pellérd, Keszü, Gyód, Orfű, Abaliget, Hosszúhetény, Komló és a közeli baranyai települések felől érkező megkeresések tartoznak ide.",
+    href: "/#szolgaltatasok",
+    linkLabel: "Szolgáltatásoldalak áttekintése",
   },
   {
     label: "Nagyobb projektek",
     value: "Budapest",
     description:
       "Összetettebb épületgépészeti és kivitelezési feladatokhoz, külön egyeztetéssel.",
+    href: "/szolgaltatasok/komplett-epuletgepeszeti-kivitelezes",
+    linkLabel: "Projektoldal megnyitása",
   },
 ] as const
 

@@ -288,10 +288,11 @@ export function ServicesSection() {
 
         <p className="mt-4 max-w-3xl text-[0.96rem] leading-6 text-zinc-300 sm:text-base sm:leading-7 md:text-lg">
           Az alábbi kategóriák a szélesebb épületgépészeti, víz-, gáz- és
-          fűtési feladatokhoz adnak gyors eligazodást. Tipikus lakossági
-          problémáknál, például csapcsere, radiátorhiba, padlófűtési gond vagy
-          kazános panasz esetén a kapcsolódó szolgáltatási útvonalból lehet
-          tisztábban továbbindulni.
+          fűtési feladatokhoz adnak gyors eligazodást lakás, családi ház,
+          felújítás vagy új rendszerkiépítés esetén is. Tipikus lakossági
+          problémáknál, például csapcsere, radiátorhiba, padlófűtési gond,
+          kazános panasz vagy összetettebb gépészeti projekt esetén a
+          kapcsolódó szolgáltatási útvonalból lehet tisztábban továbbindulni.
         </p>
 
         <p className="mt-3 max-w-3xl text-[0.9rem] leading-6 text-zinc-500 md:text-sm">

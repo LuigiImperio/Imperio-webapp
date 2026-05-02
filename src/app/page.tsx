@@ -18,9 +18,16 @@ import { buildPageMetadata } from "@/lib/seo/metadata"
 import { createHomepageStructuredData } from "@/lib/seo/site"
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Épületgépészet Pécsen és környékén",
+  title: "Imperio Gépészet | Épületgépészet Pécsen és környékén",
   description: homepageMetaDescription,
   path: "/",
+  keywords: [
+    "lakossági épületgépészet",
+    "családi ház gépészet",
+    "gépészeti kivitelezés Pécs",
+    "csőtörés Pécs",
+    "kazánjavítás Pécs",
+  ],
   openGraphTitle: "Imperio Gépészet | Épületgépészet Pécsen és környékén",
   openGraphDescription:
     "Épületgépészet, víz-, gáz- és fűtésszerelés, sürgős hibák és projektjellegű megkeresések Pécsen és környékén, természetes helyi relevanciával.",

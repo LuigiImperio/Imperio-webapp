@@ -10,6 +10,7 @@ import {
   publicContactChannels,
   publicContactProcessSteps,
   publicDirectContactIntro,
+  publicServiceAreaDetails,
 } from "@/lib/contact";
 
 const channelIcons = {
@@ -344,42 +345,78 @@ export function ContactCtaSection() {
                 {publicDirectContactIntro}
               </p>
 
-              <dl className="mt-4 grid gap-3 sm:grid-cols-2">
-                {publicContactChannels.map((channel) => {
-                  const Icon = channelIcons[channel.key];
+              <address className="not-italic">
+                <dl className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {publicContactChannels.map((channel) => {
+                    const Icon = channelIcons[channel.key];
 
-                  return (
-                    <div
-                      key={channel.key}
-                      className="group rounded-[1.15rem] border border-white/10 bg-white/[0.03] px-3.5 py-3.5 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05] md:rounded-[1.3rem] md:px-4 md:py-4"
-                    >
-                      <div className="flex items-start gap-3">
-                        <span className="mt-0.5 rounded-full border border-white/10 bg-white/[0.04] p-2 text-zinc-200">
-                          <Icon className="size-4" />
-                        </span>
-                        <div className="min-w-0">
-                          <dt className="text-[0.7rem] font-medium tracking-[0.2em] text-zinc-500 uppercase">
-                            {channel.label}
-                          </dt>
-                          <dd className="mt-2">
-                            <a
-                              href={channel.href}
-                              className={`block rounded-lg text-[1.05rem] font-medium text-white transition-colors duration-300 group-hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 ${
-                                channel.key === "email" ? "break-all" : ""
-                              }`}
-                            >
-                              <span className="block">{channel.value}</span>
-                              <span className="mt-2 block text-sm leading-6 text-zinc-400">
-                                {channel.description}
-                              </span>
-                            </a>
-                          </dd>
+                    return (
+                      <div
+                        key={channel.key}
+                        className="group rounded-[1.15rem] border border-white/10 bg-white/[0.03] px-3.5 py-3.5 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05] md:rounded-[1.3rem] md:px-4 md:py-4"
+                      >
+                        <div className="flex items-start gap-3">
+                          <span className="mt-0.5 rounded-full border border-white/10 bg-white/[0.04] p-2 text-zinc-200">
+                            <Icon className="size-4" />
+                          </span>
+                          <div className="min-w-0">
+                            <dt className="text-[0.7rem] font-medium tracking-[0.2em] text-zinc-500 uppercase">
+                              {channel.label}
+                            </dt>
+                            <dd className="mt-2">
+                              <a
+                                href={channel.href}
+                                className={`block rounded-lg text-[1.05rem] font-medium text-white transition-colors duration-300 group-hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 ${
+                                  channel.key === "email" ? "break-all" : ""
+                                }`}
+                              >
+                                <span className="block">{channel.value}</span>
+                                <span className="mt-2 block text-sm leading-6 text-zinc-400">
+                                  {channel.description}
+                                </span>
+                              </a>
+                            </dd>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </dl>
+                    );
+                  })}
+                </dl>
+              </address>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {publicServiceAreaDetails.map((areaDetail, index) => (
+                  <div
+                    key={areaDetail.label}
+                    className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] px-3.5 py-3.5 md:rounded-[1.3rem] md:px-4 md:py-4"
+                  >
+                    <p className="text-[0.7rem] font-medium tracking-[0.2em] text-zinc-500 uppercase">
+                      {areaDetail.label}
+                    </p>
+                    <p className="mt-2 text-[1.02rem] font-medium text-white">
+                      {areaDetail.value}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-zinc-400">
+                      {areaDetail.description}
+                    </p>
+                    <TrackedLink
+                      href={areaDetail.href}
+                      eventName={publicAnalyticsEventNames.ctaClick}
+                      eventPayload={{
+                        source_page: "homepage",
+                        source_section: "closing_contact_cta",
+                        cta_variant: index === 0 ? "secondary" : "supportive",
+                        cta_label: areaDetail.linkLabel,
+                        destination_path: areaDetail.href,
+                        entry_point: `homepage_contact_area_detail_${index + 1}`,
+                      }}
+                      className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-[#f0dfbe] transition-colors duration-300 hover:text-[#f6e9cd]"
+                    >
+                      <span>{areaDetail.linkLabel}</span>
+                    </TrackedLink>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </Reveal>

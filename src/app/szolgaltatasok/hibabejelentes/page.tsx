@@ -8,11 +8,7 @@ import { ServicePageHero } from "@/components/sections/service-page-hero"
 import { StructuredData } from "@/components/seo/structured-data"
 import { servicePageContents } from "@/lib/content/service-pages"
 import { buildPageMetadata } from "@/lib/seo/metadata"
-import {
-  createBreadcrumbStructuredData,
-  createFaqStructuredData,
-  createServiceStructuredData,
-} from "@/lib/seo/site"
+import { createServicePageStructuredData } from "@/lib/seo/site"
 
 const pageContent = servicePageContents.hibabejelentes
 
@@ -22,18 +18,18 @@ export default function FaultReportPage() {
   return (
     <>
       <StructuredData
-        data={[
-          createServiceStructuredData({
-            name: pageContent.structuredData.name,
-            description: pageContent.structuredData.description,
-            path: pageContent.path,
-          }),
-          createFaqStructuredData(pageContent.details.faqs),
-          createBreadcrumbStructuredData([
-            { name: "Főoldal", path: "/" },
-            { name: pageContent.hero.title, path: pageContent.path },
-          ]),
-        ]}
+        data={createServicePageStructuredData({
+          pageTitle: pageContent.metadata.title,
+          pageDescription: pageContent.metadata.description,
+          path: pageContent.path,
+          serviceName: pageContent.structuredData.name,
+          serviceDescription: pageContent.structuredData.description,
+          faqs: pageContent.details.faqs,
+          breadcrumbName: pageContent.hero.title,
+          keywords: pageContent.metadata.keywords,
+          includeBudapestProjects:
+            pageContent.structuredData.includeBudapestProjects,
+        })}
       />
       <main className="min-h-screen bg-zinc-950 text-white">
         <SiteNavbar />
@@ -55,6 +51,7 @@ export default function FaultReportPage() {
           localNoteTitle={pageContent.details.localNoteTitle}
           localNote={pageContent.details.localNote}
           relatedLinks={pageContent.details.relatedLinks}
+          searchIntents={pageContent.details.searchIntents}
           faqs={pageContent.details.faqs}
           sourcePage={pageContent.sourcePage}
           serviceType={pageContent.serviceType}

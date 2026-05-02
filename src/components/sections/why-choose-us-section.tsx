@@ -6,7 +6,7 @@ import { publicAnalyticsEventNames } from "@/lib/analytics/public-events";
 import { aboutWorkImages } from "@/lib/content/reference-project-images";
 
 const trustPillars = [
-  "Több mint 5 év terepi rutin",
+  "Terepi tapasztalat",
   "Egyéni működés, személyes felelősséggel",
   "Mérnöki és szakmai partnerháttér",
 ] as const;
@@ -35,7 +35,7 @@ const supportBlocks = [
 ] as const;
 
 const biographyLead =
-  "Az épületgépészet számomra a gyakorlati tudás, a műszaki gondolkodás és a valódi problémamegoldás találkozása. Több mint 5 éve dolgozom benne, ezért a feladatokat terepi tapasztalatból közelítem meg.";
+  "Az épületgépészet számomra a gyakorlati tudás, a műszaki gondolkodás és a valódi problémamegoldás találkozása. A feladatokat terepi tapasztalatból közelítem meg, nem általános sablonokból.";
 
 const biographySections = [
   {

@@ -7,8 +7,13 @@ import {
   defaultSocialImageAlt,
   defaultSocialImagePath,
 } from "@/lib/business"
-import { homepageStructuredDescription } from "@/lib/contact"
+import {
+  homepageStructuredDescription,
+  publicBusinessScopeSummary,
+  publicCustomerScopeSummary,
+} from "@/lib/contact"
 import { getAppBaseUrl } from "@/lib/config/server-env"
+import { featuredReferenceProjectImages } from "@/lib/content/reference-project-images"
 import { faqItems } from "@/lib/content/faqs"
 import { publicLegalPaths } from "@/lib/legal"
 import { primaryServiceAreaCities } from "@/lib/service-area"
@@ -16,8 +21,20 @@ import { primaryServiceAreaCities } from "@/lib/service-area"
 export const siteName = businessName
 export const siteLocale = "hu_HU"
 export const siteCategory = "épületgépészet"
+export const siteLanguage = "hu-HU"
 export const defaultSiteDescription =
-  "Épületgépészeti megoldások Pécsen és környékén: vízszerelés, gázszerelés, fűtésszerelés, csőtörés, kazánjavítás, hőszivattyús előkészítés, hibabejelentés és komplett gépészeti kivitelezés."
+  "Az Imperio Gépészet Pécsen és környékén végez vízszerelési, gázszerelési, fűtésszerelési, csőtöréshez kapcsolódó, kazános, hőszivattyús és komplett épületgépészeti kivitelezési munkákat."
+
+export const defaultSiteKeywords = [
+  "épületgépészet Pécs",
+  "épületgépész Pécs",
+  "vízszerelés Pécs",
+  "gázszerelés Pécs",
+  "fűtésszerelés Pécs",
+  "csőtörés Pécs",
+  "kazánjavítás Pécs",
+  "hőszivattyú telepítés Pécs",
+] as const
 
 export const publicSitePaths = [
   "/",
@@ -94,12 +111,56 @@ const serviceCatalogItems = [
   },
 ] as const
 
+const businessIntentSignals = [
+  "csőtörés",
+  "vízszivárgás",
+  "beázás",
+  "kazán nem indul",
+  "kazáncsere",
+  "radiátor nem meleg",
+  "padlófűtés nem fűt",
+  "csapcsere",
+  "lefolyóprobléma",
+  "gázkészülék szerelés",
+  "hőszivattyú telepítés",
+  "családi ház gépészet",
+] as const
+
+const baseAreaServedStructuredData = [
+  {
+    "@type": "AdministrativeArea",
+    name: "Pécsi agglomeráció",
+  },
+  ...primaryServiceAreaCities.map((city) => ({
+    "@type": "City",
+    name: city,
+  })),
+  {
+    "@type": "AdministrativeArea",
+    name: "Baranya megye",
+  },
+] as const
+
+const budapestProjectAreaStructuredData = {
+  "@type": "City",
+  name: "Budapest",
+  description: "Nagyobb, hitelesen projektjellegű megkeresésekhez.",
+} as const
+
 export function getSiteUrl() {
   return getAppBaseUrl()
 }
 
 export function getAbsoluteUrl(path: string) {
   return new URL(path, getSiteUrl()).toString()
+}
+
+function getStructuredDataId(path: string, fragment: string) {
+  return getAbsoluteUrl(`${path}#${fragment}`)
+}
+
+function getStructuredDataReference(path: string, fragment: string) {
+  return { "@id": getStructuredDataId(path, fragment) }
 }
 
 export function getDefaultOpenGraphImages() {
@@ -113,31 +174,83 @@ export function getDefaultOpenGraphImages() {
   ]
 }
 
-export const serviceAreaStructuredData = [
-  ...primaryServiceAreaCities.map((city) => ({
-    "@type": "City",
-    name: city,
-  })),
-  {
-    "@type": "AdministrativeArea",
-    name: "Baranya megye",
-  },
-] as const
+export function mergeMetadataKeywords(
+  keywords: readonly string[] | undefined
+) {
+  return Array.from(
+    new Set([...(defaultSiteKeywords as readonly string[]), ...(keywords ?? [])])
+  )
+}
+
+export function createAreaServedStructuredData({
+  includeBudapestProjects = false,
+}: {
+  includeBudapestProjects?: boolean
+} = {}) {
+  return includeBudapestProjects
+    ? [...baseAreaServedStructuredData, budapestProjectAreaStructuredData]
+    : [...baseAreaServedStructuredData]
+}
+
+export const serviceAreaStructuredData = createAreaServedStructuredData()
+
+function createOfferCatalogStructuredData() {
+  return {
+    "@type": "OfferCatalog",
+    name: "Épületgépészeti szolgáltatások",
+    itemListElement: serviceCatalogItems.map((service, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Service",
+        name: service.name,
+        url: getAbsoluteUrl(service.path),
+        description: service.description,
+        provider: getStructuredDataReference("/", "localbusiness"),
+      },
+    })),
+  }
+}
 
 export function createHomepageStructuredData() {
   return [
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": getStructuredDataId("/", "website"),
       name: siteName,
       alternateName: businessAlternateName,
       url: getAbsoluteUrl("/"),
-      inLanguage: "hu-HU",
+      inLanguage: siteLanguage,
       description: defaultSiteDescription,
+      publisher: getStructuredDataReference("/", "localbusiness"),
+      about: getStructuredDataReference("/", "localbusiness"),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": getStructuredDataId("/", "webpage"),
+      url: getAbsoluteUrl("/"),
+      name: "Épületgépészet Pécsen és környékén",
+      description: `${publicBusinessScopeSummary} ${publicCustomerScopeSummary}`,
+      inLanguage: siteLanguage,
+      isPartOf: getStructuredDataReference("/", "website"),
+      about: getStructuredDataReference("/", "localbusiness"),
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: getAbsoluteUrl(defaultSocialImagePath),
+      },
+      keywords: mergeMetadataKeywords([
+        "lakossági gépészeti megkeresés",
+        "családi ház gépészet",
+        "épületgépészeti kivitelezés",
+      ]).join(", "),
+      mainEntity: getStructuredDataReference("/", "localbusiness"),
     },
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
+      "@id": getStructuredDataId("/", "localbusiness"),
       name: siteName,
       alternateName: businessAlternateName,
       url: getAbsoluteUrl("/"),
@@ -146,8 +259,8 @@ export function createHomepageStructuredData() {
       email: businessEmail,
       telephone: businessPhone,
       description: `${defaultSiteDescription} ${homepageStructuredDescription}`,
-      areaServed: serviceAreaStructuredData,
-      availableLanguage: ["hu-HU"],
+      areaServed: createAreaServedStructuredData(),
+      availableLanguage: [siteLanguage],
       contactPoint: [
         {
           "@type": "ContactPoint",
@@ -157,38 +270,18 @@ export function createHomepageStructuredData() {
           contactType: "customer service",
           description:
             "Telefonos és e-mailes kapcsolatfelvétel strukturált víz-, gáz-, fűtési és épületgépészeti megkeresésekhez.",
-          availableLanguage: ["hu-HU"],
-          areaServed: serviceAreaStructuredData,
+          availableLanguage: [siteLanguage],
+          areaServed: createAreaServedStructuredData(),
         },
       ],
-      hasOfferCatalog: {
-        "@type": "OfferCatalog",
-        name: "Épületgépészeti szolgáltatások",
-        itemListElement: serviceCatalogItems.map((service, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          item: {
-            "@type": "Service",
-            name: service.name,
-            url: getAbsoluteUrl(service.path),
-            description: service.description,
-          },
-        })),
-      },
-      knowsAbout: serviceCatalogItems.map((service) => service.name),
+      hasOfferCatalog: createOfferCatalogStructuredData(),
+      knowsAbout: [
+        ...serviceCatalogItems.map((service) => service.name),
+        ...businessIntentSignals,
+      ],
+      mainEntityOfPage: getStructuredDataReference("/", "webpage"),
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faqItems.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      })),
-    },
+    createFaqStructuredData(faqItems),
   ]
 }
 
@@ -196,32 +289,28 @@ export function createServiceStructuredData({
   name,
   description,
   path,
+  keywords,
+  includeBudapestProjects = false,
 }: {
   name: string
   description: string
   path: string
+  keywords?: readonly string[]
+  includeBudapestProjects?: boolean
 }) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": getStructuredDataId(path, "service"),
     name,
     serviceType: name,
     category: siteCategory,
     description,
     url: getAbsoluteUrl(path),
-    areaServed: serviceAreaStructuredData,
-    availableLanguage: ["hu-HU"],
-    provider: {
-      "@type": "LocalBusiness",
-      name: siteName,
-      alternateName: businessAlternateName,
-      url: getAbsoluteUrl("/"),
-      email: businessEmail,
-      telephone: businessPhone,
-      logo: getAbsoluteUrl(businessLogoPath),
-      image: getAbsoluteUrl(defaultSocialImagePath),
-      description: defaultSiteDescription,
-    },
+    areaServed: createAreaServedStructuredData({ includeBudapestProjects }),
+    availableLanguage: [siteLanguage],
+    provider: getStructuredDataReference("/", "localbusiness"),
+    keywords: mergeMetadataKeywords(keywords).join(", "),
   }
 }
 
@@ -243,11 +332,13 @@ export function createFaqStructuredData(
 }
 
 export function createBreadcrumbStructuredData(
-  items: ReadonlyArray<{ name: string; path: string }>
+  items: ReadonlyArray<{ name: string; path: string }>,
+  id?: string
 ) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    ...(id ? { "@id": id } : {}),
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -255,4 +346,88 @@ export function createBreadcrumbStructuredData(
       item: getAbsoluteUrl(item.path),
     })),
   }
+}
+
+export function createServicePageStructuredData({
+  pageTitle,
+  pageDescription,
+  path,
+  serviceName,
+  serviceDescription,
+  faqs,
+  breadcrumbName,
+  keywords,
+  includeBudapestProjects = false,
+}: {
+  pageTitle: string
+  pageDescription: string
+  path: string
+  serviceName: string
+  serviceDescription: string
+  faqs: ReadonlyArray<{ question: string; answer: string }>
+  breadcrumbName: string
+  keywords?: readonly string[]
+  includeBudapestProjects?: boolean
+}) {
+  const pageId = getStructuredDataId(path, "webpage")
+  const breadcrumbId = getStructuredDataId(path, "breadcrumb")
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": pageId,
+      url: getAbsoluteUrl(path),
+      name: pageTitle,
+      description: pageDescription,
+      inLanguage: siteLanguage,
+      isPartOf: getStructuredDataReference("/", "website"),
+      about: [
+        getStructuredDataReference("/", "localbusiness"),
+        getStructuredDataReference(path, "service"),
+      ],
+      breadcrumb: {
+        "@id": breadcrumbId,
+      },
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: getAbsoluteUrl(defaultSocialImagePath),
+      },
+      keywords: mergeMetadataKeywords(keywords).join(", "),
+      mainEntity: getStructuredDataReference(path, "service"),
+    },
+    createServiceStructuredData({
+      name: serviceName,
+      description: serviceDescription,
+      path,
+      keywords,
+      includeBudapestProjects,
+    }),
+    createFaqStructuredData(faqs),
+    createBreadcrumbStructuredData(
+      [
+        { name: "Főoldal", path: "/" },
+        { name: breadcrumbName, path },
+      ],
+      breadcrumbId
+    ),
+  ]
+}
+
+export const publicSiteImageMap: Partial<
+  Record<(typeof publicSitePaths)[number], readonly string[]>
+> = {
+  "/": [
+    defaultSocialImagePath,
+    ...featuredReferenceProjectImages.map((image) => image.src),
+  ],
+  "/szolgaltatasok/csotores-szivargas": [defaultSocialImagePath],
+  "/szolgaltatasok/hibabejelentes": [defaultSocialImagePath],
+  "/szolgaltatasok/kazancsere": [defaultSocialImagePath],
+  "/szolgaltatasok/vizszereles": [defaultSocialImagePath],
+  "/szolgaltatasok/futeskorszerusites": [defaultSocialImagePath],
+  "/szolgaltatasok/hoszivattyu-telepites": [defaultSocialImagePath],
+  "/szolgaltatasok/komplett-epuletgepeszeti-kivitelezes": [
+    defaultSocialImagePath,
+  ],
 }

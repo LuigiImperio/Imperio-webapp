@@ -23,66 +23,47 @@ const responseSteps = [
 
 const socialProofItems = [
   {
-    highlight: "5+",
-    text: "év szakmai tapasztalat",
-    fullText: "5+ év szakmai tapasztalat",
-  },
-  {
-    highlight: "2000+",
-    text: "elvégzett munka",
-    fullText: "2000+ elvégzett munka",
-  },
-  {
     highlight: "Pécs",
     text: "és környéke",
     fullText: "Pécs és környéke",
   },
+  {
+    highlight: "Lakossági",
+    text: "és projektmunka",
+    fullText: "Lakossági és projektmunka",
+  },
+  {
+    highlight: "Víz, gáz",
+    text: "és fűtés",
+    fullText: "Víz, gáz és fűtés",
+  },
 ] as const;
 
-const feedbackItems = [
+const requestSignalItems = [
   {
-    quote:
-      "Nagyon elégedett voltam a szolgáltatással, gyorsak és precízek voltak a munkájuk során.",
-    author: "László, Pécs",
+    text: "Csőtörés gyanúja van, vizesedik a fal.",
+    caption: "Csőtörés vagy szivárgás jellegű indulás",
   },
   {
-    quote:
-      "Kiváló munka, mindent időben végeztek el, és a kommunikáció is nagyszerű volt.",
-    author: "László, Kozármisleny",
+    text: "Nem meleg a radiátor, a padlófűtés sem elég erős.",
+    caption: "Fűtésszerelési és komfortprobléma",
   },
   {
-    quote:
-      "Minden problémámra megoldást találtak, és az áraik is igazán barátságosak.",
-    author: "Gábor, Pellérd",
+    text: "Kazán hibakódot jelez, nincs rendes meleg víz.",
+    caption: "Kazános vagy sürgős hibabejelentési indulás",
   },
   {
-    quote:
-      "Professzionális hozzáállás és szakszerű munka, ajánlom mindenkinek!",
-    author: "Péter, Pécs",
+    text: "Csöpög a csap, szanitercsere és lefolyómunka is kell.",
+    caption: "Általános víz- és gázszerelési megkeresés",
   },
   {
-    quote: "Segítőkész és megbízható szakember, bátran ajánlom.",
-    author: "Beni, Pécs",
-  },
-  {
-    quote: "Korrekt ár, tiszta munkavégzés, jó kommunikáció.",
-    author: "Zsanett, Pécs",
-  },
-  {
-    quote: "Pontos érkezés, gyors és szakszerű munkavégzés.",
-    author: "Áron, Görcsöny",
-  },
-  {
-    quote: "A megbeszéltek szerint dolgozott, minden rendben ment.",
-    author: "Lívia, Pécsudvard",
+    text: "Családi ház gépészetét vagy hőszivattyús rendszert tervezünk.",
+    caption: "Projektjellegű, összetettebb kivitelezési indulás",
   },
 ].map((item) => {
-  const displayQuote = `“${item.quote}”`;
-
   return {
     ...item,
-    displayQuote,
-    displayCharacters: Array.from(displayQuote),
+    displayCharacters: Array.from(item.text),
   };
 });
 
@@ -123,27 +104,29 @@ function HeroMotion({ children, className, delay }: HeroMotionProps) {
   );
 }
 
-type TypingFeedbackProps = {
+type TypingRequestSignalsProps = {
   shouldReduceMotion: boolean | null;
 };
 
-function TypingFeedback({ shouldReduceMotion }: TypingFeedbackProps) {
-  const [activeFeedbackIndex, setActiveFeedbackIndex] = useState(0);
+function TypingRequestSignals({
+  shouldReduceMotion,
+}: TypingRequestSignalsProps) {
+  const [activeSignalIndex, setActiveSignalIndex] = useState(0);
   const [visibleCharacterCount, setVisibleCharacterCount] = useState(0);
-  const activeFeedback = feedbackItems[activeFeedbackIndex];
+  const activeSignal = requestSignalItems[activeSignalIndex];
   const displayedCharacterCount = shouldReduceMotion
-    ? activeFeedback.displayCharacters.length
+    ? activeSignal.displayCharacters.length
     : visibleCharacterCount;
   const isFeedbackFullyVisible =
     shouldReduceMotion ||
-    displayedCharacterCount >= activeFeedback.displayCharacters.length;
+    displayedCharacterCount >= activeSignal.displayCharacters.length;
 
   useEffect(() => {
     if (shouldReduceMotion) {
       return;
     }
 
-    const totalCharacters = activeFeedback.displayCharacters.length;
+    const totalCharacters = activeSignal.displayCharacters.length;
     const typingDuration = Math.min(
       feedbackTypingMaxDurationMs,
       Math.max(
@@ -185,8 +168,8 @@ function TypingFeedback({ shouldReduceMotion }: TypingFeedbackProps) {
       setVisibleCharacterCount(totalCharacters);
       holdTimeoutId = window.setTimeout(() => {
         setVisibleCharacterCount(0);
-        setActiveFeedbackIndex(
-          (currentIndex) => (currentIndex + 1) % feedbackItems.length,
+        setActiveSignalIndex(
+          (currentIndex) => (currentIndex + 1) % requestSignalItems.length,
         );
       }, feedbackHoldDurationMs);
     };
@@ -201,8 +184,8 @@ function TypingFeedback({ shouldReduceMotion }: TypingFeedbackProps) {
       window.cancelAnimationFrame(animationFrameId);
     };
   }, [
-    activeFeedback.displayCharacters.length,
-    activeFeedbackIndex,
+    activeSignal.displayCharacters.length,
+    activeSignalIndex,
     shouldReduceMotion,
   ]);
 
@@ -210,27 +193,27 @@ function TypingFeedback({ shouldReduceMotion }: TypingFeedbackProps) {
     <div className="mt-5 rounded-[1.25rem] border border-[rgba(232,208,160,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:mt-6 sm:rounded-[1.5rem] md:p-5">
       <div className="flex items-center justify-between gap-4">
         <p className="text-[0.68rem] font-medium tracking-[0.24em] text-[#e5d2ad] uppercase">
-          Ügyfél-visszajelzés
+          Gyakori megkeresés
         </p>
         <span className="tabular-nums text-[0.72rem] tracking-[0.18em] text-zinc-500 uppercase">
-          {String(activeFeedbackIndex + 1).padStart(2, "0")} /{" "}
-          {String(feedbackItems.length).padStart(2, "0")}
+          {String(activeSignalIndex + 1).padStart(2, "0")} /{" "}
+          {String(requestSignalItems.length).padStart(2, "0")}
         </span>
       </div>
 
       <div className="mt-4 min-h-[10rem] sm:min-h-[8.75rem]">
         <div className="sr-only">
-          <p>{activeFeedback.displayQuote}</p>
-          <p>{activeFeedback.author}</p>
+          <p>{activeSignal.text}</p>
+          <p>{activeSignal.caption}</p>
         </div>
 
         <p
           aria-hidden="true"
           className="whitespace-pre-wrap break-words text-[0.96rem] leading-7 text-zinc-100 sm:text-[1rem]"
         >
-          {activeFeedback.displayCharacters.map((character, characterIndex) => (
+          {activeSignal.displayCharacters.map((character, characterIndex) => (
             <span
-              key={`${activeFeedbackIndex}-${characterIndex}`}
+              key={`${activeSignalIndex}-${characterIndex}`}
               className={
                 characterIndex < displayedCharacterCount
                   ? "text-zinc-100"
@@ -253,7 +236,7 @@ function TypingFeedback({ shouldReduceMotion }: TypingFeedbackProps) {
           }}
           className="pt-3 text-[0.88rem] font-medium text-[#f2e2bc] sm:text-sm"
         >
-          {activeFeedback.author}
+          {activeSignal.caption}
         </motion.p>
       </div>
     </div>
@@ -359,7 +342,7 @@ export function HeroSection() {
 
           <HeroMotion delay={0.08} className="mt-6">
             <h1 className="max-w-4xl pb-2 text-[2.1rem] font-semibold leading-[1.08] tracking-tight text-white sm:text-[2.85rem] md:text-6xl md:leading-[1.05]">
-              <span className="block">Víz, gáz és fűtés</span>
+              <span className="block">Épületgépészet, víz, gáz és fűtés</span>
               <span className="mt-3 block pb-[0.08em] bg-gradient-to-r from-[#f2e2bc] via-[#cd9d60] to-[#8f6534] bg-clip-text text-transparent">
                 Pécsen és környékén
               </span>
@@ -368,8 +351,9 @@ export function HeroSection() {
 
           <HeroMotion delay={0.16} className="mt-6">
             <p className="max-w-2xl text-[0.95rem] leading-6 text-zinc-300 sm:text-base sm:leading-7 md:text-lg">
-              Vízszerelés, gázszerelés, fűtésszerelés, csőtörés, kazános hibák
-              és összetettebb épületgépészeti megkeresések egy helyen.
+              Az Imperio Gépészet lakossági hibáktól a családi házas
+              felújításokig és a nagyobb gépészeti projektekig segít víz-,
+              gáz-, fűtési és teljesebb épületgépészeti feladatoknál.
             </p>
           </HeroMotion>
 
@@ -377,9 +361,10 @@ export function HeroSection() {
             <div className="flex items-start gap-3 sm:items-center">
               <span className="mt-3 h-px w-8 shrink-0 bg-gradient-to-r from-[#d0a261] to-transparent sm:mt-0 sm:w-10" />
               <p className="text-[0.92rem] leading-6 text-[#e5d2ad] md:text-base">
-                Pécsen és környékén a hétköznapi lakossági problémáktól a
-                komplett gépészeti projektekig strukturáltan indulhat a
-                megkeresés, a sürgős hibákat pedig kiemelten kezeljük.
+                Pécsen, a pécsi agglomerációban és több közeli baranyai
+                településen a hétköznapi hibáktól a komplett gépészeti
+                kivitelezésig strukturáltan indulhat a megkeresés, a sürgős
+                hibákat pedig külön útvonal kezeli.
               </p>
             </div>
           </HeroMotion>
@@ -529,16 +514,17 @@ export function HeroSection() {
           <div className="relative z-10 overflow-hidden rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.025))] p-4 shadow-[0_20px_52px_rgba(0,0,0,0.26)] backdrop-blur-xl sm:p-5 md:rounded-[1.9rem] md:p-7">
             <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/16 to-transparent md:inset-x-8" />
             <div className="public-pill inline-flex px-3 py-1 text-xs font-medium tracking-[0.16em] uppercase">
-              Strukturált megkeresés
+              Keresési és megkeresési helyzetek
             </div>
 
             <h2 className="mt-4 max-w-xs text-[1.32rem] font-semibold tracking-tight text-white sm:text-[1.55rem] md:text-[1.7rem]">
-              Tisztább indulás, pontosabb visszajelzés
+              Tisztább indulás a megfelelő szolgáltatás felé
             </h2>
 
             <p className="mt-3.5 max-w-md text-[0.92rem] leading-6 text-zinc-400 sm:text-sm">
-              A megfelelő megkeresési út segít, hogy az első visszajelzés is
-              pontosabb legyen.
+              A weboldal úgy épül fel, hogy a sürgős hibák, a hétköznapi
+              lakossági problémák és a komplexebb projektigények is gyorsabban
+              a megfelelő oldalra jussanak.
             </p>
 
             <div className="mt-5 divide-y divide-white/10 rounded-[1.25rem] border border-white/10 bg-black/20 sm:mt-6 sm:rounded-[1.5rem]">
@@ -557,7 +543,7 @@ export function HeroSection() {
               ))}
             </div>
 
-            <TypingFeedback shouldReduceMotion={shouldReduceMotion} />
+            <TypingRequestSignals shouldReduceMotion={shouldReduceMotion} />
           </div>
         </HeroMotion>
       </div>

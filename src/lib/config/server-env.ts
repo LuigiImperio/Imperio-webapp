@@ -1,12 +1,9 @@
 import "server-only"
 
+import { normalizeCanonicalBaseUrl } from "@/lib/seo/domain"
+
 const defaultAppBaseUrl = "http://localhost:3000"
 const serverEnvWarningCache = new Set<string>()
-const canonicalProductionHost = "www.imperiogepeszet.hu"
-const canonicalProductionHosts = new Set([
-  "imperiogepeszet.hu",
-  canonicalProductionHost,
-])
 
 function warnServerEnv(message: string) {
   if (serverEnvWarningCache.has(message)) {
@@ -40,21 +37,6 @@ export function getOptionalServerEnv(name: string) {
   return value ? value : undefined
 }
 
-function normalizeAppBaseUrl(url: URL) {
-  const normalizedUrl = new URL(url.toString())
-
-  if (canonicalProductionHosts.has(normalizedUrl.hostname)) {
-    normalizedUrl.protocol = "https:"
-    normalizedUrl.hostname = canonicalProductionHost
-    normalizedUrl.port = ""
-    normalizedUrl.pathname = "/"
-    normalizedUrl.search = ""
-    normalizedUrl.hash = ""
-  }
-
-  return normalizedUrl
-}
-
 export function getRequiredServerEnv(name: string, context: string) {
   const value = getOptionalServerEnv(name)
 
@@ -73,7 +55,7 @@ export function getAppBaseUrl(requestUrl?: string) {
 
   if (configuredBaseUrl) {
     try {
-      return normalizeAppBaseUrl(new URL(configuredBaseUrl))
+      return normalizeCanonicalBaseUrl(new URL(configuredBaseUrl))
     } catch {
       warnServerEnv(
         "Az APP_BASE_URL értéke érvénytelen, ezért a rendszer a biztonságos alapértelmezett URL-re áll vissza."
@@ -87,7 +69,7 @@ export function getAppBaseUrl(requestUrl?: string) {
 
   if (requestUrl) {
     try {
-      return normalizeAppBaseUrl(new URL(requestUrl))
+      return normalizeCanonicalBaseUrl(new URL(requestUrl))
     } catch {
       warnServerEnv(
         "A kérésszintű alap URL nem volt értelmezhető, ezért a rendszer a biztonságos alapértelmezett URL-re áll vissza."

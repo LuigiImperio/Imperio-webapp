@@ -30,12 +30,14 @@ export type ServicePageContent = {
     title: string
     description: string
     path: string
+    keywords?: readonly string[]
     openGraphTitle: string
     openGraphDescription: string
   }
   structuredData: {
     name: string
     description: string
+    includeBudapestProjects?: boolean
   }
   hero: {
     title: string
@@ -53,6 +55,7 @@ export type ServicePageContent = {
     localNoteTitle: string
     localNote: string
     relatedLinks: readonly ServicePageRelatedLink[]
+    searchIntents: readonly string[]
     faqs: readonly ServicePageFaq[]
   }
   formSection: {
@@ -71,6 +74,13 @@ export const servicePageContents = {
       description:
         "Csőtörés, vízszivárgás, rejtett csőhiba vagy beázás bejelentése Pécsen és környékén, rövid helyzetfelméréssel, képes pontosítással és gyorsabb első egyeztetéssel.",
       path: "/szolgaltatasok/csotores-szivargas",
+      keywords: [
+        "csőtörés Pécs",
+        "vízszivárgás",
+        "rejtett csőhiba",
+        "beázás",
+        "vizesedő fal",
+      ],
       openGraphTitle:
         "Csőtörés, vízszivárgás és beázás | Imperio Gépészet",
       openGraphDescription:
@@ -170,6 +180,14 @@ export const servicePageContents = {
             "Ha bizonytalan a megfelelő útvonalban, a kontaktblokkban röviden áttekinthető a következő lépés.",
         },
       ],
+      searchIntents: [
+        "csőtörés a fürdőben",
+        "vízszivárgás a falban",
+        "rejtett csőszivárgás",
+        "beázás a plafonnál",
+        "vizesedik a fal",
+        "csöpögő vezeték",
+      ],
       faqs: [
         {
           question: "Mit érdemes tenni, ha csőtörés vagy vízszivárgás látszik?",
@@ -203,6 +221,13 @@ export const servicePageContents = {
       description:
         "Sürgős víz-, gáz- és fűtési hibák, leállások és problémás helyzetek bejelentése Pécsen és környékén, rövid leírással, sürgősségi jelzéssel és képes pontosítással.",
       path: "/szolgaltatasok/hibabejelentes",
+      keywords: [
+        "hibabejelentés Pécs",
+        "sürgős gépészeti hiba",
+        "nincs meleg víz",
+        "leállt a fűtés",
+        "bizonytalan gázkészülék hiba",
+      ],
       openGraphTitle: "Sürgős gépészeti hibabejelentés | Imperio Gépészet",
       openGraphDescription:
         "Gyors hibabejelentési útvonal sürgős víz-, gáz- és fűtéstechnikai problémákhoz Pécsen és környékén.",
@@ -301,6 +326,14 @@ export const servicePageContents = {
             "Ha a gond inkább radiátoros, padlófűtéses vagy általános fűtési rendszerhez köthető.",
         },
       ],
+      searchIntents: [
+        "nincs meleg víz",
+        "leállt a fűtés",
+        "sürgős gépészeti hiba",
+        "nem tudom melyik rendszer hibás",
+        "gázkészülék körüli bizonytalan hiba",
+        "hirtelen jelentkező szivárgás",
+      ],
       faqs: [
         {
           question: "Milyen problémáknál érdemes hibabejelentéssel indulni?",
@@ -334,6 +367,13 @@ export const servicePageContents = {
       description:
         "Kazánjavítás, kazáncsere, kazánhiba, hibakód, melegvíz- vagy fűtéskimaradás esetén indítható megkeresés Pécsen és környékén, strukturált adatbekéréssel.",
       path: "/szolgaltatasok/kazancsere",
+      keywords: [
+        "kazánjavítás Pécs",
+        "kazáncsere Pécs",
+        "kazán hiba",
+        "kazán nem indul",
+        "kazán hibakód",
+      ],
       openGraphTitle:
         "Kazánjavítás, kazáncsere és kazános hibák | Imperio Gépészet",
       openGraphDescription:
@@ -433,6 +473,14 @@ export const servicePageContents = {
             "Ha a készülékcsere mellett korszerűbb hőtermelő megoldás is szóba kerül.",
         },
       ],
+      searchIntents: [
+        "kazán nem indul",
+        "kazán hibakódot jelez",
+        "nincs meleg víz a kazán miatt",
+        "kazáncsere családi házban",
+        "régi kazán cseréje",
+        "kazános hiba",
+      ],
       faqs: [
         {
           question: "Kazánhiba és kazáncsere esetén is ugyanitt érdemes kezdeni?",
@@ -466,6 +514,13 @@ export const servicePageContents = {
       description:
         "Vízszerelés és gázszerelés csapcsere, lefolyóprobléma, szaniterek, víznyomási gondok, gázvezeték- és gázkészülék-munkák esetén Pécsen és környékén.",
       path: "/szolgaltatasok/vizszereles",
+      keywords: [
+        "vízszerelés Pécs",
+        "gázszerelés Pécs",
+        "csapcsere",
+        "lefolyóprobléma",
+        "szanitercsere",
+      ],
       openGraphTitle: "Vízszerelés és gázszerelés | Imperio Gépészet",
       openGraphDescription:
         "Általános víz- és gázszerelési szolgáltatásoldal csapok, szaniterek, lefolyók, vízvezetékek és gázkészülékek körüli feladatokhoz.",
@@ -564,6 +619,14 @@ export const servicePageContents = {
             "Ha a szerelési munka felújítással, fürdőszobai gépészettel vagy nagyobb rendszerkiépítéssel függ össze.",
         },
       ],
+      searchIntents: [
+        "csöpög a csap",
+        "nem folyik le a víz",
+        "szanitercsere",
+        "víznyomás probléma",
+        "gázvezeték szerelés",
+        "gázkészülék csere",
+      ],
       faqs: [
         {
           question: "Csapcsere, lefolyóprobléma vagy szanitercsere esetén is ez a jó oldal?",
@@ -597,6 +660,13 @@ export const servicePageContents = {
       description:
         "Fűtésszerelés, radiátorproblémák, padlófűtés, beszabályozás, karbantartás és korszerűsítés megkeresése Pécsen és környékén, strukturált egyeztetéssel.",
       path: "/szolgaltatasok/futeskorszerusites",
+      keywords: [
+        "fűtésszerelés Pécs",
+        "radiátor nem meleg",
+        "padlófűtés nem fűt",
+        "levegős radiátor",
+        "fűtés beszabályozás",
+      ],
       openGraphTitle:
         "Fűtésszerelés, radiátor és padlófűtés | Imperio Gépészet",
       openGraphDescription:
@@ -696,6 +766,14 @@ export const servicePageContents = {
             "Ha a korszerűsítés részeként új hőtermelő vagy teljesebb rendszerátalakítás merül fel.",
         },
       ],
+      searchIntents: [
+        "nem meleg a radiátor",
+        "levegős a radiátor",
+        "padlófűtés nem fűt",
+        "zajos a fűtés",
+        "fűtéskorszerűsítés",
+        "fűtés beszabályozás",
+      ],
       faqs: [
         {
           question: "Ha nem meleg a radiátor, ezt az oldalt érdemes választani?",
@@ -729,6 +807,13 @@ export const servicePageContents = {
       description:
         "Hőszivattyú telepítés, új építésű vagy felújított ingatlan gépészeti előkészítése, radiátoros vagy padlófűtéses rendszerhez illesztett egyeztetéssel Pécsen és környékén.",
       path: "/szolgaltatasok/hoszivattyu-telepites",
+      keywords: [
+        "hőszivattyú telepítés Pécs",
+        "hőszivattyú családi ház",
+        "kazán kiváltása hőszivattyúval",
+        "új építés gépészet",
+        "hőszivattyús rendszer",
+      ],
       openGraphTitle:
         "Hőszivattyú telepítés és rendszerkiépítés | Imperio Gépészet",
       openGraphDescription:
@@ -738,6 +823,7 @@ export const servicePageContents = {
       name: "Hőszivattyú telepítés és rendszerkiépítés",
       description:
         "Hőszivattyús projektekhez készült megkeresési oldal új építéshez, meglévő rendszer átalakításához, radiátoros vagy padlófűtéses kialakításhoz.",
+      includeBudapestProjects: true,
     },
     hero: {
       title: "Hőszivattyú telepítés és rendszerkiépítés",
@@ -828,6 +914,14 @@ export const servicePageContents = {
             "Ha a kiindulópont inkább a meglévő kazán állapota, hibája vagy cseréje.",
         },
       ],
+      searchIntents: [
+        "hőszivattyú telepítés családi házba",
+        "kazán kiváltása hőszivattyúval",
+        "új építésű ház gépészete",
+        "radiátoros hőszivattyú",
+        "padlófűtés hőszivattyúval",
+        "budapesti hőszivattyús projekt",
+      ],
       faqs: [
         {
           question: "Új építésű ház gépészetéhez is innen érdemes indulni?",
@@ -861,6 +955,13 @@ export const servicePageContents = {
       description:
         "Komplett épületgépészeti kivitelezés, rendszerkiépítés, családi ház gépészet, fürdőszobai gépészeti munka és nagyobb felújítási projekt megkeresése Pécsen és környékén.",
       path: "/szolgaltatasok/komplett-epuletgepeszeti-kivitelezes",
+      keywords: [
+        "komplett épületgépészeti kivitelezés",
+        "családi ház gépészet",
+        "fürdőszobai gépészeti felújítás",
+        "rendszerkiépítés",
+        "budapesti gépészeti projekt",
+      ],
       openGraphTitle:
         "Komplett épületgépészeti kivitelezés és felújítás | Imperio Gépészet",
       openGraphDescription:
@@ -870,6 +971,7 @@ export const servicePageContents = {
       name: "Komplett épületgépészeti kivitelezés és felújítás",
       description:
         "Komplex épületgépészeti kivitelezési oldal családi ház, lakásfelújítás, fürdőszobai gépészet, rendszerkiépítés és nagyobb projektmegkeresések számára.",
+      includeBudapestProjects: true,
     },
     hero: {
       title: "Komplett épületgépészeti kivitelezés és felújítás",
@@ -959,6 +1061,14 @@ export const servicePageContents = {
           description:
             "Ha a megkeresés főként a meglévő fűtési rendszer állapotára, komfortjára vagy korszerűsítésére vonatkozik.",
         },
+      ],
+      searchIntents: [
+        "családi ház gépészet",
+        "komplett épületgépészeti kivitelezés",
+        "fürdőszoba gépészeti felújítás",
+        "új rendszerkiépítés",
+        "nagyobb budapesti gépészeti projekt",
+        "összetett felújítás gépészete",
       ],
       faqs: [
         {
