@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 
-import { businessLogoPath } from "@/lib/business"
 import { getAppBaseUrl } from "@/lib/config/server-env"
 import {
   defaultSiteDescription,
@@ -87,15 +86,6 @@ export function buildRootMetadata(): Metadata {
     description: defaultSiteDescription,
     keywords: [...defaultSiteKeywords],
     category: siteCategory,
-    icons: {
-      icon: [
-        {
-          url: businessLogoPath,
-          type: "image/svg+xml",
-          sizes: "any",
-        },
-      ],
-    },
     alternates: {
       canonical: getAbsoluteUrl("/"),
     },
