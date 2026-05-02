@@ -86,6 +86,34 @@ export function buildRootMetadata(): Metadata {
     description: defaultSiteDescription,
     keywords: [...defaultSiteKeywords],
     category: siteCategory,
+    manifest: "/site.webmanifest",
+    icons: {
+      shortcut: ["/favicon.ico"],
+      icon: [
+        {
+          url: "/favicon.ico",
+          type: "image/x-icon",
+          sizes: "48x48",
+        },
+        {
+          url: "/favicon-48x48.png",
+          type: "image/png",
+          sizes: "48x48",
+        },
+        {
+          url: "/favicon-96x96.png",
+          type: "image/png",
+          sizes: "96x96",
+        },
+      ],
+      apple: [
+        {
+          url: "/apple-touch-icon.png",
+          type: "image/png",
+          sizes: "180x180",
+        },
+      ],
+    },
     alternates: {
       canonical: getAbsoluteUrl("/"),
     },
