@@ -39,7 +39,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=
 
 - A `supabase/service_requests.sql` és a `supabase/job_applications.sql` lefutott a cél Supabase projektben.
 - Az RLS szabályok és a storage bucket ténylegesen léteznek.
-- Az admin oldal megnyitható a beállított `ADMIN_ACCESS_TOKEN` értékkel.
+- Az admin oldal megnyitható a beállított belépési tokennel, majd a token nélküli admin URL-en is működik a HTTP-only admin munkamenet idejéig.
 - A publikus ajánlatkérés mentése működik mind a négy szolgáltatástípusnál.
 - A publikus munkajelentkezés mentése működik, és a kötelező önéletrajz feltöltése is sikeres.
 - A képfeltöltés működik, és 3 képnél többet vagy túl nagy fájlt nem enged.
@@ -59,7 +59,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=
 
 ## Ismert MVP korlátok
 
-- Az admin védelem jelenleg tokenes, nem teljes hitelesítési rendszer.
+- Az admin védelem jelenleg egyszerű belépési tokenes, HTTP-only sütivel fenntartott belső MVP védelem, nem teljes hitelesítési rendszer.
 - Az e-mail küldési hibák nem blokkolják a kérés mentését, ezért az adat megmarad, de az értesítés külön ellenőrizendő.
 - A képfeltöltés publikus folyamatban történik, ezért a storage policy-k helyes beállítása különösen fontos.
 - A státusz- és admin megjegyzéskezelés egyszerű belső workflow, nem teljes CRM vagy ticketing rendszer.

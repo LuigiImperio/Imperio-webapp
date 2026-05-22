@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
-import { getAdminAccessState } from "@/lib/config/server-env"
+import { resolveAdminAccessFromCookie } from "@/lib/admin/admin-access"
 import { logServerError } from "@/lib/logging"
 import {
   isServiceRequestStatus,
@@ -16,19 +16,13 @@ function getTextValue(value: FormDataEntryValue | null) {
 }
 
 function buildRedirectUrl({
-  token,
   activeFilter,
   result,
 }: {
-  token: string
   activeFilter: string
   result?: string
 }) {
   const searchParams = new URLSearchParams()
-
-  if (token) {
-    searchParams.set("token", token)
-  }
 
   if (activeFilter && activeFilter !== "osszes") {
     searchParams.set("status", activeFilter)
@@ -46,13 +40,11 @@ function buildRedirectUrl({
 export async function updateServiceRequestStatusAction(formData: FormData) {
   const requestId = getTextValue(formData.get("requestId"))
   const nextStatus = getTextValue(formData.get("status"))
-  const token = getTextValue(formData.get("token"))
   const activeFilter = getTextValue(formData.get("activeFilter"))
 
-  if (!getAdminAccessState(token).hasAccess) {
+  if (!(await resolveAdminAccessFromCookie()).hasAccess) {
     redirect(
       buildRedirectUrl({
-        token: "",
         activeFilter,
         result: "unauthorized",
       })
@@ -62,7 +54,6 @@ export async function updateServiceRequestStatusAction(formData: FormData) {
   if (!requestId || !isServiceRequestStatus(nextStatus)) {
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "status_invalid",
       })
@@ -74,7 +65,6 @@ export async function updateServiceRequestStatusAction(formData: FormData) {
     revalidatePath("/admin/ajanlatkeresek")
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "status_saved",
       })
@@ -86,7 +76,6 @@ export async function updateServiceRequestStatusAction(formData: FormData) {
     })
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "status_error",
       })
@@ -97,13 +86,11 @@ export async function updateServiceRequestStatusAction(formData: FormData) {
 export async function updateServiceRequestAdminNoteAction(formData: FormData) {
   const requestId = getTextValue(formData.get("requestId"))
   const adminNote = getTextValue(formData.get("adminNote"))
-  const token = getTextValue(formData.get("token"))
   const activeFilter = getTextValue(formData.get("activeFilter"))
 
-  if (!getAdminAccessState(token).hasAccess) {
+  if (!(await resolveAdminAccessFromCookie()).hasAccess) {
     redirect(
       buildRedirectUrl({
-        token: "",
         activeFilter,
         result: "unauthorized",
       })
@@ -113,7 +100,6 @@ export async function updateServiceRequestAdminNoteAction(formData: FormData) {
   if (!requestId) {
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "note_invalid",
       })
@@ -125,7 +111,6 @@ export async function updateServiceRequestAdminNoteAction(formData: FormData) {
     revalidatePath("/admin/ajanlatkeresek")
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "note_saved",
       })
@@ -136,7 +121,6 @@ export async function updateServiceRequestAdminNoteAction(formData: FormData) {
     })
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "note_error",
       })

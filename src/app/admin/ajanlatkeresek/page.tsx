@@ -6,7 +6,7 @@ import {
   updateServiceRequestStatusAction,
 } from "@/app/admin/ajanlatkeresek/actions"
 import { AdminFormSubmitButton } from "@/components/admin/admin-form-submit-button"
-import { resolveAdminAccess } from "@/lib/admin/admin-access"
+import { resolveAdminAccessFromCookie } from "@/lib/admin/admin-access"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import {
   Card,
@@ -493,12 +493,8 @@ function getTechnicalDetails(request: ServiceRequestRecord) {
   ]
 }
 
-function buildFilterHref(token: string | undefined, status: string) {
+function buildFilterHref(status: string) {
   const searchParams = new URLSearchParams()
-
-  if (token) {
-    searchParams.set("token", token)
-  }
 
   if (status === "osszes") {
     return searchParams.size
@@ -571,14 +567,13 @@ export default async function AdminServiceRequestsPage({
   searchParams,
 }: {
   searchParams: Promise<{
-    token?: string | string[] | undefined
     status?: string | string[] | undefined
     result?: string | string[] | undefined
   }>
 }) {
   const resolvedSearchParams = await searchParams
-  const accessState = resolveAdminAccess(resolvedSearchParams.token)
-  const { providedToken, hasConfiguredProtection, hasAccess } = accessState
+  const accessState = await resolveAdminAccessFromCookie()
+  const { hasConfiguredProtection, hasAccess } = accessState
   const requestedStatus = Array.isArray(resolvedSearchParams.status)
     ? resolvedSearchParams.status[0]
     : resolvedSearchParams.status
@@ -635,7 +630,7 @@ export default async function AdminServiceRequestsPage({
         {!hasConfiguredProtection ? (
           <AccessState
             title="Az admin hozzáférés még nincs konfigurálva"
-            description="A belső nézet használatához állítsa be az `ADMIN_ACCESS_TOKEN` környezeti változót, majd a megfelelő tokennel nyissa meg az oldalt."
+            description="A belső nézet használatához állítsa be a szerveroldali admin hozzáférést, majd a megfelelő belépési hivatkozással nyissa meg az oldalt."
           />
         ) : !hasAccess ? (
           <AccessState
@@ -647,7 +642,7 @@ export default async function AdminServiceRequestsPage({
             description={
               accessState.reason === "missing_token"
                 ? "A beérkezett ajánlatkérések megtekintéséhez érvényes hozzáférési token szükséges. Ez a nézet belső használatra készült, publikus listázás nélkül."
-                : "A megadott token nem egyezik a beállított `ADMIN_ACCESS_TOKEN` értékkel, ezért a lista nem nyitható meg."
+                : "A megadott token nem egyezik a szerveroldalon beállított admin hozzáféréssel, ezért a lista nem nyitható meg."
             }
           />
         ) : loadError ? (
@@ -687,7 +682,7 @@ export default async function AdminServiceRequestsPage({
                   return (
                     <Link
                       key={option.value}
-                      href={buildFilterHref(providedToken, option.value)}
+                      href={buildFilterHref(option.value)}
                       className={
                         isActive
                           ? "rounded-full border border-white/30 bg-white px-4 py-2 text-sm text-zinc-950"
@@ -738,7 +733,7 @@ export default async function AdminServiceRequestsPage({
                   return (
                     <Link
                       key={option.value}
-                      href={buildFilterHref(providedToken, option.value)}
+                      href={buildFilterHref(option.value)}
                       className={
                         isActive
                           ? "rounded-full border border-white/30 bg-white px-4 py-2 text-sm text-zinc-950"
@@ -1118,11 +1113,6 @@ export default async function AdminServiceRequestsPage({
                         <input type="hidden" name="requestId" value={request.id} />
                         <input
                           type="hidden"
-                          name="token"
-                          value={providedToken ?? ""}
-                        />
-                        <input
-                          type="hidden"
                           name="activeFilter"
                           value={activeStatusFilter ?? "osszes"}
                         />
@@ -1170,11 +1160,6 @@ export default async function AdminServiceRequestsPage({
                         className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4"
                       >
                         <input type="hidden" name="requestId" value={request.id} />
-                        <input
-                          type="hidden"
-                          name="token"
-                          value={providedToken ?? ""}
-                        />
                         <input
                           type="hidden"
                           name="activeFilter"

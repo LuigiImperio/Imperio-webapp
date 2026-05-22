@@ -26,7 +26,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=
 
 Megjegyzés:
 
-- Az `APP_BASE_URL` éles környezetben kötelezően ajánlott. Ha hiányzik, a rendszer biztonságos helyi alap URL-re áll vissza, de ez hibás canonical URL-eket, sitemap URL-eket és admin linkeket eredményezhet.
+- Az `APP_BASE_URL` éles környezetben kötelezően ajánlott. Ha hiányzik, a rendszer a publikus HTTPS alapértelmezett URL-re áll vissza, de élesben ezt akkor is célszerű kifejezetten beállítani.
 - A `NEXT_PUBLIC_SUPABASE_URL` és `NEXT_PUBLIC_SUPABASE_ANON_KEY` hiánya nem nyers publikus hibával kell, hogy találkozzon, de a képfeltöltés és a böngészős storage műveletek nem fognak működni.
 
 ## Külső szolgáltatások és setup
@@ -68,7 +68,7 @@ Hiányzó asset esetén a felület fallbacket mutat, de éles indulás előtt ez
 - Ellenőrizze, hogy admin értesítő e-mail érkezik.
 - Ellenőrizze, hogy ügyfél visszaigazoló e-mail érkezik, ha az űrlapon érvényes e-mail cím szerepel.
 - Az `/admin`, `/admin/ajanlatkeresek` és `/admin/jelentkezesek` oldalak:
-  token nélkül védettek, hibás tokennel nem nyílnak meg, helyes tokennel működnek.
+  token nélkül védettek, hibás tokennel nem nyílnak meg, helyes belépési tokennel HTTP-only admin munkamenetet állítanak be, majd token nélküli URL-re irányítanak.
 - Az admin listákban a státusz mentése működik, a szolgáltatási megkereséseknél az admin megjegyzés mentése is, és hibánál is kontrollált belső visszajelzés látható.
 - A sitemap és a robots végpont a tényleges éles domainre mutat.
 - A GTM vagy GA4 oldalon megjelennek a pageview és CTA/form események, ha az analitika be van kapcsolva.
@@ -83,7 +83,7 @@ Hiányzó asset esetén a felület fallbacket mutat, de éles indulás előtt ez
 
 ## Ismert MVP korlátok
 
-- Az admin védelem jelenleg query token alapú, nem teljes felhasználókezelés.
+- Az admin védelem jelenleg egyszerű belépési tokenes, HTTP-only sütivel fenntartott belső MVP védelem, nem teljes felhasználókezelés.
 - Az admin oldalak nem audit trail vagy CRM rendszerként működnek, hanem belső MVP áttekintőként.
 - A képfeltöltés publikus böngészős flowban történik, ezért a Supabase Storage policy-k helyessége kritikus.
 - Az önéletrajz feltöltése szerveroldalon történik, ezért az alkalmazás futtatási környezetének fogadnia kell a nagyobb multipart kéréseket is.

@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { resolveAdminAccess } from "@/lib/admin/admin-access"
+import { resolveAdminAccessFromCookie } from "@/lib/admin/admin-access"
 import { logServerError } from "@/lib/logging"
 import {
   getJobApplications,
@@ -59,12 +59,8 @@ function getStatusBadgeClassName(status: JobApplicationStatus) {
   }
 }
 
-function buildFilterHref(token: string | undefined, status: string) {
+function buildFilterHref(status: string) {
   const searchParams = new URLSearchParams()
-
-  if (token) {
-    searchParams.set("token", token)
-  }
 
   if (status !== "osszes") {
     searchParams.set("status", status)
@@ -125,14 +121,13 @@ export default async function AdminJobApplicationsPage({
   searchParams,
 }: {
   searchParams: Promise<{
-    token?: string | string[] | undefined
     status?: string | string[] | undefined
     result?: string | string[] | undefined
   }>
 }) {
   const resolvedSearchParams = await searchParams
-  const accessState = resolveAdminAccess(resolvedSearchParams.token)
-  const { providedToken, hasConfiguredProtection, hasAccess } = accessState
+  const accessState = await resolveAdminAccessFromCookie()
+  const { hasConfiguredProtection, hasAccess } = accessState
   const requestedStatus = Array.isArray(resolvedSearchParams.status)
     ? resolvedSearchParams.status[0]
     : resolvedSearchParams.status
@@ -190,7 +185,7 @@ export default async function AdminJobApplicationsPage({
         {!hasConfiguredProtection ? (
           <AccessState
             title="Az admin hozzáférés még nincs konfigurálva"
-            description="A belső jelentkezési lista használatához állítsa be az `ADMIN_ACCESS_TOKEN` környezeti változót, majd a megfelelő tokennel nyissa meg az oldalt."
+            description="A belső jelentkezési lista használatához állítsa be a szerveroldali admin hozzáférést, majd a megfelelő belépési hivatkozással nyissa meg az oldalt."
           />
         ) : !hasAccess ? (
           <AccessState
@@ -202,7 +197,7 @@ export default async function AdminJobApplicationsPage({
             description={
               accessState.reason === "missing_token"
                 ? "A jelentkezések megtekintéséhez érvényes hozzáférési token szükséges."
-                : "A megadott token nem egyezik a beállított `ADMIN_ACCESS_TOKEN` értékkel, ezért a lista nem nyitható meg."
+                : "A megadott token nem egyezik a szerveroldalon beállított admin hozzáféréssel, ezért a lista nem nyitható meg."
             }
           />
         ) : loadError ? (
@@ -242,7 +237,7 @@ export default async function AdminJobApplicationsPage({
                   return (
                     <Link
                       key={option.value}
-                      href={buildFilterHref(providedToken, option.value)}
+                      href={buildFilterHref(option.value)}
                       className={
                         isActive
                           ? "rounded-full border border-white/30 bg-white px-4 py-2 text-sm text-zinc-950"
@@ -400,11 +395,6 @@ export default async function AdminJobApplicationsPage({
                             type="hidden"
                             name="applicationId"
                             value={application.id}
-                          />
-                          <input
-                            type="hidden"
-                            name="token"
-                            value={providedToken ?? ""}
                           />
                           <input
                             type="hidden"

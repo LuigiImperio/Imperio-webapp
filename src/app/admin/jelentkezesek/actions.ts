@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
-import { getAdminAccessState } from "@/lib/config/server-env"
+import { resolveAdminAccessFromCookie } from "@/lib/admin/admin-access"
 import { logServerError } from "@/lib/logging"
 import {
   isJobApplicationStatus,
@@ -15,19 +15,13 @@ function getTextValue(value: FormDataEntryValue | null) {
 }
 
 function buildRedirectUrl({
-  token,
   activeFilter,
   result,
 }: {
-  token: string
   activeFilter: string
   result?: string
 }) {
   const searchParams = new URLSearchParams()
-
-  if (token) {
-    searchParams.set("token", token)
-  }
 
   if (activeFilter && activeFilter !== "osszes") {
     searchParams.set("status", activeFilter)
@@ -45,13 +39,11 @@ function buildRedirectUrl({
 export async function updateJobApplicationStatusAction(formData: FormData) {
   const applicationId = getTextValue(formData.get("applicationId"))
   const nextStatus = getTextValue(formData.get("status"))
-  const token = getTextValue(formData.get("token"))
   const activeFilter = getTextValue(formData.get("activeFilter"))
 
-  if (!getAdminAccessState(token).hasAccess) {
+  if (!(await resolveAdminAccessFromCookie()).hasAccess) {
     redirect(
       buildRedirectUrl({
-        token: "",
         activeFilter,
         result: "unauthorized",
       })
@@ -61,7 +53,6 @@ export async function updateJobApplicationStatusAction(formData: FormData) {
   if (!applicationId || !isJobApplicationStatus(nextStatus)) {
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "status_invalid",
       })
@@ -73,7 +64,6 @@ export async function updateJobApplicationStatusAction(formData: FormData) {
     revalidatePath("/admin/jelentkezesek")
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "status_saved",
       })
@@ -85,7 +75,6 @@ export async function updateJobApplicationStatusAction(formData: FormData) {
     })
     redirect(
       buildRedirectUrl({
-        token,
         activeFilter,
         result: "status_error",
       })

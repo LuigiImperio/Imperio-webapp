@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { resolveAdminAccess } from "@/lib/admin/admin-access"
+import { resolveAdminAccessFromCookie } from "@/lib/admin/admin-access"
 import { getServiceRequestTypeLabel } from "@/lib/service-requests/service-request-types"
 import {
   getServiceRequestDashboardSummary,
@@ -46,20 +46,12 @@ function getStatusBadgeClassName(status: ServiceRequestStatus) {
   }
 }
 
-function buildRequestsHref(token: string | undefined) {
-  if (!token) {
-    return "/admin/ajanlatkeresek"
-  }
-
-  return `/admin/ajanlatkeresek?token=${encodeURIComponent(token)}`
+function buildRequestsHref() {
+  return "/admin/ajanlatkeresek"
 }
 
-function buildJobApplicationsHref(token: string | undefined) {
-  if (!token) {
-    return "/admin/jelentkezesek"
-  }
-
-  return `/admin/jelentkezesek?token=${encodeURIComponent(token)}`
+function buildJobApplicationsHref() {
+  return "/admin/jelentkezesek"
 }
 
 function AccessState({
@@ -81,16 +73,9 @@ function AccessState({
   )
 }
 
-export default async function AdminDashboardPage({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    token?: string | string[] | undefined
-  }>
-}) {
-  const resolvedSearchParams = await searchParams
-  const accessState = resolveAdminAccess(resolvedSearchParams.token)
-  const { providedToken, hasConfiguredProtection, hasAccess } = accessState
+export default async function AdminDashboardPage() {
+  const accessState = await resolveAdminAccessFromCookie()
+  const { hasConfiguredProtection, hasAccess } = accessState
 
   let loadError = false
   let summary = null as Awaited<
@@ -136,7 +121,7 @@ export default async function AdminDashboardPage({
         {!hasConfiguredProtection ? (
           <AccessState
             title="Az admin hozzáférés még nincs konfigurálva"
-            description="A belső áttekintés használatához állítsa be az `ADMIN_ACCESS_TOKEN` környezeti változót, majd a megfelelő tokennel nyissa meg az oldalt."
+            description="A belső áttekintés használatához állítsa be a szerveroldali admin hozzáférést, majd a megfelelő belépési hivatkozással nyissa meg az oldalt."
           />
         ) : !hasAccess ? (
           <AccessState
@@ -147,8 +132,8 @@ export default async function AdminDashboardPage({
             }
             description={
               accessState.reason === "missing_token"
-                ? "A belső dashboard megtekintéséhez érvényes hozzáférési token szükséges. Helyi használatnál az oldal `?token=` paraméterrel nyitható meg."
-                : "A belső dashboardhoz megadott token nem egyezik a beállított `ADMIN_ACCESS_TOKEN` értékkel, ezért a hozzáférés nem engedélyezett."
+                ? "A belső dashboard megtekintéséhez érvényes hozzáférés szükséges. A belépési hivatkozás egyszeri tokenes ellenőrzés után védett munkamenetet állít be."
+                : "A megadott belépési token nem egyezik a szerveroldalon beállított admin hozzáféréssel, ezért a hozzáférés nem engedélyezett."
             }
           />
         ) : loadError || !summary ? (
@@ -315,7 +300,7 @@ export default async function AdminDashboardPage({
                   </div>
 
                   <Button asChild className="w-full bg-white text-zinc-950 hover:bg-zinc-200">
-                    <Link href={buildRequestsHref(providedToken)}>
+                    <Link href={buildRequestsHref()}>
                       Beérkezett ajánlatkérések megnyitása
                     </Link>
                   </Button>
@@ -330,7 +315,7 @@ export default async function AdminDashboardPage({
                     variant="outline"
                     className="w-full border-white/15 bg-white/[0.04] text-white hover:bg-white/10 hover:text-white"
                   >
-                    <Link href={buildJobApplicationsHref(providedToken)}>
+                    <Link href={buildJobApplicationsHref()}>
                       Beérkezett jelentkezések megnyitása
                     </Link>
                   </Button>

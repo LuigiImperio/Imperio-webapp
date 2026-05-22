@@ -2,7 +2,8 @@ import "server-only"
 
 import { normalizeCanonicalBaseUrl } from "@/lib/seo/domain"
 
-const defaultAppBaseUrl = "http://localhost:3000"
+const localAppBaseUrl = "http://localhost:3000"
+const productionAppBaseUrl = "https://www.imperiogepeszet.hu"
 const serverEnvWarningCache = new Set<string>()
 
 function warnServerEnv(message: string) {
@@ -12,6 +13,12 @@ function warnServerEnv(message: string) {
 
   serverEnvWarningCache.add(message)
   console.warn(`[config] ${message}`)
+}
+
+function getDefaultAppBaseUrl() {
+  return process.env.NODE_ENV === "production"
+    ? productionAppBaseUrl
+    : localAppBaseUrl
 }
 
 export class ConfigurationError extends Error {
@@ -63,7 +70,7 @@ export function getAppBaseUrl(requestUrl?: string) {
     }
   } else if (process.env.NODE_ENV === "production") {
     warnServerEnv(
-      "Az APP_BASE_URL nincs beállítva, ezért a rendszer biztonságos helyi alapértelmezett URL-t használ. Éles környezetben ezt mindenképpen állítsa be."
+      "Az APP_BASE_URL nincs beállítva, ezért a rendszer a publikus HTTPS alapértelmezett URL-t használja. Éles környezetben ezt mindenképpen állítsa be."
     )
   }
 
@@ -77,26 +84,5 @@ export function getAppBaseUrl(requestUrl?: string) {
     }
   }
 
-  return new URL(defaultAppBaseUrl)
-}
-
-export function getAdminAccessState(providedToken: string | undefined) {
-  const expectedToken = getOptionalServerEnv("ADMIN_ACCESS_TOKEN")
-  const hasConfiguredProtection = Boolean(expectedToken)
-  const hasProvidedToken = Boolean(providedToken)
-  const hasAccess =
-    hasConfiguredProtection && hasProvidedToken && providedToken === expectedToken
-
-  return {
-    providedToken,
-    hasConfiguredProtection,
-    hasAccess,
-    reason: !hasConfiguredProtection
-      ? "missing_config"
-      : !hasProvidedToken
-        ? "missing_token"
-        : hasAccess
-          ? "authorized"
-          : "invalid_token",
-  }
+  return new URL(getDefaultAppBaseUrl())
 }

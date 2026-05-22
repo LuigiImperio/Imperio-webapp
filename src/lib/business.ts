@@ -1,6 +1,6 @@
 export const businessName = "Imperio Gépészet"
 export const businessAlternateName = "IMPERIO VGF"
-export const businessEmail = "imperiomarco3@gmail.com"
+export const businessEmail = "info@imperiogepeszet.hu"
 export const businessPhone = "+36704180504"
 export const businessPhoneDisplay = "+36 70 418 0504"
 export const businessLogoPath = "/images/brand/logo1.0.svg"

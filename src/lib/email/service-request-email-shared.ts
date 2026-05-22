@@ -194,15 +194,6 @@ export async function sendResendEmail({
   }
 
   if (!response.ok) {
-    const errorBody = (await response.text())
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 280)
-
-    throw new Error(
-      errorBody
-        ? `Az e-mail küldése nem sikerült: ${response.status} ${errorBody}`
-        : `Az e-mail küldése nem sikerült: ${response.status}`
-    )
+    throw new Error(`Az e-mail küldése nem sikerült: ${response.status}`)
   }
 }

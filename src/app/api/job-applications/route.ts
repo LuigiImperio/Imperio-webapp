@@ -1,8 +1,3 @@
-console.log(
-  "Service Role Key létezik?",
-  !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-);
-
 import { NextResponse } from "next/server";
 
 import { ConfigurationError, getAppBaseUrl } from "@/lib/config/server-env";
