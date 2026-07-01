@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono, Inter } from "next/font/google"
 
 import { AnalyticsProvider } from "@/components/analytics/analytics-provider"
+import { GuidedRequestProvider } from "@/components/guided-request/guided-request-provider"
 import { ConsentProvider } from "@/components/privacy/consent-provider"
 import { buildRootMetadata } from "@/lib/seo/metadata"
 import { cn } from "@/lib/utils"
@@ -41,7 +42,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ConsentProvider>
-          {children}
+          <GuidedRequestProvider>{children}</GuidedRequestProvider>
           <AnalyticsProvider />
         </ConsentProvider>
       </body>

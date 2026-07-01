@@ -5,13 +5,14 @@ import { Menu, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { ImperioLogo } from "@/components/branding/ImperioLogo"
+import { useGuidedRequest } from "@/components/guided-request/guided-request-context"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const navigationItems = [
   { label: "Szolgáltatások", href: "/#szolgaltatasok" },
-  { label: "Rólunk", href: "/#rolunk" },
-  { label: "Dolgozz velünk", href: "/#dolgozz-velunk" },
+  { label: "Sürgős", href: "/#surgos" },
+  { label: "Terület", href: "/#terulet" },
   { label: "Referenciák", href: "/#referenciak" },
   { label: "GYIK", href: "/#gyik" },
   { label: "Kapcsolat", href: "/#kapcsolat" },
@@ -19,6 +20,7 @@ const navigationItems = [
 
 export function SiteNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { openGeneral } = useGuidedRequest()
 
   useEffect(() => {
     if (!isMobileMenuOpen) {
@@ -45,7 +47,15 @@ export function SiteNavbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/88 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2.5 px-3.5 sm:h-[4.5rem] sm:gap-3 sm:px-6 md:px-10">
-        <ImperioLogo className="size-[4rem] sm:size-[4.2rem] lg:size-[4rem] xl:size-[4.35rem]" />
+        <div className="flex items-center gap-2.5">
+          <ImperioLogo className="size-11 sm:size-12" />
+          <span className="hidden flex-col leading-none sm:flex">
+            <span className="text-[15px] font-bold tracking-[0.02em] text-white">IMPERIO</span>
+            <span className="mt-0.5 text-[10px] tracking-[0.32em] text-[#c89758]">
+              GÉPÉSZET
+            </span>
+          </span>
+        </div>
 
         <nav className="hidden items-center gap-6 lg:flex 2xl:gap-7">
           {navigationItems.map((item) => (
@@ -61,14 +71,13 @@ export function SiteNavbar() {
 
         <div className="flex items-center gap-2 sm:gap-2.5">
           <Button
-            asChild
+            type="button"
             size="sm"
+            onClick={openGeneral}
             className="public-button-primary h-9 shrink-0 rounded-xl px-3 text-[0.76rem] sm:h-10 sm:px-4 sm:text-[0.82rem] lg:h-11 lg:px-4 lg:text-sm"
           >
-            <Link href="/#szolgaltatasok">
-              <span className="sm:hidden">Megkeresés</span>
-              <span className="hidden sm:inline">Megkeresés indítása</span>
-            </Link>
+            <span className="sm:hidden">Megkeresés</span>
+            <span className="hidden sm:inline">Megkeresés indítása</span>
           </Button>
 
           <button

@@ -1,62 +1,27 @@
-import {
-  publicContactResponseSummary,
-  publicServiceAreaExtendedSummary,
-  publicServiceAreaSummary,
-  publicUrgentContactSummary,
-} from "@/lib/contact"
-
 export const faqItems = [
   {
-    question: "Hogyan működik a strukturált megkeresés?",
+    question: "Mennyi idő alatt jelentkeznek vissza?",
     answer:
-      "A kiválasztott szolgáltatás oldalán rövid, lépésenként felépített űrlap segít összegyűjteni a legfontosabb műszaki és kapcsolattartási adatokat. A folyamat gyakorlati célja, hogy a következő egyeztetés rendezettebb alapból indulhasson, nem pedig az, hogy feleslegesen hosszú legyen.",
+      "A beérkezett megkeresést a feladat és a helyszín alapján nézzük át, és általában rövid időn belül telefonon vagy e-mailben visszajelzünk a következő lépéssel.",
   },
   {
-    question: "Milyen adatokat érdemes megadni?",
+    question: "Sürgős hibánál mi a leggyorsabb?",
     answer:
-      "Nem szükséges, hogy az első körben minden részlet ismert legyen. A feladat rövid leírása, a sürgősség, valamint az irányítószám és a település már sokat segít a pontosabb előkészítésben. A teljes, pontos cím általában csak később szükséges, ha a munka és a további egyeztetés ezt indokolja.",
+      "Csőtörés, beázás, leállt kazán vagy melegvíz-kimaradás esetén hívjon azonnal — élőben gyorsabban segítünk. Írásban a gyors hibabejelentés a legjobb belépési pont.",
   },
   {
-    question: "Mikor lehet számítani kapcsolatfelvételre?",
+    question: "Milyen területen dolgoznak?",
     answer:
-      `${publicContactResponseSummary} ${publicUrgentContactSummary}`,
+      "Elsődlegesen Pécs és környéke, valamint a közeli baranyai települések. Nagyobb projekteknél távolabbi helyszín is egyeztethető, az esetleges kiszállási feltételeket előre jelezzük.",
   },
   {
-    question:
-      "Kihez érdemes fordulni, ha nem meleg a radiátor vagy nem indul a kazán?",
+    question: "Kell fizetni az ajánlatért?",
     answer:
-      "Ha a probléma egyértelműen a kazán működéséhez kapcsolódik, a kazános megkeresés ad tisztább indulást. Ha inkább a teljes fűtési rendszer, a radiátorok vagy a padlófűtés működése a kérdés, a fűtési oldal a jobb belépési pont. Bizonytalan vagy sürgős helyzetnél a hibabejelentés a leggyorsabb út.",
+      "A megkeresés és a tájékozódó egyeztetés díjmentes. Pontos árat a feladat ismeretében, szükség esetén helyszíni felmérés után adunk.",
   },
   {
-    question: "Mit érdemes tenni, ha csőtörés, szivárgás vagy beázás látszik?",
+    question: "Milyen munkákat vállalnak?",
     answer:
-      "Érdemes röviden jelezni, hogy aktív-e még a szivárgás, melyik terület érintett, és sikerült-e elzárni a vizet. Ha a helyzet sürgős, a csőtörés / szivárgás oldal vagy a hibabejelentés segít a leggyorsabban rendezett formában elindítani az egyeztetést.",
-  },
-  {
-    question: "Mi történik a képfeltöltés után?",
-    answer:
-      "A csatolt képek a megkeresés részévé válnak, így a helyszín vagy a probléma jellege jobban átlátható már az első áttekintéskor. Ez segíthet abban, hogy a következő kapcsolatfelvétel kevesebb pontosító körrel induljon. A képfeltöltés mindenhol opcionális.",
-  },
-  {
-    question:
-      "Milyen munkák tartozhatnak a víz-, gáz- és fűtésszerelési megkeresésekhez?",
-    answer:
-      "A tipikus lakossági megkeresések közé tartozhat a csapcsere, szanitercsere, lefolyó körüli probléma, vízvezeték-javítás, gázvezeték- vagy gázkészülékhez kapcsolódó munka, radiátorhiba, padlófűtéses panasz vagy teljes fűtési rendszerrel kapcsolatos kérdés.",
-  },
-  {
-    question: "Mely területeken vállalunk munkát?",
-    answer:
-      `${publicServiceAreaSummary} ${publicServiceAreaExtendedSummary} Más településekről érkező megkeresést is rögzítünk, és a munka jellege alapján jelezzük a lehetőségeket, illetve az esetleges kiszállási feltételeket.`,
-  },
-  {
-    question: "Milyen típusú ingatlanokhoz és megkeresésekhez használható az oldal?",
-    answer:
-      "Lakásokhoz, családi házakhoz, felújításokhoz, új rendszerkiépítésekhez és nagyobb gépészeti projektekhez is. A rövidebb hibajellegű megkereséstől a komplett épületgépészeti kivitelezésig ugyanaz a logika segít kiválasztani a megfelelő indulási pontot.",
-  },
-  {
-    question:
-      "Komplett felújításnál, családi ház gépészetnél vagy nagyobb budapesti projektnél is lehet megkeresést indítani?",
-    answer:
-      "Igen. Ha a feladat nem egyetlen javítás, hanem nagyobb felújítás, komplett rendszerkiépítés vagy összetettebb épületgépészeti kivitelezés, a komplett gépészeti megkeresés a legjobb indulás. Budapesti helyszín főként nagyobb, hitelesen projektjellegű munkáknál releváns.",
+      "Víz-, gáz- és fűtésszerelés, kazán- és hőszivattyú-munkák, fürdőszoba-gépészet és komplett kivitelezés — lakástól a családi házig.",
   },
 ] as const

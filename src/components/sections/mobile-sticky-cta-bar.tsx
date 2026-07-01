@@ -1,11 +1,10 @@
 "use client"
 
-import { PhoneCall, PhoneIncoming, TriangleAlert } from "lucide-react"
+import { MessagesSquare, PhoneCall } from "lucide-react"
 import { useEffect, useState } from "react"
 
-import { TrackedLink } from "@/components/analytics/tracked-link"
+import { useGuidedRequest } from "@/components/guided-request/guided-request-context"
 import { useConsent } from "@/components/privacy/consent-context"
-import { Button } from "@/components/ui/button"
 import { publicAnalyticsEventNames } from "@/lib/analytics/public-events"
 import { trackPublicEvent } from "@/lib/analytics/tracker"
 import { businessPhone } from "@/lib/business"
@@ -20,6 +19,7 @@ export function MobileStickyCtaBar() {
     hasDecision,
     isPreferencesOpen,
   } = useConsent()
+  const { openGeneral } = useGuidedRequest()
   const [hasScrolledEnough, setHasScrolledEnough] = useState(false)
   const [isContactSectionVisible, setIsContactSectionVisible] = useState(false)
 
@@ -72,10 +72,21 @@ export function MobileStickyCtaBar() {
       source_page: "homepage",
       source_section: "mobile_sticky_cta",
       cta_variant: "primary",
-      cta_label: "Hívás most",
+      cta_label: "Hívás",
       destination_path: `tel:${businessPhone}`,
       entry_point: "homepage_mobile_sticky_call",
     })
+  }
+
+  function handleGuidedRequestClick() {
+    trackPublicEvent(publicAnalyticsEventNames.ctaClick, {
+      source_page: "homepage",
+      source_section: "mobile_sticky_cta",
+      cta_variant: "secondary",
+      cta_label: "Megkeresés",
+      entry_point: "homepage_mobile_sticky_guided_request",
+    })
+    openGeneral()
   }
 
   return (
@@ -96,69 +107,24 @@ export function MobileStickyCtaBar() {
       >
         <nav
           aria-label="Gyors mobil műveletek"
-          className="pointer-events-auto mx-auto w-full max-w-md overflow-hidden rounded-[1.6rem] border border-[rgba(232,208,160,0.14)] bg-[linear-gradient(180deg,rgba(24,24,27,0.94),rgba(9,9,11,0.98))] p-2.5 shadow-[0_20px_60px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl"
+          className="pointer-events-auto mx-auto grid w-full max-w-[28.75rem] grid-cols-2 gap-2.5 overflow-hidden rounded-[1.6rem] border border-[rgba(232,208,160,0.16)] bg-[linear-gradient(180deg,rgba(24,24,27,0.94),rgba(9,9,11,0.98))] p-2.5 shadow-[0_20px_60px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl"
         >
-          <div className="grid gap-2">
-            <div className="grid grid-cols-2 gap-2">
-              <Button
-                asChild
-                size="sm"
-                className="public-button-primary h-12 rounded-[1rem] px-3 text-[0.82rem] font-medium"
-              >
-                <a href={`tel:${businessPhone}`} onClick={handleCallClick}>
-                  <PhoneCall className="size-4" />
-                  Hívás most
-                </a>
-              </Button>
-
-              <Button
-                asChild
-                size="sm"
-                variant="outline"
-                className="h-12 rounded-[1rem] border-[#c89758]/18 bg-[#c89758]/[0.08] px-3 text-[0.82rem] font-medium text-[#f2e2bc] hover:border-[#c89758]/30 hover:bg-[#c89758]/[0.14] hover:text-[#f7ebcf]"
-              >
-                <TrackedLink
-                  href="/szolgaltatasok/hibabejelentes"
-                  eventName={publicAnalyticsEventNames.ctaClick}
-                  eventPayload={{
-                    source_page: "homepage",
-                    source_section: "mobile_sticky_cta",
-                    service_type: "hibabejelentes",
-                    cta_variant: "secondary",
-                    cta_label: "Hibabejelentés",
-                    destination_path: "/szolgaltatasok/hibabejelentes",
-                    entry_point: "homepage_mobile_sticky_fault_report",
-                  }}
-                >
-                  <TriangleAlert className="size-4" />
-                  Hibabejelentés
-                </TrackedLink>
-              </Button>
-            </div>
-
-            <Button
-              asChild
-              size="sm"
-              variant="ghost"
-              className="h-11 rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 text-[0.82rem] font-medium text-zinc-100 hover:border-white/16 hover:bg-white/[0.08] hover:text-white"
-            >
-              <TrackedLink
-                href="#lakossagi-gyakori-munkak"
-                eventName={publicAnalyticsEventNames.ctaClick}
-                eventPayload={{
-                  source_page: "homepage",
-                  source_section: "mobile_sticky_cta",
-                  cta_variant: "supporting",
-                  cta_label: "Visszahívást kérek",
-                  destination_path: "/#lakossagi-gyakori-munkak",
-                  entry_point: "homepage_mobile_sticky_callback_request",
-                }}
-              >
-                <PhoneIncoming className="size-4" />
-                Visszahívást kérek
-              </TrackedLink>
-            </Button>
-          </div>
+          <a
+            href={`tel:${businessPhone}`}
+            onClick={handleCallClick}
+            className="public-button-primary flex h-[50px] items-center justify-center gap-2 rounded-[14px] text-[14.5px] font-semibold"
+          >
+            <PhoneCall className="size-4" />
+            Hívás
+          </a>
+          <button
+            type="button"
+            onClick={handleGuidedRequestClick}
+            className="flex h-[50px] items-center justify-center gap-2 rounded-[14px] border border-[#c89758]/22 bg-[#c89758]/10 text-[14.5px] font-semibold text-[#f2e2bc]"
+          >
+            <MessagesSquare className="size-4" />
+            Megkeresés
+          </button>
         </nav>
       </div>
     </div>
